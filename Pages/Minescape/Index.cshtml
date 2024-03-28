@@ -1,0 +1,156 @@
+﻿@page
+@model WebApplication1.Pages.Minescape.IndexModel
+@{
+    <script src="https://docs.opencv.org/master/opencv.js"></script>
+
+    <div class="container">
+        <div class="btn-container" id="Navigation">
+            <input class="radio" type="radio" id="rPuzzle" name="radios" value="Puzzle">
+            <label for="rPuzzle">Puzzle Box Solver</label><br />
+            <input class="radio" type="radio" id="rLight" name="radios" value="Light" checked="checked">
+            <label for="rLight">Light Box Solver</label><br />
+            <input class="radio" type="radio" id="rAnagram" name="radios" value="Anagram">
+            <label for="rAnagram">Anagram Solver</label><br />
+            <input class="radio" type="radio" id="rCypher" name="radios" value="Cypher">
+            <label for="rCypher">Cypher Solver</label><br />
+        </div>
+    </div>
+
+    <div class="main" id="Puzzle" style="display: none;">
+        <div class="dropzone-wrapper" id="PuzzleInputZone">
+            <div class="dropzone-desc">
+                <p id="PuzzleInputDescription">Choose a Puzzle image file or drag it here.</p>
+            </div>
+            <canvas id="PuzzleCanvas" height="200"></canvas>
+            <input type="file" name="img_logo" class="dropzone" id="PuzzleInput">
+        </div>
+
+        <p id="solution"></p>
+
+        <div id="PuzzleCanvas" style="display: none;">
+            <canvas id="canvas"></canvas>
+
+            <canvas id="canvas0-0"></canvas>
+            <canvas id="canvas0-1"></canvas>
+            <canvas id="canvas0-2"></canvas>
+            <canvas id="canvas0-3"></canvas>
+            <canvas id="canvas1-0"></canvas>
+            <canvas id="canvas1-1"></canvas>
+            <canvas id="canvas1-2"></canvas>
+            <canvas id="canvas1-3"></canvas>
+            <canvas id="canvas2-0"></canvas>
+            <canvas id="canvas2-1"></canvas>
+            <canvas id="canvas2-2"></canvas>
+            <canvas id="canvas2-3"></canvas>
+            <canvas id="canvas3-0"></canvas>
+            <canvas id="canvas3-1"></canvas>
+            <canvas id="canvas3-2"></canvas>
+            <canvas id="canvas3-3"></canvas>
+
+            <canvas id="scanvas0-0"></canvas>
+            <canvas id="scanvas0-1"></canvas>
+            <canvas id="scanvas0-2"></canvas>
+            <canvas id="scanvas0-3"></canvas>
+            <canvas id="scanvas1-0"></canvas>
+            <canvas id="scanvas1-1"></canvas>
+            <canvas id="scanvas1-2"></canvas>
+            <canvas id="scanvas1-3"></canvas>
+            <canvas id="scanvas2-0"></canvas>
+            <canvas id="scanvas2-1"></canvas>
+            <canvas id="scanvas2-2"></canvas>
+            <canvas id="scanvas2-3"></canvas>
+            <canvas id="scanvas3-0"></canvas>
+            <canvas id="scanvas3-1"></canvas>
+            <canvas id="scanvas3-2"></canvas>
+            <canvas id="scanvas3-3"></canvas>
+        </div>
+        <input type="checkbox" id="PuzzleDebug"/><br />
+    </div>
+
+
+    <div class="main" id="Light">
+        <div class="dropzone-wrapper" id="LightInputZone">
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput1">
+            <span class="dropzone-desc" id="LightDescription1">Step 1: Upload an inital view of the Light Puzzle</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip1">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput2">
+            <span class="dropzone-desc" id="LightDescription2">Step 2: Click A and Upload a new screenshot</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip2">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput3">
+            <span class="dropzone-desc" id="LightDescription3">Step 3: Click B and Upload a new screenshot</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip3">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput4">
+            <span class="dropzone-desc" id="LightDescription4">Step 4/9: Click C and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip4">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput5">
+            <span class="dropzone-desc" id="LightDescription5">Step 5/9: Click D and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip5">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput6">
+            <span class="dropzone-desc" id="LightDescription6">Step 6/9: Click E and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip6">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput7">
+            <span class="dropzone-desc" id="LightDescription7">Step 7/9: Click F and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip7">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput8">
+            <span class="dropzone-desc" id="LightDescription8">Step 8/9: Click G and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip8">Initial View</span>
+
+            <input class="dropzone lights-input" type="file" accept="image/*" id="LightInput9">
+            <span class="dropzone-desc" id="LightDescription9">Last Step: Click H and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip9">Initial View</span>
+
+            <canvas id="PuzzleCanvas" height="200"></canvas>
+        </div>
+
+        <div>
+            <canvas class="light-preview" id="canvas-preview-0" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-1" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-2" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-3" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-4" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-5" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-6" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-7" style="display:none;"></canvas>
+            <canvas class="light-preview" id="canvas-preview-8" style="display:none;"></canvas>
+        </div>
+
+
+        <button id="solve-button-lb">Solve</button><br />
+
+        <div id="LightCanvas" style="display: none;">
+            <canvas id="canvas-lb-0"></canvas>
+            <canvas id="canvas-lb-1"></canvas>
+            <canvas id="canvas-lb-2"></canvas>
+            <canvas id="canvas-lb-3"></canvas>
+            <canvas id="canvas-lb-4"></canvas>
+            <canvas id="canvas-lb-5"></canvas>
+            <canvas id="canvas-lb-6"></canvas>
+            <canvas id="canvas-lb-7"></canvas>
+            <canvas id="canvas-lb-8"></canvas>
+        </div>
+        <p id="solution-lb"></p>
+        <input type="checkbox" id="LightDebug" /><br />
+    </div>
+
+
+    <div class="main" id="Anagram" style="display: none;">
+        <h1>Anagram Solver</h1>
+    </div>
+
+
+    <div class="main" id="Cypher" style="display: none;">
+        <h1>Cypher Solver</h1>
+    </div>
+
+
+
+    <script src="@Url.Content("/dist/minescape.js")"></script>
+    <script src="@Url.Content("/dist/tabs.js")"></script>
+}
