@@ -11,7 +11,7 @@ checkbox.addEventListener('change', function () {
 
 Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), function (val, ind) {
     let id = val.id.replace("LightInput", "");
-    if (val.id.replace("LightInput", "") == "1")
+    if (val.id.replace("LightInput", "") == "0")
         return;
     document.getElementById("LightInput" + id).style.display = "none";
     document.getElementById("LightDescription" + id).style.display = "none";
@@ -33,10 +33,20 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
                 let preview = document.getElementById('canvas-preview-' + ind);
                 preview.getContext('2d').drawImage(img, 0, 0);
 
-                if (GetMatrix(ind))
+                if (GetMatrix(ind)) {
+                    preview.style.display = "";
+                    document.getElementById('LightTip' + ind).style.display = "none";
+                    val.style.display = "none";
+                    document.getElementById('LightDescription' + ind).style.display = "none";
+
+                    if (ind + 1 <= 8) {
+                        document.getElementById('LightInput' + (ind + 1)).style.display = "";
+                        document.getElementById('LightDescription' + (ind + 1)).style.display = "";
+                    }
+                }
                     // Loaded fine
                 else
-                    // issue
+                    document.getElementById('LightTip' + ind).innerText = "Couldn't process the image, try again with a new screenshot";
             };
             img.src = event.target.result;
         };
