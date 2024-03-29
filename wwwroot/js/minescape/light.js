@@ -1,4 +1,3 @@
-var button = document.getElementById("solve-button-lb");
 var matrices = Array.apply(null, Array(7)).map(function () { });
 
 var debug = false;
@@ -43,6 +42,8 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
                         document.getElementById('LightInput' + (ind + 1)).style.display = "";
                         document.getElementById('LightDescription' + (ind + 1)).style.display = "";
                     }
+                    else
+                        Solve();
                 }
                     // Loaded fine
                 else
@@ -124,10 +125,6 @@ function IsOn(src, size) {
         return 0;
     return 1;
 }
-
-button.addEventListener("click", function () {
-    Solve();
-});
 
 var xor_matrix = function (m1, m2) {
     return range(0, 5).map(function (r) {
