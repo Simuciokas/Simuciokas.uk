@@ -4,8 +4,98 @@ var debug = false;
 
 var checkbox = document.getElementById("LightDebug");
 
+var lightIndex = 0;
+
+function resetLightPuzzle() {
+    lightIndex = 0;
+    matrices = Array.apply(null, Array(7)).map(function () { })
+    for (let i = 0; i < 9; i++) {
+
+        document.getElementById('LightInput' + i).style.display = "none"
+        let tip = document.getElementById('LightTip' + i)
+        tip.innerHTML = ""
+        tip.style.display = "none"
+        document.getElementById('LightDescription' + i).style.display = "none"
+
+        let canvas = document.getElementById('canvas-lb-' + i)
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        canvas.style.display = "none"
+
+        let preview = document.getElementById('canvas-preview-' + i);
+        preview.getContext('2d').clearRect(0, 0, preview.width, preview.height)
+        canvas.style.display = "none"
+    }
+
+    let solution = document.getElementById('LightSolution')
+    solution.style.display = "none"
+    solution.innerHTML = ""
+
+    document.getElementById('LightInput0').style.display = ""
+    let tip = document.getElementById('LightTip0')
+    tip.innerHTML = ""
+    tip.style.display = ""
+    document.getElementById('LightDescription0').style.display = ""
+}
+
+document.getElementById("LightReset").addEventListener('click', function (e) {
+    resetLightPuzzle()
+});
+
+
+document.getElementById("LightInputZone").addEventListener('click', function (e) {
+    if (document.getElementById("LightSolution").innerHTML.includes("reset")) resetLightPuzzle()
+});
+
+document.getElementById("LightSolution").addEventListener('click', function (e) {
+    if (this.innerHTML.includes("reset")) resetLightPuzzle()
+});
+
 checkbox.addEventListener('change', function () {
     debug = this.checked;
+});
+
+window.addEventListener("paste", function (e) {
+    if (currentPage != "Light" || lightIndex > 8) return;
+    var item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
+
+    var blob = item.getAsFile();
+
+    var img = new Image();
+
+    img.onload = function () {
+        let canvas = document.getElementById('canvas-lb-' + lightIndex);
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+
+        let preview = document.getElementById('canvas-preview-' + lightIndex);
+        preview.getContext('2d').drawImage(img, 0, 0);
+
+        if (GetMatrix(lightIndex)) {
+            preview.style.display = "";
+            document.getElementById('LightTip' + lightIndex).style.display = "none";
+            document.getElementById('LightInput' + lightIndex).style.display = "none";
+            document.getElementById('LightDescription' + lightIndex).style.display = "none";
+
+            if (lightIndex < 8) {
+                document.getElementById('LightInput' + (lightIndex + 1)).style.display = "";
+                document.getElementById('LightDescription' + (lightIndex + 1)).style.display = "";
+                lightIndex++;
+            }
+            else
+                Solve();
+        }
+        // Loaded fine
+        else {
+            console.log(document.getElementById('LightTip' + lightIndex).innerText)
+            document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot";
+            document.getElementById('LightTip' + lightIndex).style.display = "";
+            console.log(document.getElementById('LightTip' + lightIndex).innerText)
+
+        }
+    };
+
+    img.src = URL.createObjectURL(blob);
 });
 
 Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), function (val, ind) {
@@ -38,9 +128,10 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
                     val.style.display = "none";
                     document.getElementById('LightDescription' + ind).style.display = "none";
 
-                    if (ind + 1 <= 8) {
+                    if (ind < 8) {
                         document.getElementById('LightInput' + (ind + 1)).style.display = "";
                         document.getElementById('LightDescription' + (ind + 1)).style.display = "";
+                        lightIndex++;
                     }
                     else
                         Solve();
@@ -174,10 +265,10 @@ function Solve() {
         })
         return isEqual(m, one_matrix)
     })
-    if (solution != "")
+    if (solution != "" && solution != undefined)
         document.getElementById('LightSolution').innerText = "Solution: " + solution;
     else
-        document.getElementById('LightSolution').innerText = "No solution found";
+        document.getElementById('LightSolution').innerText = "No solution found. Click me to reset";
     document.getElementById('LightSolution').style.display = "";
     console.log(solution);
 }
@@ -192,6 +283,8 @@ function GetMatrix(ind) {
 
     if (debug) console.log("topRightCorner");
     if (debug) console.log(topRightCorner);
+
+    if (topRightCorner == undefined) return false;
 
     let tileSize = GetTileSize(src, { x: topRightCorner.x, y: topRightCorner.y });
 

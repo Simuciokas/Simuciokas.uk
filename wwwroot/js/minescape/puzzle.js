@@ -5,6 +5,37 @@ const ctx = canvas.getContext('2d');
 
 let debug = document.getElementById("PuzzleDebug").checked;
 
+window.addEventListener("paste", function (e) {
+    if (currentPage != "Puzzle") return;
+    var item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
+
+    var blob = item.getAsFile();
+
+    var img = new Image();
+
+    img.onload = function () {
+        document.getElementById("PuzzleInputZone").classList.remove('dragover');
+        document.getElementById("PuzzleInputDescription").innerText = "Got another puzzle? Choose or drag it here";
+        document.getElementById("PuzzleInputDescription").style.textAlign = "right";
+        document.getElementById("PuzzleInputDescription").style.paddingRight = "5px";
+        let puzzleCanvas = document.getElementById("PuzzleCanvas");
+        puzzleCanvas.width = img.width;
+        puzzleCanvas.height = img.height;
+        document.getElementById("PuzzleInputZone").style.height = `${img.height + 6}px`;
+
+        let obj = puzzleCanvas.getContext('2d');
+        obj.drawImage(img, 0, 0);
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        Solve();
+    };
+
+    img.src = URL.createObjectURL(blob);
+});
+
 document.getElementById("PuzzleDebug").addEventListener('change', function () {
     debug = document.getElementById("PuzzleDebug").checked;
 });
