@@ -143,7 +143,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _puz
 /******/ 		// This function allow to reference async chunks and sibling chunks for the entrypoint
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + ".minescape.js";
+/******/ 			return "" + chunkId + ".minescape-solvers.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -254,4 +254,4 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _puz
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=wwwroot_js_minescape_puzzle-solver_worker_js-_f9a31.minescape.js.map
+//# sourceMappingURL=wwwroot_js_minescape_puzzle-solver_worker_js-_f9a31.minescape-solvers.js.map

@@ -174,7 +174,12 @@ function Solve() {
         })
         return isEqual(m, one_matrix)
     })
-    document.getElementById('solution-lb').innerText = "Solution: " + solution;
+    if (solution != "")
+        document.getElementById('LightSolution').innerText = "Solution: " + solution;
+    else
+        document.getElementById('LightSolution').innerText = "No solution found";
+    document.getElementById('LightSolution').style.display = "";
+    console.log(solution);
 }
 
 function GetMatrix(ind) {
@@ -217,8 +222,8 @@ function GetMatrix(ind) {
         matrix.push(row);
     }
 
-    console.log("matrix");
-    console.log(matrix);
+    //console.log("matrix");
+    //console.log(matrix);
 
     matrices[ind] = matrix;
     return true;

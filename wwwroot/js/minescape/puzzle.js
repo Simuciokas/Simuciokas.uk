@@ -3,6 +3,12 @@ import Puzzle from './puzzle-async-solver'
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+let debug = document.getElementById("PuzzleDebug").checked;
+
+document.getElementById("PuzzleDebug").addEventListener('change', function () {
+    debug = document.getElementById("PuzzleDebug").checked;
+});
+
 document.getElementById("PuzzleInput").addEventListener('change', function () {
     readFile(this);
 });
@@ -20,7 +26,7 @@ document.getElementById("PuzzleInputZone").addEventListener('dragleave', functio
 });
 
 function readFile(input) {
-    console.log(input.files);
+    if (debug) console.log(input.files);
     if (input.files && input.files[0]) {
         document.getElementById("PuzzleInputZone").classList.remove('dragover');
         document.getElementById("PuzzleInputDescription").innerText = "Got another puzzle? Choose or drag it here";
@@ -100,13 +106,21 @@ var partitionData = new PartitionData();
 function Solve() {
     let src = cv.imread('canvas');
 
-    let debug = document.getElementById("PuzzleDebug").checked;
-
     let sTopLeftPos = SolvedTopLeftCorner(src);
+
+    if (sTopLeftPos == undefined) {
+        document.getElementById('solution').innerText = "Bad image. Include a picture that contains Unsolved and Solved puzzle";
+        return;
+    }
 
     let tileSize = GetTileSize(src, { x: sTopLeftPos.x, y: sTopLeftPos.y });
 
-    console.log(tileSize);
+    if (tileSize == undefined) {
+        document.getElementById('solution').innerText = "Bad image. Include a picture that contains Unsolved and Solved puzzle";
+        return;
+    }
+
+    if (debug) console.log(tileSize);
 
     let uTopLeftPos = { x: (sTopLeftPos.x - (tileSize * 5)), y: sTopLeftPos.y }
 
@@ -139,7 +153,7 @@ function Solve() {
     const goalState = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const initialState = unsolvedTiles;
 
-    console.log(initialState);
+    if (debug) console.log(initialState);
     let sum = 0;
     for (const num of initialState) {
         sum += num;
@@ -162,7 +176,7 @@ function Solve() {
     ).then(ans => {
         document.getElementById('solution').innerText = "Solution: \n\n" + ans + "\n\nInstructions: \n\nu - tile goes up\nd - tile goes down\nr - tile goes right\nl - tile goes left";
     }).catch(e => {
-        console.error(e.message);
+        if (debug) console.error(e.message);
     });
 }
 
@@ -177,29 +191,34 @@ function SolvedTopLeftCorner(src) {
 }
 
 function GetTileSize(src, pos) {
-    let i = 0;
-    let rgba = src.ucharPtr(pos.y, pos.x);
-    while (i < 5 || (rgba[0] != 0 || rgba[1] != 0 || rgba[2] != 0)) {
-        i++;
-        pos.x++;
-        pos.y++;
-        rgba = src.ucharPtr(pos.y, pos.x);
-    }
+    try {
+        let i = 0;
+        let rgba = src.ucharPtr(pos.y, pos.x);
+        while (i < 5 || (rgba[0] != 0 || rgba[1] != 0 || rgba[2] != 0)) {
+            i++;
+            pos.x++;
+            pos.y++;
+            rgba = src.ucharPtr(pos.y, pos.x);
+        }
 
-    let k = 0;
-    while (rgba[0] == 0 && rgba[1] == 0 && rgba[2] == 0) {
-        k++;
-        pos.x++;
-        pos.y++;
-        rgba = src.ucharPtr(pos.y, pos.x);
+        let k = 0;
+        while (rgba[0] == 0 && rgba[1] == 0 && rgba[2] == 0) {
+            k++;
+            pos.x++;
+            pos.y++;
+            rgba = src.ucharPtr(pos.y, pos.x);
+        }
+        k = Math.floor(k / 2);
+        return i + k;
     }
-    k = Math.floor(k / 2);
-    return i+k;
+    catch {
+        return undefined;
+    }
 }
 
 function CompareMats(mat1, mat2) {
     if (mat1.rows !== mat2.rows || mat1.cols !== mat2.cols) {
-        console.error("Dimensions of the Mats are different.");
+        if (debug) console.error("Dimensions of the Mats are different.");
         return false;
     }
 

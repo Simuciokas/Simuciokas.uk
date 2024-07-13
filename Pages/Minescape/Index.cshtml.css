@@ -36,7 +36,7 @@ label {
     padding: 5px;
     background-color: var(--btn-container-bg);
     border: var(--btn-container-border) 1px solid;
-    width: 80%;
+    width: 100%;
     height: 58px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -44,14 +44,14 @@ label {
 
 /*To be used as radio buttons*/
 
-input[type="radio"] {
+input[type="radio"].navRadio {
     visibility: hidden;
     height: 0;
     width: 0;
     margin: 0;
 }
 
-label {
+label.navRadio {
     width: 45.5%;
     height: 60%;
     padding: 10px 20px;
@@ -65,7 +65,7 @@ label {
     color: var(--inactive-btn-text);
 }
 
-input[type="radio"]:checked + label {
+input[type="radio"].navRadio:checked + label {
     background-color: var(--active-btn-bg);
     box-shadow: 0 0 10px 1px var(--active-btn-box-shadow);
     font-weight: bold;
@@ -123,4 +123,52 @@ input[type="radio"]:checked + label {
 .dropzone-wrapper:hover,
 .dropzone-wrapper.dragover {
     background: #ecf0f5;
+}
+
+.autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+}
+
+.autocomplete input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.autocomplete input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
 }

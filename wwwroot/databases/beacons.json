@@ -1,0 +1,212 @@
+{
+  "Al-": {
+    "id": "",
+    "location": "-115, 69, 279",
+    "tip": "Glory Necklace to Al-Kharid"
+  },
+  "Ba-": {
+    "id": "",
+    "location": "-781, 69, -404",
+    "tip": "Edgeville"
+  },
+  "Bu-": {
+    "id": "",
+    "location": "425, 74, 218",
+    "tip": "Games Necklace to Barrows"
+  },
+  "Bur": {
+    "id": "",
+    "location": "-1253, 78, -957",
+    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  },
+  "Bri": {
+    "id": "",
+    "location": "-1625, 84, 266",
+    "tip": "Games Necklace to Agility"
+  },
+  "Br-": {
+    "id": "",
+    "location": "-1811, 83, 390",
+    "tip": "Games Necklace to Agility"
+  },
+  "Cam": {
+    "id": "",
+    "location": "-1670, 69, -711",
+    "tip": "Camelot"
+  },
+  "Can": {
+    "id": "",
+    "location": "513, 75, -670",
+    "tip": "Canifis"
+  },
+  "Cat": {
+    "id": "",
+    "location": "-1520, 68, -527",
+    "tip": "Camelot"
+  },
+  "Cra": {
+    "id": "",
+    "location": "-1503, 98, -11",
+    "tip": "Crandor"
+  },
+  "Da-": {
+    "id": "",
+    "location": "-1308, 108, -183",
+    "tip": "Falador"
+  },
+  "Dr-": {
+    "id": "",
+    "location": "-725, 70, -223",
+    "tip": "Glory Amulet to Draynor"
+  },
+  "Drag": {
+    "id": "",
+    "location": "-896, 0, -1902",
+    "tip": "Trollheim"
+  },
+  "Dray": {
+    "id": "",
+    "location": "-727, 69, 52",
+    "tip": "Glory Amulet to Draynor"
+  },
+  "Ed-D": {
+    "id": "",
+    "location": "-617, 54, -659",
+    "tip": "Edgeville"
+  },
+  "Ed-M": {
+    "id": "",
+    "location": "-852, 71, -640",
+    "tip": "Edgeville"
+  },
+  "Fal": {
+    "id": "",
+    "location": "-1086, 72, -179",
+    "tip": "Falador"
+  },
+  "Go-": {
+    "id": "",
+    "location": "-1126, 74, -678",
+    "tip": "Edgeville / Falador"
+  },
+  "Ic-": {
+    "id": "",
+    "location": "-1046, 27, 385",
+    "tip": "Port Sarim"
+  },
+  "Kar": {
+    "id": "",
+    "location": "-1363, 68, 305",
+    "tip": "Glory Amulet to Karamja"
+  },
+  "Kh-": {
+    "id": "",
+    "location": "20, 75, 27",
+    "tip": "Ring of Dueling to Duel Arena"
+  },
+  "Lu-": {
+    "id": "",
+    "location": "-507, 73, 271",
+    "tip": "Glory Amulet to Draynor / Lumbridge"
+  },
+  "Lum": {
+    "id": "",
+    "location": "-320, 85, 167",
+    "tip": "Lumbridge"
+  },
+  "Mor": {
+    "id": "",
+    "location": "517, 71, -114",
+    "tip": "Games Necklace to Barrows"
+  },
+  "Po-": {
+    "id": "",
+    "location": "-893, 92, 130",
+    "tip": "Port Sarim"
+  },
+  "Rel": {
+    "id": "",
+    "location": "-2067, 87, -1144",
+    "tip": "Rellekka Island"
+  },
+  "Rim": {
+    "id": "",
+    "location": "-1148, 68, 245",
+    "tip": "Rimmington Island"
+  },
+  "Se-": {
+    "id": "",
+    "location": "-1911, 75, -628",
+    "tip": "Camelot"
+  },
+  "Sl-": {
+    "id": "",
+    "location": "316, 106, -839",
+    "tip": "Canifis"
+  },
+  "Ta-D": {
+    "id": "",
+    "location": "-1278, 52, -396",
+    "tip": "Taverley"
+  },
+  "Ta-M": {
+    "id": "",
+    "location": "-1464, 50, -548",
+    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  },
+  "Tav": {
+    "id": "",
+    "location": "-1296, 79, -684",
+    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  },
+  "Tro": {
+    "id": "",
+    "location": "-1297, 142, -1229",
+    "tip": "Trollheim"
+  },
+  "Va-M": {
+    "id": "",
+    "location": "-238, 73, -524",
+    "tip": "Varrock"
+  },
+  "Va-S": {
+    "id": "",
+    "location": "-240, 55, -676",
+    "tip": "Varrock"
+  },
+  "Var": {
+    "id": "",
+    "location": "-443, 71, -407",
+    "tip": "Varrock"
+  },
+  "Wi-D": {
+    "id": "",
+    "location": "-933, 78, -1084",
+    "tip": "Edgeville"
+  },
+  "Wi-M": {
+    "id": "",
+    "location": "-697, 83, -2027",
+    "tip": "Edgeville"
+  },
+  "Wi-P": {
+    "id": "",
+    "location": "-937, 67, -2066",
+    "tip": "Edgeville"
+  },
+  "Wi-R": {
+    "id": "",
+    "location": "-106, 92, -2026",
+    "tip": "Edgeville"
+  },
+  "Wi-T": {
+    "id": "",
+    "location": "-654, 85, 364",
+    "tip": "Glory Amulet to Draynor"
+  },
+  "Wi-V": {
+    "id": "",
+    "location": "-576, 211, -1296",
+    "tip": "Edgeville"
+  }
+}

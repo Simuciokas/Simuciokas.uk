@@ -1,0 +1,212 @@
+{
+  "Lilal": {
+    "id": "lalli",
+    "location": "-1741, 74, -1056",
+    "tip": "Rellekka Island"
+  },
+  "Rain Cove": {
+    "id": "veronica",
+    "location": "-661, 69, -142",
+    "tip": "Draynor Manor"
+  },
+  "Carpet Ahoy": {
+    "id": "apothecary",
+    "location": "-416, 69, -384",
+    "tip": "Varrock behind hole"
+  },
+  "Disorder": {
+    "id": "sedridor",
+    "location": "-658, 74, 360",
+    "tip": "Glory Amulet to Draynor"
+  },
+  "Red Art Tans": {
+    "id": "trader stan",
+    "location": "-920, 69, 251",
+    "tip": "Glory Amulet to Draynor / Rimmington Island"
+  },
+  "Slide Woman": {
+    "id": "wise old man",
+    "location": "-741, 68, 77",
+    "tip": "Glory Amulet to Draynor / Lumbridge"
+  },
+  "Ace Match Elm": {
+    "id": "cam the camel",
+    "location": "-129, 69, 109",
+    "tip": "Lumbridge / Glory Amulet to Al-Kharid / Ring of Dueling to Duel Arena"
+  },
+  "Do Say More": {
+    "id": "doomsayer",
+    "location": "-311, 68, 138",
+    "tip": "Lumbridge"
+  },
+  "Peak Reflex": {
+    "id": "flax keeper",
+    "location": "-1783, 71, -500",
+    "tip": "Camelot"
+  },
+  "Blue Grim Guided": {
+    "id": "lumbridge guide",
+    "location": "-294, 68, 173",
+    "tip": "Lumbridge"
+  },
+  "A Basic Anti Pot": {
+    "id": "captain tobias",
+    "location": "-947, 69, 139",
+    "tip": "Port Sarim"
+  },
+  "A Baker": {
+    "id": "baraek",
+    "location": "-353, 68, -466",
+    "tip": "Varrock"
+  },
+  "Aha Jar": {
+    "id": "jaraah",
+    "location": "54, 70, 77",
+    "tip": "Ring of Dueling to Duel Arena / Glory Amulet to Al-Kharid"
+  },
+  "Area chef Treck": {
+    "id": "father aereck",
+    "location": "-280, 68, 205",
+    "tip": "Lumbridge"
+  },
+  "El Ow": {
+    "id": "lowe",
+    "location": "-303, 71, -433",
+    "tip": "Varrock"
+  },
+  "Armchair The Pelt": {
+    "id": "charlie the tramp",
+    "location": "-381, 69, -347",
+    "tip": "Varrock"
+  },
+  "Are Col": {
+    "id": "oracle",
+    "location": "-974, 112, -660",
+    "tip": "Edgeville"
+  },
+  "Lark In Dog": {
+    "id": "king roald",
+    "location": "-343, 69, -591",
+    "tip": "Varrock"
+  },
+  "Ratai": {
+    "id": "taria",
+    "location": "-1188, 68, 178",
+    "tip": "Rimmington Island"
+  },
+  "R Ak Mi": {
+    "id": "karim",
+    "location": "-184, 68, 294",
+    "tip": "Glory Amulet to Al-Kharid"
+  },
+  "Sand Nut": {
+    "id": "dunstan",
+    "location": "-1225, 78, -882",
+    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  },
+  "Snah": {
+    "id": "hans",
+    "location": "-345, 68, 170",
+    "tip": "Lumbridge"
+  },
+  "Ok co": {
+    "id": "cook",
+    "location": "-372, 72, 193",
+    "tip": "Lumbridge"
+  },
+  "Peaty Pert": {
+    "id": "party pete",
+    "location": "-854, 68, -295",
+    "tip": "Falador"
+  },
+  "An Earl": {
+    "id": "ranael",
+    "location": "-21, 73, 365",
+    "tip": "Glory Amulet to Al-Kharid"
+  },
+  "Me Am The Calc": {
+    "id": "cam the camel",
+    "location": "-129, 69, 109",
+    "tip": "Lumbridge / Glory Amulet to Al-Kharid / Ring of Dueling to Duel Arena"
+  },
+  "Them Cal Came": {
+    "id": "cam the camel",
+    "location": "-129, 69, 109",
+    "tip": "Lumbridge / Glory Amulet to Al-Kharid / Ring of Dueling to Duel Arena"
+  },
+  "O Birdz A Zany En Pc": {
+    "id": "cap n izzy no beard",
+    "location": "-1810, 81, 155",
+    "tip": "Games Necklace to Agility"
+  },
+  "Profs Lose Wrong Pie": {
+    "id": "professor onglewip",
+    "location": "-658, 84, 354",
+    "tip": "Glory Amulet to Al-Kharid"
+  },
+  "Thickno": {
+    "id": "hickton",
+    "location": "-1542, 68, -493",
+    "tip": "Camelot"
+  },
+  "Veil Veda": {
+    "id": "evil dave",
+    "location": "-778, 68, -645",
+    "tip": "Edgeville"
+  },
+  "Que Sir": {
+    "id": "squire",
+    "location": "-1079, 71, -186",
+    "tip": "Falador"
+  },
+  "Dragons Lament": {
+    "id": "strange old man",
+    "location": "716, 81, -56",
+    "tip": "Games Necklace to Barrows"
+  },
+  "Kay Sir": {
+    "id": "sir kay",
+    "location": "-1738, 68, -649",
+    "tip": "Camelot"
+  },
+  "A Bas": {
+    "id": "saba",
+    "location": "-1422, 79, -948",
+    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  },
+  "Heroic": {
+    "id": "eohric",
+    "location": "-1322, 96, -919",
+    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  },
+  "I Cord": {
+    "id": "doric",
+    "location": "-1155, 65, -516",
+    "tip": "Falador/Taverley"
+  },
+  "In Bar": {
+    "id": "brian",
+    "location": "-943, 71, 94",
+    "tip": "Port Sarim"
+  },
+  "Sir Share Red": {
+    "id": "hairdresser",
+    "location": "-1176, 68, -299",
+    "tip": "Falador"
+  },
+  "Leakey": {
+    "id": "kaylee",
+    "location": "-1148, 68, -280",
+    "tip": "Falador"
+  },
+  "Taunt Roof": {
+    "id": "fortunato",
+    "location": "-754, 68, 67",
+    "tip": "Glory Amulet to Draynor"
+  },
+  "Rug Deter": {
+    "id": "gertrude",
+    "location": "-561, 70, -400",
+    "tip": "Varrock"
+  }
+}

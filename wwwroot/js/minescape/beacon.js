@@ -1,17 +1,17 @@
-var anagrams = null;
+var beacons = null;
 
 Startup();
 
 async function Startup() {
 
-    let response = await fetch(`../Data/anagrams.json`)
+    let response = await fetch(`../Data/beacons.json`)
 
     if (response.ok)
-        anagrams = await response.json()
+        beacons = await response.json()
     else
         console.error("Cannot load")
 
-    autocomplete(document.getElementById("AnagramInput"), Object.keys(anagrams))
+    autocomplete(document.getElementById("BeaconInput"), Object.keys(beacons))
 }
 
 function autocomplete(inp, arr) {
@@ -21,6 +21,9 @@ function autocomplete(inp, arr) {
     /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function (e) {
         var a, b, i, val = this.value;
+        console.log(this.value);
+        console.log();
+
         /*close any already open lists of autocompleted values*/
         closeAllLists();
         if (!val) { return false; }
@@ -47,18 +50,17 @@ function autocomplete(inp, arr) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
 
-                    let name = anagrams[inp.value].id
-                    let location = anagrams[inp.value].location
+                    let name = beacons[inp.value].id
+                    let location = beacons[inp.value].location
                     let x = location.split(", ")[0]
                     let y = location.split(", ")[1]
                     let z = location.split(", ")[2]
-                    let tip = anagrams[inp.value].tip
+                    let tip = beacons[inp.value].tip
 
                     let text = `https://map.minescape.net/#/${x}/${y}/${z}/-1/minescape/minescape`
-                    document.getElementById("solution-anagram-tip").innerText = tip;
-                    document.getElementById("solution-anagram-name").innerText = name == undefined ? "Name not set in database" : name;
-                    document.getElementById("solution-anagram-url").href = text;
-                    document.getElementById("solution-anagram-url").innerText = location;
+                    document.getElementById("solution-beacon-tip").innerText = tip;
+                    document.getElementById("solution-beacon-url").href = text;
+                    document.getElementById("solution-beacon-url").innerText = location;
 
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
