@@ -12,7 +12,7 @@ async function Startup() {
         console.error("Cannot load")
 
     document.getElementById("CypherInput").addEventListener("input", function (e, val) {
-        let cipher = e.target.value
+        let cipher = e.target.value.toLowerCase()
         let ciphers = Object.keys(anagrams).filter(function (val) {
             return anagrams[val].id.length == cipher.length && anagrams[val].id.length > 0
         })
@@ -29,10 +29,10 @@ async function Startup() {
         }
 
         if (found == null) {
-            document.getElementById("solution-cypher-name").innerText = "Not found";
-            document.getElementById("solution-cypher-tip").innerText = "";
+            document.getElementById("solution-cypher-name").innerText = "not found";
+            document.getElementById("solution-cypher-tip").innerText = "not found";
             document.getElementById("solution-cypher-url").href = "";
-            document.getElementById("solution-cypher-url").innerText = "";
+            document.getElementById("solution-cypher-url").innerText = "not found";
         }
         else {
 
