@@ -1,17 +1,17 @@
-var anagrams = null;
+var chests = null;
 
 Startup();
 
 async function Startup() {
 
-    let response = await fetch(`../Data/anagrams.json`)
+    let response = await fetch(`../Data/chests.json`)
 
     if (response.ok)
-        anagrams = await response.json()
+        chests = await response.json()
     else
         console.error("Cannot load")
 
-    autocomplete(document.getElementById("AnagramInput"), Object.keys(anagrams))
+    autocomplete(document.getElementById("ChestInput"), Object.keys(chests))
 }
 
 function autocomplete(inp, arr) {
@@ -47,18 +47,17 @@ function autocomplete(inp, arr) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
 
-                    let name = anagrams[inp.value].id
-                    let location = anagrams[inp.value].location
+                    let name = chests[inp.value].id
+                    let location = chests[inp.value].location
                     let x = location.split(", ")[0]
                     let y = location.split(", ")[1]
                     let z = location.split(", ")[2]
-                    let tip = anagrams[inp.value].tip
+                    let tip = chests[inp.value].tip
 
                     let text = `https://map.minescape.net/#/${x}/${y}/${z}/-1/minescape/minescape`
-                    document.getElementById("solution-anagram-tip").innerText = tip;
-                    document.getElementById("solution-anagram-name").innerText = name == undefined ? "Name not set in database" : name;
-                    document.getElementById("solution-anagram-url").href = text;
-                    document.getElementById("solution-anagram-url").innerText = location;
+                    document.getElementById("solution-chest-tip").innerText = tip;
+                    document.getElementById("solution-chest-url").href = text;
+                    document.getElementById("solution-chest-url").innerText = location;
 
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/

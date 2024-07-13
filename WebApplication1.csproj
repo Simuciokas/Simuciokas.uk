@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <Folder Include="wwwroot\databases\" />
-	  <Folder Include="wwwroot\dist\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\dist\tabs.js">
+    <Content Update="wwwroot\js\minescape\tabs.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

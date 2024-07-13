@@ -5,18 +5,24 @@
 
     <div class="container">
         <div class="btn-container" id="Navigation">
-            <input class="radio" type="radio" id="rPuzzle" name="radios" value="Puzzle">
-            <label for="rPuzzle">Puzzle Box Solver</label><br />
-            <input class="radio" type="radio" id="rLight" name="radios" value="Light" checked="checked">
-            <label for="rLight">Light Box Solver</label><br />
-            <input class="radio" type="radio" id="rAnagram" name="radios" value="Anagram">
-            <label for="rAnagram">Anagram Solver</label><br />
-            <input class="radio" type="radio" id="rCypher" name="radios" value="Cypher">
-            <label for="rCypher">Cypher Solver</label><br />
+            <input class="navRadio" type="radio" id="rPuzzle" name="radios" value="Puzzle" checked="checked">
+            <label class="navRadio" for="rPuzzle">Puzzle Box Solver</label><br />
+            <input class="navRadio" type="radio" id="rLight" name="radios" value="Light">
+            <label class="navRadio" for="rLight">Light Box Solver</label><br />
+            <input class="navRadio" type="radio" id="rAnagram" name="radios" value="Anagram">
+            <label class="navRadio" for="rAnagram">Anagram Solver</label><br />
+            <input class="navRadio" type="radio" id="rCypher" name="radios" value="Cypher">
+            <label class="navRadio" for="rCypher">Cypher Solver</label><br />
+            <input class="navRadio" type="radio" id="rBeacon" name="radios" value="Beacon">
+            <label class="navRadio" for="rBeacon">Beacon Solver</label><br />
+            <input class="navRadio" type="radio" id="rChest" name="radios" value="Chest">
+            <label class="navRadio" for="rChest">Chest Solver</label><br />
+            <input class="navRadio" type="radio" id="rHotCold" name="radios" value="HotCold">
+            <label class="navRadio" for="rHotCold">Hot and Cold Solver</label><br />
         </div>
     </div>
 
-    <div class="main" id="Puzzle" style="display: none;">
+    <div class="main" id="Puzzle">
         <div class="dropzone-wrapper" id="PuzzleInputZone">
             <div class="dropzone-desc">
                 <p id="PuzzleInputDescription">Choose a Puzzle image file or drag it here.</p>
@@ -64,11 +70,10 @@
             <canvas id="scanvas3-2"></canvas>
             <canvas id="scanvas3-3"></canvas>
         </div>
-        <input type="checkbox" id="PuzzleDebug"/><br />
+        <input type="checkbox" id="PuzzleDebug" style="display:none;" /><br />
     </div>
 
-
-    <div class="main" id="Light">
+    <div class="main" id="Light" style="display: none;">
         <div class="dropzone-wrapper" id="LightInputZone">
             <canvas id="PuzzleCanvas" height="200"></canvas>
 
@@ -108,6 +113,8 @@
             <span class="dropzone-tip" style="display:none;" id="LightTip8">Initial View</span>
             <input class="dropzone lights-input" style="display:none;" type="file" accept="image/*" id="LightInput8">
 
+            <span class="dropzone-desc" style="display:none;" id="LightSolution">Last Step: Click H and Upload</span>
+            <span class="dropzone-tip" style="display:none;" id="LightTip">Initial View</span>
         </div>
 
         <div>
@@ -134,21 +141,70 @@
             <canvas id="canvas-lb-8"></canvas>
         </div>
         <p id="solution-lb"></p>
-        <input type="checkbox" id="LightDebug" /><br />
+        <input type="checkbox" id="LightDebug" style="display:none;" /><br />
     </div>
-
 
     <div class="main" id="Anagram" style="display: none;">
-        <h1>Anagram Solver</h1>
+        <span><b>Name: </b></span><span id="solution-anagram-name">not found</span><br>
+        <span><b>Tip: </b></span><span id="solution-anagram-tip">not found</span><br>
+        <span><b>Map location: </b></span><a id="solution-anagram-url" target="_blank">not found</a><br><br>
+        <div class="autocomplete" style="width:300px;">
+            <input type="text" id="AnagramInput" placeholder="Input an anagram">
+        </div>
     </div>
-
 
     <div class="main" id="Cypher" style="display: none;">
-        <h1>Cypher Solver</h1>
+        <span><b>Name: </b></span><span id="solution-cypher-name">not found</span><br>
+        <span><b>Tip: </b></span><span id="solution-cypher-tip">not found</span><br>
+        <span><b>Map location: </b></span><a id="solution-cypher-url" target="_blank">not found</a><br><br>
+        <div class="autocomplete" style="width:300px;">
+            <input type="text" id="CypherInput" placeholder="Input a cypher">
+        </div>
     </div>
 
+    <div class="main" id="Beacon" style="display: none;">
+        <span><b>Tip: </b></span><span id="solution-beacon-tip">not found</span><br>
+        <span><b>Map location: </b></span><a id="solution-beacon-url" target="_blank">not found</a><br><br>
+        <div class="autocomplete" style="width:300px;">
+            <input type="text" id="BeaconInput" placeholder="Input a beacon">
+        </div>
+    </div>
 
+    <div class="main" id="Chest" style="display: none;">
+        <span><b>Tip: </b></span><span id="solution-chest-tip">not found</span><br>
+        <span><b>Map location: </b></span><a id="solution-chest-url" target="_blank">not found</a><br><br>
+        <div class="autocomplete" style="width:300px;">
+            <input type="text" id="ChestInput" placeholder="Input a chest">
+        </div>
+    </div>
 
-    <script src="@Url.Content("/dist/minescape.js")"></script>
+    <div class="main" id="HotCold" style="display: none;">
+        <h1>Not implemented</h1>
+        <span><b>Tip: </b></span><span id="solution-hotcold-tip">not found</span><br>
+        <span><b>Map location: </b></span><a id="solution-hotcold-url" target="_blank">not found</a><br><br>
+
+        <span>Tier of Clue:</span><br />
+        <input class="selRadio" type="radio" id="rEasy" name="clueTier" value="Easy" checked="checked">
+        <label for="rEasy">Easy</label><br />
+        <input class="selRadio" type="radio" id="rMedium" name="clueTier" value="Medium">
+        <label for="rMedium">Medium</label><br />
+        <input class="selRadio" type="radio" id="rHard" name="clueTier" value="Hard">
+        <label for="rHard">Hard</label><br />
+        <input class="selRadio" type="radio" id="rElite" name="clueTier" value="Elite">
+        <label for="rElite">Elite</label><br />
+        <input class="selRadio" type="radio" id="rMaster" name="clueTier" value="Master">
+        <label for="rMaster">Master</label><br /><br />
+
+        <span>Input your location with X, Y and Z coordiantes or paste in the URL you get from /map</span>
+        <input type="number" id="HotColdX" placeholder="Input your X coordinate">
+        <input type="number" id="HotColdY" placeholder="Input your Y coordinate">
+        <input type="number" id="HotColdZ" placeholder="Input your Z coordinate">
+        <input type="text" id="HotColdMap" placeholder="Input URL from /map">
+
+        <input type="number" id="HotColdDistance" placeholder="Input distance">
+
+    </div>
+
+    <script src="@Url.Content("/dist/minescape-solvers.js")"></script>
     <script src="@Url.Content("/dist/tabs.js")"></script>
 }

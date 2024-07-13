@@ -1,10 +1,10 @@
 var webpack = require('webpack');
 
 module.exports = {
-    entry: ['./wwwroot/js/minescape/puzzle.js', './wwwroot/js/minescape/light.js', './wwwroot/js/minescape/cypher.js', './wwwroot/js/minescape/anagram.js'],
+    entry: ['./wwwroot/js/minescape/puzzle.js', './wwwroot/js/minescape/light.js', './wwwroot/js/minescape/cypher.js', './wwwroot/js/minescape/anagram.js', './wwwroot/js/minescape/chest.js', './wwwroot/js/minescape/beacon.js'],
     output: {
         path: __dirname + '/wwwroot/dist',
-        filename: 'minescape.js',
+        filename: 'minescape-solvers.js',
     },
     module: {
         rules: [
