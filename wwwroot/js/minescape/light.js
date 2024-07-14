@@ -1,11 +1,11 @@
-var matrices = Array.apply(null, Array(7)).map(function () { });
+var matrices = Array.apply(null, Array(7)).map(function () { })
 var combos = ['A', 'BA', 'B', 'CA', 'CBA', 'CB', 'C', 'DA', 'DBA', 'DB', 'DCA', 'DCBA', 'DCB', 'DC', 'D', 'EA', 'EBA', 'EB', 'ECA', 'ECBA', 'ECB', 'EC', 'EDA', 'EDBA', 'EDB', 'EDCA', 'EDCBA', 'EDCB', 'EDC', 'ED', 'E', 'FA', 'FBA', 'FB', 'FCA', 'FCBA', 'FCB', 'FC', 'FDA', 'FDBA', 'FDB', 'FDCA', 'FDCBA', 'FDCB', 'FDC', 'FD', 'FEA', 'FEBA', 'FEB', 'FECA', 'FECBA', 'FECB', 'FEC', 'FEDA', 'FEDBA', 'FEDB', 'FEDCA', 'FEDCBA', 'FEDCB', 'FEDC', 'FED', 'FE', 'F', 'GA', 'GBA', 'GB', 'GCA', 'GCBA', 'GCB', 'GC', 'GDA', 'GDBA', 'GDB', 'GDCA', 'GDCBA', 'GDCB', 'GDC', 'GD', 'GEA', 'GEBA', 'GEB', 'GECA', 'GECBA', 'GECB', 'GEC', 'GEDA', 'GEDBA', 'GEDB', 'GEDCA', 'GEDCBA', 'GEDCB', 'GEDC', 'GED', 'GE', 'GFA', 'GFBA', 'GFB', 'GFCA', 'GFCBA', 'GFCB', 'GFC', 'GFDA', 'GFDBA', 'GFDB', 'GFDCA', 'GFDCBA', 'GFDCB', 'GFDC', 'GFD', 'GFEA', 'GFEBA', 'GFEB', 'GFECA', 'GFECBA', 'GFECB', 'GFEC', 'GFEDA', 'GFEDBA', 'GFEDB', 'GFEDCA', 'GFEDCBA', 'GFEDCB', 'GFEDC', 'GFED', 'GFE', 'GF', 'G', 'HA', 'HBA', 'HB', 'HCA', 'HCBA', 'HCB', 'HC', 'HDA', 'HDBA', 'HDB', 'HDCA', 'HDCBA', 'HDCB', 'HDC', 'HD', 'HEA', 'HEBA', 'HEB', 'HECA', 'HECBA', 'HECB', 'HEC', 'HEDA', 'HEDBA', 'HEDB', 'HEDCA', 'HEDCBA', 'HEDCB', 'HEDC', 'HED', 'HE', 'HFA', 'HFBA', 'HFB', 'HFCA', 'HFCBA', 'HFCB', 'HFC', 'HFDA', 'HFDBA', 'HFDB', 'HFDCA', 'HFDCBA', 'HFDCB', 'HFDC', 'HFD', 'HFEA', 'HFEBA', 'HFEB', 'HFECA', 'HFECBA', 'HFECB', 'HFEC', 'HFEDA', 'HFEDBA', 'HFEDB', 'HFEDCA', 'HFEDCBA', 'HFEDCB', 'HFEDC', 'HFED', 'HFE', 'HF', 'HGA', 'HGBA', 'HGB', 'HGCA', 'HGCBA', 'HGCB', 'HGC', 'HGDA', 'HGDBA', 'HGDB', 'HGDCA', 'HGDCBA', 'HGDCB', 'HGDC', 'HGD', 'HGEA', 'HGEBA', 'HGEB', 'HGECA', 'HGECBA', 'HGECB', 'HGEC', 'HGEDA', 'HGEDBA', 'HGEDB', 'HGEDCA', 'HGEDCBA', 'HGEDCB', 'HGEDC', 'HGED', 'HGE', 'HGFA', 'HGFBA', 'HGFB', 'HGFCA', 'HGFCBA', 'HGFCB', 'HGFC', 'HGFDA', 'HGFDBA', 'HGFDB', 'HGFDCA', 'HGFDCBA', 'HGFDCB', 'HGFDC', 'HGFD', 'HGFEA', 'HGFEBA', 'HGFEB', 'HGFECA', 'HGFECBA', 'HGFECB', 'HGFEC', 'HGFEDA', 'HGFEDBA', 'HGFEDB', 'HGFEDCA', 'HGFEDCBA', 'HGFEDCB', 'HGFEDC', 'HGFED', 'HGFE', 'HGF', 'HG', 'H', '']
 
-var debug = false;
+var debug = false
 
-var checkbox = document.getElementById("LightDebug");
+var checkbox = document.getElementById("LightDebug")
 
-var lightIndex = 0;
+var lightIndex = 0
 
 function resetLightPuzzle() {
     lightIndex = 0;
@@ -43,7 +43,6 @@ document.getElementById("LightReset").addEventListener('click', function (e) {
     resetLightPuzzle()
 });
 
-
 document.getElementById("LightInputZone").addEventListener('click', function (e) {
     if (document.getElementById("LightSolution").innerHTML.includes("reset")) resetLightPuzzle()
 });
@@ -53,48 +52,74 @@ document.getElementById("LightSolution").addEventListener('click', function (e) 
 });
 
 checkbox.addEventListener('change', function () {
-    debug = this.checked;
+    debug = this.checked
 });
+
+function imageOnLoad(img) {
+    let canvas = document.getElementById('canvas-lb-' + lightIndex)
+    canvas.width = img.width
+    canvas.height = img.height
+    canvas.getContext('2d').drawImage(img, 0, 0)
+
+    let preview = document.getElementById('canvas-preview-' + lightIndex)
+    preview.getContext('2d').drawImage(img, 0, 0)
+    var result = GetMatrix(lightIndex)
+    if (result == "") {
+        preview.style.display = "";
+        document.getElementById('LightTip' + lightIndex).style.display = "none"
+        document.getElementById('LightInput' + lightIndex).style.display = "none"
+        document.getElementById('LightDescription' + lightIndex).style.display = "none"
+
+        if (lightIndex < 8) {
+            if (TrySolveMidWay()) {
+                lightIndex = 9
+            }
+            else {
+                document.getElementById('LightInput' + (lightIndex + 1)).style.display = ""
+                document.getElementById('LightDescription' + (lightIndex + 1)).style.display = ""
+                lightIndex++
+            }
+        }
+        else {
+            lightIndex = 9
+            Solve()
+        }
+    }
+    // Loaded fine
+    else {
+        document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot: " + result
+        document.getElementById('LightTip' + lightIndex).style.display = ""
+    }
+}
 
 window.addEventListener("paste", function (e) {
     if (currentPage != "Light" || lightIndex > 8) return;
-    var item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
+    let item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
 
-    var blob = item.getAsFile();
+    let blob = item.getAsFile();
 
-    var img = new Image();
+    let img = new Image();
 
     img.onload = function () {
-        let canvas = document.getElementById('canvas-lb-' + lightIndex);
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvas.getContext('2d').drawImage(img, 0, 0);
-
-        let preview = document.getElementById('canvas-preview-' + lightIndex);
-        preview.getContext('2d').drawImage(img, 0, 0);
-        var result = GetMatrix(lightIndex)
-        if (result == "") {
-            preview.style.display = "";
-            document.getElementById('LightTip' + lightIndex).style.display = "none";
-            document.getElementById('LightInput' + lightIndex).style.display = "none";
-            document.getElementById('LightDescription' + lightIndex).style.display = "none";
-
-            if (lightIndex < 8) {
-                document.getElementById('LightInput' + (lightIndex + 1)).style.display = "";
-                document.getElementById('LightDescription' + (lightIndex + 1)).style.display = "";
-                lightIndex++;
-            }
-            else
-                Solve();
-        }
-        // Loaded fine
-        else {
-            document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot: " + result;
-            document.getElementById('LightTip' + lightIndex).style.display = "";
-        }
+        imageOnLoad(img)
     };
 
     img.src = URL.createObjectURL(blob);
+});
+
+Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), function (val, ind) {
+    val.addEventListener('change', function (event) {
+        let reader = new FileReader();
+        reader.onload = function (event) {
+            let img = new Image();
+            img.onload = function () {
+                imageOnLoad(img)
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+
 });
 
 Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), function (val, ind) {
@@ -107,51 +132,11 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
     return;
 });
 
-Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), function (val, ind) {
-    val.addEventListener('change', function (event) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const img = new Image();
-            img.onload = function () {
-                let canvas = document.getElementById('canvas-lb-'+ind);
-                canvas.width = img.width;
-                canvas.height = img.height;
-                canvas.getContext('2d').drawImage(img, 0, 0);
 
-                let preview = document.getElementById('canvas-preview-' + ind);
-                preview.getContext('2d').drawImage(img, 0, 0);
 
-                var result = GetMatrix(ind)
-                if (result == "") {
-                    preview.style.display = "";
-                    document.getElementById('LightTip' + ind).style.display = "none";
-                    val.style.display = "none";
-                    document.getElementById('LightDescription' + ind).style.display = "none";
-
-                    if (ind < 8) {
-                        document.getElementById('LightInput' + (ind + 1)).style.display = "";
-                        document.getElementById('LightDescription' + (ind + 1)).style.display = "";
-                        lightIndex++;
-                    }
-                    else
-                        Solve();
-                }
-                // Loaded fine
-                else {
-                    document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot: " + result;
-                    document.getElementById('LightTip' + lightIndex).style.display = "";
-                }
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
-
-});
-
-function GetMatrix(ind) {
-    if (debug) console.log("canvas-lb-" + ind)
-    let src = cv.imread('canvas-lb-' + ind)
+function GetMatrix(index) {
+    if (debug) console.log("canvas-lb-" + index)
+    let src = cv.imread('canvas-lb-' + index)
 
     if (debug) console.log("src")
     if (debug) console.log(src)
@@ -187,11 +172,11 @@ function GetMatrix(ind) {
         matrix.push(row);
     }
 
-    if (ind > 0 && JSON.stringify(matrices[ind - 1]) == JSON.stringify(matrix)) {
+    if (index > 0 && JSON.stringify(matrices[index - 1]) == JSON.stringify(matrix)) {
         return "Matches Previous Image";
     }
 
-    matrices[ind] = matrix;
+    matrices[index] = matrix;
     return "";
 }
 
@@ -253,7 +238,7 @@ function isEqual(a, b) {
 }
 
 function TrySolveMidWay() {
-    if (lightIndex < 3) return;
+    if (lightIndex < 3) return false
 
     let temp = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
     let chars = []
@@ -264,7 +249,7 @@ function TrySolveMidWay() {
     let one_matrix = (function () {
         return range(0, 5).map(function (row) {
             return range(0, 5).map(function (col) {
-                return 1;
+                return 1
             });
         })
     })();
@@ -272,15 +257,15 @@ function TrySolveMidWay() {
     let data = {}
     let last_state
     let copyMatrices = { ...matrices }
-    for (let i = 0; i < chars.length - 1; i++) {
+    for (let i = 0; i < chars.length; i++) {
         last_state = copyMatrices[i];
         if (debug) console.log(last_state);
         data[chars[i]] = xor_matrix(last_state, copyMatrices[i + 1])
     }
-    last_state = copyMatrices[copyMatrices.length - 1]
+    last_state = copyMatrices[chars.length]
 
     let combosByChars = getAllUniqueStrings(chars)
-    let solution = combos.find(function (letters) {
+    let solution = combosByChars.find(function (letters) {
         let m = last_state
         letters.split('').forEach(function (l) {
             m = xor_matrix(m, data[l])
@@ -289,9 +274,11 @@ function TrySolveMidWay() {
     })
 
     if (solution != "" && solution != undefined) {
-        document.getElementById('LightSolution').innerText = "Solution found early: " + solution;
-        document.getElementById('LightSolution').style.display = "";
+        document.getElementById('LightSolution').innerText = "Solution found early: " + solution
+        document.getElementById('LightSolution').style.display = ""
+        return true
     }
+    return false
 }
 
 function permute(arr, size) {

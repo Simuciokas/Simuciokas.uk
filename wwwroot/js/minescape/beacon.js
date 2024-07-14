@@ -21,8 +21,6 @@ function autocomplete(inp, arr) {
     /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function (e) {
         var a, b, i, val = this.value;
-        console.log(this.value);
-        console.log();
 
         /*close any already open lists of autocompleted values*/
         closeAllLists();
