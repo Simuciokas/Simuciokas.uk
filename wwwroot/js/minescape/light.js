@@ -1,4 +1,5 @@
 var matrices = Array.apply(null, Array(7)).map(function () { });
+var combos = ['A', 'BA', 'B', 'CA', 'CBA', 'CB', 'C', 'DA', 'DBA', 'DB', 'DCA', 'DCBA', 'DCB', 'DC', 'D', 'EA', 'EBA', 'EB', 'ECA', 'ECBA', 'ECB', 'EC', 'EDA', 'EDBA', 'EDB', 'EDCA', 'EDCBA', 'EDCB', 'EDC', 'ED', 'E', 'FA', 'FBA', 'FB', 'FCA', 'FCBA', 'FCB', 'FC', 'FDA', 'FDBA', 'FDB', 'FDCA', 'FDCBA', 'FDCB', 'FDC', 'FD', 'FEA', 'FEBA', 'FEB', 'FECA', 'FECBA', 'FECB', 'FEC', 'FEDA', 'FEDBA', 'FEDB', 'FEDCA', 'FEDCBA', 'FEDCB', 'FEDC', 'FED', 'FE', 'F', 'GA', 'GBA', 'GB', 'GCA', 'GCBA', 'GCB', 'GC', 'GDA', 'GDBA', 'GDB', 'GDCA', 'GDCBA', 'GDCB', 'GDC', 'GD', 'GEA', 'GEBA', 'GEB', 'GECA', 'GECBA', 'GECB', 'GEC', 'GEDA', 'GEDBA', 'GEDB', 'GEDCA', 'GEDCBA', 'GEDCB', 'GEDC', 'GED', 'GE', 'GFA', 'GFBA', 'GFB', 'GFCA', 'GFCBA', 'GFCB', 'GFC', 'GFDA', 'GFDBA', 'GFDB', 'GFDCA', 'GFDCBA', 'GFDCB', 'GFDC', 'GFD', 'GFEA', 'GFEBA', 'GFEB', 'GFECA', 'GFECBA', 'GFECB', 'GFEC', 'GFEDA', 'GFEDBA', 'GFEDB', 'GFEDCA', 'GFEDCBA', 'GFEDCB', 'GFEDC', 'GFED', 'GFE', 'GF', 'G', 'HA', 'HBA', 'HB', 'HCA', 'HCBA', 'HCB', 'HC', 'HDA', 'HDBA', 'HDB', 'HDCA', 'HDCBA', 'HDCB', 'HDC', 'HD', 'HEA', 'HEBA', 'HEB', 'HECA', 'HECBA', 'HECB', 'HEC', 'HEDA', 'HEDBA', 'HEDB', 'HEDCA', 'HEDCBA', 'HEDCB', 'HEDC', 'HED', 'HE', 'HFA', 'HFBA', 'HFB', 'HFCA', 'HFCBA', 'HFCB', 'HFC', 'HFDA', 'HFDBA', 'HFDB', 'HFDCA', 'HFDCBA', 'HFDCB', 'HFDC', 'HFD', 'HFEA', 'HFEBA', 'HFEB', 'HFECA', 'HFECBA', 'HFECB', 'HFEC', 'HFEDA', 'HFEDBA', 'HFEDB', 'HFEDCA', 'HFEDCBA', 'HFEDCB', 'HFEDC', 'HFED', 'HFE', 'HF', 'HGA', 'HGBA', 'HGB', 'HGCA', 'HGCBA', 'HGCB', 'HGC', 'HGDA', 'HGDBA', 'HGDB', 'HGDCA', 'HGDCBA', 'HGDCB', 'HGDC', 'HGD', 'HGEA', 'HGEBA', 'HGEB', 'HGECA', 'HGECBA', 'HGECB', 'HGEC', 'HGEDA', 'HGEDBA', 'HGEDB', 'HGEDCA', 'HGEDCBA', 'HGEDCB', 'HGEDC', 'HGED', 'HGE', 'HGFA', 'HGFBA', 'HGFB', 'HGFCA', 'HGFCBA', 'HGFCB', 'HGFC', 'HGFDA', 'HGFDBA', 'HGFDB', 'HGFDCA', 'HGFDCBA', 'HGFDCB', 'HGFDC', 'HGFD', 'HGFEA', 'HGFEBA', 'HGFEB', 'HGFECA', 'HGFECBA', 'HGFECB', 'HGFEC', 'HGFEDA', 'HGFEDBA', 'HGFEDB', 'HGFEDCA', 'HGFEDCBA', 'HGFEDCB', 'HGFEDC', 'HGFED', 'HGFE', 'HGF', 'HG', 'H', '']
 
 var debug = false;
 
@@ -11,6 +12,7 @@ function resetLightPuzzle() {
     matrices = Array.apply(null, Array(7)).map(function () { })
     for (let i = 0; i < 9; i++) {
 
+        document.getElementById('LightInput' + i).value = null
         document.getElementById('LightInput' + i).style.display = "none"
         let tip = document.getElementById('LightTip' + i)
         tip.innerHTML = ""
@@ -70,8 +72,8 @@ window.addEventListener("paste", function (e) {
 
         let preview = document.getElementById('canvas-preview-' + lightIndex);
         preview.getContext('2d').drawImage(img, 0, 0);
-
-        if (GetMatrix(lightIndex)) {
+        var result = GetMatrix(lightIndex)
+        if (result == "") {
             preview.style.display = "";
             document.getElementById('LightTip' + lightIndex).style.display = "none";
             document.getElementById('LightInput' + lightIndex).style.display = "none";
@@ -87,11 +89,8 @@ window.addEventListener("paste", function (e) {
         }
         // Loaded fine
         else {
-            console.log(document.getElementById('LightTip' + lightIndex).innerText)
-            document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot";
+            document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot: " + result;
             document.getElementById('LightTip' + lightIndex).style.display = "";
-            console.log(document.getElementById('LightTip' + lightIndex).innerText)
-
         }
     };
 
@@ -122,7 +121,8 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
                 let preview = document.getElementById('canvas-preview-' + ind);
                 preview.getContext('2d').drawImage(img, 0, 0);
 
-                if (GetMatrix(ind)) {
+                var result = GetMatrix(ind)
+                if (result == "") {
                     preview.style.display = "";
                     document.getElementById('LightTip' + ind).style.display = "none";
                     val.style.display = "none";
@@ -136,9 +136,11 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
                     else
                         Solve();
                 }
-                    // Loaded fine
-                else
-                    document.getElementById('LightTip' + ind).innerText = "Couldn't process the image, try again with a new screenshot";
+                // Loaded fine
+                else {
+                    document.getElementById('LightTip' + lightIndex).innerText = "Couldn't process the image, try again with a new screenshot: " + result;
+                    document.getElementById('LightTip' + lightIndex).style.display = "";
+                }
             };
             img.src = event.target.result;
         };
@@ -147,80 +149,93 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
 
 });
 
-function TopRightCorner(src) {
-    for (let x = src.size().width-1; x > 0; x--) {
-        for (let y = 0; y < src.size().height-1; y++) {
-            let rgba = src.ucharPtr(y, x);
-            if (rgba[0] == 136 && rgba[1] == 136 && rgba[2] == 122) {
-                y--;
-                console.log({ x, y });
-                console.log(rgba);
-                rgba = src.ucharPtr(y, x);
-                while (rgba[0] == 0 && rgba[1] == 0 && rgba[2] == 1) {
-                    y--;
-                    rgba = src.ucharPtr(y, x);
-                }
-                y++;
-                return { x, y };
-            }
+function GetMatrix(ind) {
+    if (debug) console.log("canvas-lb-" + ind)
+    let src = cv.imread('canvas-lb-' + ind)
+
+    if (debug) console.log("src")
+    if (debug) console.log(src)
+
+    let topLeftBlack = TopLeftBlack(src)
+
+    if (debug) console.log("topLeftBlack")
+    if (debug) console.log(topLeftBlack)
+
+    if (topLeftBlack == undefined) return "Invalid Photo"
+
+    let nextLeftBlack = GetNextTopLeftBlack(src, { x: topLeftBlack.x, y: topLeftBlack.y })
+
+    if (debug) console.log("nextLeftBlack")
+    if (debug) console.log(nextLeftBlack)
+
+    let distanceBetween = GetDistanceBetweenPos(topLeftBlack.x, nextLeftBlack.x)
+
+    if (debug) console.log("distanceBetween")
+    if (debug) console.log(distanceBetween)
+
+    if (distanceBetween == undefined) return "Invalid Photo"
+
+    let matrix = [];
+    for (let i = 0; i < 6; i++) {
+        let y = topLeftBlack.y + (distanceBetween * i);
+        let row = [];
+        for (let k = 0; k < 6; k++) {
+            let x = topLeftBlack.x + (distanceBetween * k);
+            let isOn = IsOn(src, x, y + 1);
+            row.push(isOn);
+        }
+        matrix.push(row);
+    }
+
+    if (ind > 0 && JSON.stringify(matrices[ind - 1]) == JSON.stringify(matrix)) {
+        return "Matches Previous Image";
+    }
+
+    matrices[ind] = matrix;
+    return "";
+}
+
+function TopLeftBlack(src) {
+    for (let y = 0; y < src.size().height - 1; y++) {
+        for (let x = 0; x < src.size().width - 1; x++) {
+            let rgba = src.ucharPtr(y, x)
+            if (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5)
+                return { x, y }
         }
     }
 }
 
-function GetTileSize(src, pos) {
-    let i = 0;
-    let rgba = src.ucharPtr(pos.y, pos.x);
-    if (debug) console.log(rgba);
-    while (i < 5 || (rgba[0] != 0 || rgba[1] != 0 || rgba[2] != 1)) {
-        i++;
-        pos.x--;
-        pos.y++;
-        rgba = src.ucharPtr(pos.y, pos.x);
+function GetNextTopLeftBlack(src, pos) {
+    let x = pos.x
+    pos.x += 10
+    let rgba = src.ucharPtr(pos.y, pos.x)
+    while (rgba[0] > 5 || rgba[1] > 5 || rgba[2] > 5) {
+        pos.x++
+        rgba = src.ucharPtr(pos.y, pos.x)
+        if (pos.x - x > 200)
+            return undefined
     }
-    if (debug) console.log("Passed top bottom left corner at: ")
-    if (debug) console.log({ x: pos.x, y: pos.y });
-
-    while (rgba[0] == 0 && rgba[1] == 0 && rgba[2] == 1) {
-        i++;
-        pos.x--;
-        pos.y++;
-        rgba = src.ucharPtr(pos.y, pos.x);
-    }
-    if (debug) console.log("Position after blacks")
-    if (debug) console.log({ x: pos.x, y: pos.y });
-    if (debug) console.log(rgba);
-
-    let k = 0;
-    while (rgba[0] != 0 && rgba[1] != 0 && rgba[2] != 1) {
-        k++;
-        pos.x--;
-        pos.y++;
-        rgba = src.ucharPtr(pos.y, pos.x);
-    }
-
-    if (debug) console.log("Position after colored")
-    if (debug) console.log({ x: pos.x, y: pos.y });
-    if (debug) console.log(rgba);
-
-    if (debug) console.log("k: " + k);
-    i += k;
-    if (debug) console.log("i: " + i);
-
-    return { i, k: k/2 };
+    return pos
 }
 
-function IsOn(src, size) {
-    let rgba = src.ucharPtr(Math.floor(size / 2), Math.floor(size / 2));
+function GetDistanceBetweenPos(x1, x2) {
+    return Math.abs(x1 - x2)
+}
+
+function IsOn(src, x, y) {
+    let rgba = src.ucharPtr(y, x);
+    if (debug) console.log("IsOn:");
+    if (debug) console.log(y, x);
     if (debug) console.log(rgba);
-    if (rgba[0] < 60 && rgba[1] < 60)
+    if (rgba[0] < 100 && rgba[1] < 100)
         return 0;
     return 1;
 }
 
 var xor_matrix = function (m1, m2) {
-    return range(0, 5).map(function (r) {
-        return range(0, 5).map(function (c) {
-            return m1[r][c] ^ m2[r][c]
+    return range(0, 5).map(function (row) {
+        return range(0, 5).map(function (col) {
+            return m1[row][col] ^ m2[row][col]
         })
     })
 }
@@ -237,29 +252,107 @@ function isEqual(a, b) {
     return true
 }
 
-function Solve() {
-    let chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+function TrySolveMidWay() {
+    if (lightIndex < 3) return;
+
+    let temp = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    let chars = []
+    for (let i = 0; i < lightIndex; i++) {
+        chars.push(temp[i])
+    }
+
     let one_matrix = (function () {
-        return range(1, 6).map(function (r) {
-            return range(1, 6).map(function (c) {
+        return range(0, 5).map(function (row) {
+            return range(0, 5).map(function (col) {
                 return 1;
             });
         })
     })();
+
     let data = {}
-    let last_state;
+    let last_state
+    let copyMatrices = { ...matrices }
+    for (let i = 0; i < chars.length - 1; i++) {
+        last_state = copyMatrices[i];
+        if (debug) console.log(last_state);
+        data[chars[i]] = xor_matrix(last_state, copyMatrices[i + 1])
+    }
+    last_state = copyMatrices[copyMatrices.length - 1]
+
+    let combosByChars = getAllUniqueStrings(chars)
+    let solution = combos.find(function (letters) {
+        let m = last_state
+        letters.split('').forEach(function (l) {
+            m = xor_matrix(m, data[l])
+        })
+        return isEqual(m, one_matrix)
+    })
+
+    if (solution != "" && solution != undefined) {
+        document.getElementById('LightSolution').innerText = "Solution found early: " + solution;
+        document.getElementById('LightSolution').style.display = "";
+    }
+}
+
+function permute(arr, size) {
+    if (size === 1) {
+        return arr.map(element => [element]);
+    }
+
+    const permutations = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        const current = arr[i];
+        const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
+
+        const remainingPermutations = permute(remaining, size - 1);
+
+        for (const permutation of remainingPermutations) {
+            permutations.push([current].concat(permutation));
+        }
+    }
+
+    return permutations;
+}
+
+function getAllUniqueStrings(arr) {
+    const uniqueStrings = new Set();
+
+    for (let size = 1; size <= arr.length; size++) {
+        const permutations = permute(arr, size);
+        for (const permutation of permutations) {
+            uniqueStrings.add(permutation.join(''));
+        }
+    }
+
+    return [...uniqueStrings];
+}
+
+
+function Solve() {
+    let chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+
+    let one_matrix = (function () {
+        return range(0, 5).map(function (row) {
+            return range(0, 5).map(function (col) {
+                return 1;
+            });
+        })
+    })();
+
+    let data = {}
+    let last_state
 
     for (let i = 0; i < matrices.length-1; i++) {
-        last_state = matrices[i];
-        if (debug) console.log(last_state);
+        last_state = matrices[i]
+        if (debug) console.log(last_state)
         data[chars[i]] = xor_matrix(last_state, matrices[i+1])
     }
-    last_state = matrices[matrices.length-1];
 
-    let combos = ['A', 'BA', 'B', 'CA', 'CBA', 'CB', 'C', 'DA', 'DBA', 'DB', 'DCA', 'DCBA', 'DCB', 'DC', 'D', 'EA', 'EBA', 'EB', 'ECA', 'ECBA', 'ECB', 'EC', 'EDA', 'EDBA', 'EDB', 'EDCA', 'EDCBA', 'EDCB', 'EDC', 'ED', 'E', 'FA', 'FBA', 'FB', 'FCA', 'FCBA', 'FCB', 'FC', 'FDA', 'FDBA', 'FDB', 'FDCA', 'FDCBA', 'FDCB', 'FDC', 'FD', 'FEA', 'FEBA', 'FEB', 'FECA', 'FECBA', 'FECB', 'FEC', 'FEDA', 'FEDBA', 'FEDB', 'FEDCA', 'FEDCBA', 'FEDCB', 'FEDC', 'FED', 'FE', 'F', 'GA', 'GBA', 'GB', 'GCA', 'GCBA', 'GCB', 'GC', 'GDA', 'GDBA', 'GDB', 'GDCA', 'GDCBA', 'GDCB', 'GDC', 'GD', 'GEA', 'GEBA', 'GEB', 'GECA', 'GECBA', 'GECB', 'GEC', 'GEDA', 'GEDBA', 'GEDB', 'GEDCA', 'GEDCBA', 'GEDCB', 'GEDC', 'GED', 'GE', 'GFA', 'GFBA', 'GFB', 'GFCA', 'GFCBA', 'GFCB', 'GFC', 'GFDA', 'GFDBA', 'GFDB', 'GFDCA', 'GFDCBA', 'GFDCB', 'GFDC', 'GFD', 'GFEA', 'GFEBA', 'GFEB', 'GFECA', 'GFECBA', 'GFECB', 'GFEC', 'GFEDA', 'GFEDBA', 'GFEDB', 'GFEDCA', 'GFEDCBA', 'GFEDCB', 'GFEDC', 'GFED', 'GFE', 'GF', 'G', 'HA', 'HBA', 'HB', 'HCA', 'HCBA', 'HCB', 'HC', 'HDA', 'HDBA', 'HDB', 'HDCA', 'HDCBA', 'HDCB', 'HDC', 'HD', 'HEA', 'HEBA', 'HEB', 'HECA', 'HECBA', 'HECB', 'HEC', 'HEDA', 'HEDBA', 'HEDB', 'HEDCA', 'HEDCBA', 'HEDCB', 'HEDC', 'HED', 'HE', 'HFA', 'HFBA', 'HFB', 'HFCA', 'HFCBA', 'HFCB', 'HFC', 'HFDA', 'HFDBA', 'HFDB', 'HFDCA', 'HFDCBA', 'HFDCB', 'HFDC', 'HFD', 'HFEA', 'HFEBA', 'HFEB', 'HFECA', 'HFECBA', 'HFECB', 'HFEC', 'HFEDA', 'HFEDBA', 'HFEDB', 'HFEDCA', 'HFEDCBA', 'HFEDCB', 'HFEDC', 'HFED', 'HFE', 'HF', 'HGA', 'HGBA', 'HGB', 'HGCA', 'HGCBA', 'HGCB', 'HGC', 'HGDA', 'HGDBA', 'HGDB', 'HGDCA', 'HGDCBA', 'HGDCB', 'HGDC', 'HGD', 'HGEA', 'HGEBA', 'HGEB', 'HGECA', 'HGECBA', 'HGECB', 'HGEC', 'HGEDA', 'HGEDBA', 'HGEDB', 'HGEDCA', 'HGEDCBA', 'HGEDCB', 'HGEDC', 'HGED', 'HGE', 'HGFA', 'HGFBA', 'HGFB', 'HGFCA', 'HGFCBA', 'HGFCB', 'HGFC', 'HGFDA', 'HGFDBA', 'HGFDB', 'HGFDCA', 'HGFDCBA', 'HGFDCB', 'HGFDC', 'HGFD', 'HGFEA', 'HGFEBA', 'HGFEB', 'HGFECA', 'HGFECBA', 'HGFECB', 'HGFEC', 'HGFEDA', 'HGFEDBA', 'HGFEDB', 'HGFEDCA', 'HGFEDCBA', 'HGFEDCB', 'HGFEDC', 'HGFED', 'HGFE', 'HGF', 'HG', 'H', '']
+    last_state = matrices[matrices.length - 1]
 
-    var solution = combos.find(function (letters) {
-        var m = last_state
+    let solution = combos.find(function (letters) {
+        let m = last_state
         letters.split('').forEach(function (l) {
             m = xor_matrix(m, data[l])
         })
@@ -270,54 +363,5 @@ function Solve() {
     else
         document.getElementById('LightSolution').innerText = "No solution found. Click me to reset";
     document.getElementById('LightSolution').style.display = "";
-    console.log(solution);
-}
-
-function GetMatrix(ind) {
-    if (debug) console.log("canvas-lb-" + ind);
-    let src = cv.imread('canvas-lb-' + ind);
-    if (debug) console.log("src");
-    if (debug) console.log(src);
-
-    let topRightCorner = TopRightCorner(src);
-
-    if (debug) console.log("topRightCorner");
-    if (debug) console.log(topRightCorner);
-
-    if (topRightCorner == undefined) return false;
-
-    let tileSize = GetTileSize(src, { x: topRightCorner.x, y: topRightCorner.y });
-
-    topRightCorner.x += tileSize.k;
-    topRightCorner.y -= tileSize.k;
-
-    if (debug) console.log("topRightCorner");
-    if (debug) console.log(topRightCorner);
-
-    if (debug) console.log(tileSize);
-
-    let topLeftCornerOfLights = { x: topRightCorner.x - (tileSize.i * 9), y: topRightCorner.y };
-
-
-    if (debug) console.log("topLeftCornerOfLights");
-    if (debug) console.log(topLeftCornerOfLights);
-
-    let matrix = [];
-    for (let i = 0; i < 6; i++) {
-        let y = topLeftCornerOfLights.y + (tileSize.i * i);
-        let row = [];
-        for (let k = 0; k < 6; k++) {
-            let x = topLeftCornerOfLights.x + (tileSize.i * k);
-            let rect = new cv.Rect(x, y, tileSize.i, tileSize.i);
-            let isOn = IsOn(src.roi(rect), tileSize.i);
-            row.push(isOn);
-        }
-        matrix.push(row);
-    }
-
-    //console.log("matrix");
-    //console.log(matrix);
-
-    matrices[ind] = matrix;
-    return true;
+    if (debug) console.log(solution);
 }
