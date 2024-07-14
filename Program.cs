@@ -5,11 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddResponseCompression(options =>
-{
-    //options.Enable = true;
-    //options.Providers.Add<GzipCompressionProvider>();
-});
+//builder.Services.AddResponseCompression(options =>
+//{
+//    //options.Enable = true;
+//    //options.Providers.Add<GzipCompressionProvider>();
+//});
 
 builder.Services.AddResponseCaching(options =>
 {
@@ -29,7 +29,7 @@ builder.Services.AddResponseCaching(options =>
 
 var app = builder.Build();
 
-app.UseResponseCompression();
+//app.UseResponseCompression();
 app.UseResponseCaching();
 
 // Configure the HTTP request pipeline.
