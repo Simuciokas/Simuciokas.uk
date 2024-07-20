@@ -6,19 +6,19 @@
     <div class="container">
         <div class="btn-container" id="Navigation">
             <input class="navRadio" type="radio" id="rPuzzle" name="radios" value="Puzzle" checked="checked">
-            <label class="navRadio" for="rPuzzle">Puzzle Box Solver</label><br />
+            <label class="navRadio prevent-select" for="rPuzzle">Puzzle Box Solver</label><br />
             <input class="navRadio" type="radio" id="rLight" name="radios" value="Light">
-            <label class="navRadio" for="rLight">Light Box Solver</label><br />
+            <label class="navRadio prevent-select" for="rLight">Light Box Solver</label><br />
             <input class="navRadio" type="radio" id="rAnagram" name="radios" value="Anagram">
-            <label class="navRadio" for="rAnagram">Anagram Solver</label><br />
+            <label class="navRadio prevent-select" for="rAnagram">Anagram Solver</label><br />
             <input class="navRadio" type="radio" id="rCypher" name="radios" value="Cypher">
-            <label class="navRadio" for="rCypher">Cypher Solver</label><br />
+            <label class="navRadio prevent-select" for="rCypher">Cypher Solver</label><br />
             <input class="navRadio" type="radio" id="rBeacon" name="radios" value="Beacon">
-            <label class="navRadio" for="rBeacon">Beacon Solver</label><br />
+            <label class="navRadio prevent-select" for="rBeacon">Beacon Solver</label><br />
             <input class="navRadio" type="radio" id="rChest" name="radios" value="Chest">
-            <label class="navRadio" for="rChest">Chest Solver</label><br />
+            <label class="navRadio prevent-select" for="rChest">Chest Solver</label><br />
             <input class="navRadio" type="radio" id="rHotCold" name="radios" value="HotCold">
-            <label class="navRadio" for="rHotCold">Hot and Cold Solver</label><br />
+            <label class="navRadio prevent-select" for="rHotCold">Hot and Cold Solver</label><br />
         </div>
     </div>
 
@@ -123,16 +123,25 @@
             <span class="dropzone-tip" style="display:none;" id="LightTip">Initial View</span>
         </div>
 
-        <div>
+        <div id="LightPreview">
             <canvas class="light-preview" id="canvas-preview-0" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-0" style="display:none;">Initial</label>
             <canvas class="light-preview" id="canvas-preview-1" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-1" style="display:none;">A</label>
             <canvas class="light-preview" id="canvas-preview-2" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-2" style="display:none;">B</label>
             <canvas class="light-preview" id="canvas-preview-3" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-3" style="display:none;">C</label>
             <canvas class="light-preview" id="canvas-preview-4" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-4" style="display:none;">D</label>
             <canvas class="light-preview" id="canvas-preview-5" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-5" style="display:none;">E</label>
             <canvas class="light-preview" id="canvas-preview-6" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-6" style="display:none;">F</label>
             <canvas class="light-preview" id="canvas-preview-7" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-7" style="display:none;">G</label>
             <canvas class="light-preview" id="canvas-preview-8" style="display:none;"></canvas>
+            <label class="previewLabel" for="canvas-preview-8" style="display:none;">H</label>
         </div>
 
         <div id="LightCanvas" style="display: none;">
@@ -193,29 +202,44 @@
     </div>
 
     <div class="main" id="HotCold" style="display: none;">
-        <h1>Not implemented</h1>
-        <span><b>Tip: </b></span><span id="solution-hotcold-tip">not found</span><br />
-        <span><b>Map location: </b></span><a id="solution-hotcold-url" target="_blank">not found</a><br /><br />
 
         <span>Tier of Clue:</span><br />
-        <input class="selRadio" type="radio" id="rEasy" name="clueTier" value="Easy" checked="checked">
+        <input class="selRadio" type="radio" id="rBeginner" name="clueTier" value="Beginner">
+        <label for="rBeginner">Beginner</label><br />
+        <input class="selRadio" type="radio" id="rEasy" name="clueTier" value="Easy">
         <label for="rEasy">Easy</label><br />
-        <input class="selRadio" type="radio" id="rMedium" name="clueTier" value="Medium">
+        <!---<input class="selRadio" type="radio" id="rMedium" name="clueTier" value="Medium">
         <label for="rMedium">Medium</label><br />
         <input class="selRadio" type="radio" id="rHard" name="clueTier" value="Hard">
         <label for="rHard">Hard</label><br />
         <input class="selRadio" type="radio" id="rElite" name="clueTier" value="Elite">
-        <label for="rElite">Elite</label><br />
+        <label for="rElite">Elite</label><br />-->
         <input class="selRadio" type="radio" id="rMaster" name="clueTier" value="Master">
         <label for="rMaster">Master</label><br /><br />
 
-        <span>Input your location with X, Y and Z coordiantes or paste in the URL you get from /map</span>
-        <input type="number" id="HotColdX" placeholder="Input your X coordinate">
-        <input type="number" id="HotColdY" placeholder="Input your Y coordinate">
-        <input type="number" id="HotColdZ" placeholder="Input your Z coordinate">
-        <input type="text" id="HotColdMap" placeholder="Input URL from /map">
+        <span id="solution-hotcold-header"><b>Possible locations:</b></span>
+        <div id="solution-hotcold" style="height: 200px; width: 520px; overflow: hidden; overflow-y: scroll;">
+            <span><b>Tip: </b></span><span id="solution-hotcold-tip">not found</span><br />
+            <span><b>Map location: </b></span><a id="solution-hotcold-url" target="_blank">not found</a><br />
+        </div><br />
 
-        <input type="number" id="HotColdDistance" placeholder="Input distance">
+        <span><b>Provided Location: </b></span><span id="hotcold-location">not provided</span><br />
+        <span><b>Provided Distance: </b></span><span id="hotcold-distance">not provided</span><br /><br />
+
+        <button id="HotColdSolve">Try Solve</button> <button id="HotColdReset">Reset</button><br /><br />
+
+
+        <!--- <span>Input your location with X and Z coordiantes</span><br />
+        <input type="number" oninput="this.value = Math.round(this.value);" id="HotColdX" placeholder="Input your X coordinate">
+        <input type="number" oninput="this.value = Math.round(this.value);" id="HotColdZ" placeholder="Input your Z coordinate"><br /><br /> --->
+
+        <span>Input the URL you get from /map</span><br />
+        <input type="text" id="HotColdMap" placeholder="Input URL from /map" style="width: 520px"><span id="HotColdMapTip" style="padding-left: 10px;color: red; display:none;"></span><br /><br />
+
+        <span>Input the distance you get standing at your location</span><br />
+        <input type="number" id="HotColdDistance" placeholder="Input distance"><br /><br />
+
+
 
     </div>
 

@@ -8,10 +8,12 @@ var checkbox = document.getElementById("LightDebug")
 var lightIndex = 0
 
 function resetLightPuzzle() {
-    lightIndex = 0;
+    lightIndex = 0
     matrices = Array.apply(null, Array(7)).map(function () { })
-    for (let i = 0; i < 9; i++) {
 
+    document.getElementById("LightPreview").querySelectorAll("label").forEach(x => x.style.display = "none")
+
+    for (let i = 0; i < 9; i++) {
         document.getElementById('LightInput' + i).value = null
         document.getElementById('LightInput' + i).style.display = "none"
         let tip = document.getElementById('LightTip' + i)
@@ -23,7 +25,7 @@ function resetLightPuzzle() {
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
         canvas.style.display = "none"
 
-        let preview = document.getElementById('canvas-preview-' + i);
+        let preview = document.getElementById('canvas-preview-' + i)
         preview.getContext('2d').clearRect(0, 0, preview.width, preview.height)
         canvas.style.display = "none"
     }
@@ -62,7 +64,10 @@ function imageOnLoad(img) {
     canvas.getContext('2d').drawImage(img, 0, 0)
 
     let preview = document.getElementById('canvas-preview-' + lightIndex)
+    preview.height = img.height
+    preview.width = img.width
     preview.getContext('2d').drawImage(img, 0, 0)
+    let previewLabel = document.getElementById("LightPreview").querySelectorAll("label")[lightIndex].style.display = ""
     var result = GetMatrix(lightIndex)
     if (result == "") {
         preview.style.display = "";
