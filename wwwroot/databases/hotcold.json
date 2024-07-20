@@ -1,212 +1,287 @@
-{
-  "Lilal": {
-    "id": "lalli",
-    "location": "-1741, 74, -1056",
-    "tip": "Rellekka Island"
+[
+  {
+    "id": "master",
+    "location": "410, 71, -58",
+    "tip": "Mort'ton."
   },
-  "Rain Cove": {
-    "id": "veronica",
-    "location": "-661, 69, -142",
-    "tip": "Draynor Manor"
+  {
+    "id": "master",
+    "location": "-961, 72, 242",
+    "tip": "Next to a crossroad by Port Sarim jail."
   },
-  "Carpet Ahoy": {
-    "id": "apothecary",
-    "location": "-416, 69, -384",
-    "tip": "Varrock behind hole"
+  {
+    "id": "master",
+    "location": "-889, 72, 71",
+    "tip": "Near Port Sarim Jobs Master"
   },
-  "Disorder": {
-    "id": "sedridor",
-    "location": "-658, 74, 360",
-    "tip": "Glory Amulet to Draynor"
+  {
+    "id": "master",
+    "location": "-834, 68, -100",
+    "tip": "Falador farm, in the middle of small patches and north of the cabbage patch"
   },
-  "Red Art Tans": {
-    "id": "trader stan",
-    "location": "-920, 69, 251",
-    "tip": "Glory Amulet to Draynor / Rimmington Island"
+  {
+    "id": "master",
+    "location": "-1108, 69, -101",
+    "tip": "Next to a building, next to Falador southern wall."
   },
-  "Slide Woman": {
-    "id": "wise old man",
-    "location": "-741, 68, 77",
-    "tip": "Glory Amulet to Draynor / Lumbridge"
+  {
+    "id": "master",
+    "location": "624, 73, -124",
+    "tip": "Infront of the building at Barrows."
   },
-  "Ace Match Elm": {
-    "id": "cam the camel",
-    "location": "-129, 69, 109",
-    "tip": "Lumbridge / Glory Amulet to Al-Kharid / Ring of Dueling to Duel Arena"
+  {
+    "id": "master",
+    "location": "-681, 69, -154",
+    "tip": "Near Draynor Manor entrance."
   },
-  "Do Say More": {
-    "id": "doomsayer",
-    "location": "-311, 68, 138",
-    "tip": "Lumbridge"
+  {
+    "id": "master",
+    "location": "-1009, 69, -310",
+    "tip": "In Falador garden, in the middle of a flower patch."
   },
-  "Peak Reflex": {
-    "id": "flax keeper",
-    "location": "-1783, 71, -500",
-    "tip": "Camelot"
+  {
+    "id": "master",
+    "location": "-1146, 72, -313",
+    "tip": "In Falador across the road from the Rising Sun Inn"
   },
-  "Blue Grim Guided": {
-    "id": "lumbridge guide",
-    "location": "-294, 68, 173",
-    "tip": "Lumbridge"
+  {
+    "id": "master",
+    "location": "284, 72, -323",
+    "tip": "In Mort Myre swamp, near old location of Cosmic altar."
   },
-  "A Basic Anti Pot": {
-    "id": "captain tobias",
-    "location": "-947, 69, 139",
-    "tip": "Port Sarim"
+  {
+    "id": "master",
+    "location": "-2031, 73, -483",
+    "tip": "In Hemenster."
   },
-  "A Baker": {
-    "id": "baraek",
-    "location": "-353, 68, -466",
-    "tip": "Varrock"
+  {
+    "id": "master",
+    "location": "-967, 75, -486",
+    "tip": "Near the Dwarven Mine entrance at the root of Ice Mountain."
   },
-  "Aha Jar": {
-    "id": "jaraah",
-    "location": "54, 70, 77",
-    "tip": "Ring of Dueling to Duel Arena / Glory Amulet to Al-Kharid"
+  {
+    "id": "master",
+    "location": "-865, 69, -569",
+    "tip": "At the front of the Edgeville Monastery."
   },
-  "Area chef Treck": {
-    "id": "father aereck",
-    "location": "-280, 68, 205",
-    "tip": "Lumbridge"
+  {
+    "id": "master",
+    "location": "-1118, 69, -584",
+    "tip": "Next to the ruined chapel in front of the Goblin Village."
   },
-  "El Ow": {
-    "id": "lowe",
-    "location": "-303, 71, -433",
-    "tip": "Varrock"
+  {
+    "id": "master",
+    "location": "525, 71, -598",
+    "tip": "In front of the Canifis bank."
   },
-  "Armchair The Pelt": {
-    "id": "charlie the tramp",
-    "location": "-381, 69, -347",
-    "tip": "Varrock"
+  {
+    "id": "master",
+    "location": "-727, 69, -613",
+    "tip": "In the graveyard ruins near the Edgeville bank"
   },
-  "Are Col": {
-    "id": "oracle",
-    "location": "-974, 112, -660",
-    "tip": "Edgeville"
+  {
+    "id": "master",
+    "location": "-1939, 75, -618",
+    "tip": "In front of Seers' Village pub."
   },
-  "Lark In Dog": {
-    "id": "king roald",
-    "location": "-343, 69, -591",
-    "tip": "Varrock"
+  {
+    "id": "master",
+    "location": "-1376, 75, -649",
+    "tip": "Next to a small hut near Taverley Mine."
   },
-  "Ratai": {
-    "id": "taria",
-    "location": "-1188, 68, 178",
-    "tip": "Rimmington Island"
+  {
+    "id": "master",
+    "location": "-323, 69, -673",
+    "tip": "In the large cage within Varrock Palace walls."
   },
-  "R Ak Mi": {
-    "id": "karim",
-    "location": "-184, 68, 294",
-    "tip": "Glory Amulet to Al-Kharid"
+  {
+    "id": "master",
+    "location": "-755, 69, -679",
+    "tip": "Next to Edgeville well."
   },
-  "Sand Nut": {
-    "id": "dunstan",
-    "location": "-1225, 78, -882",
-    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  {
+    "id": "master",
+    "location": "-233, 70, -767",
+    "tip": "In low level Wilderness, north west of Jolly Boar inn."
   },
-  "Snah": {
-    "id": "hans",
-    "location": "-345, 68, 170",
-    "tip": "Lumbridge"
+  {
+    "id": "master",
+    "location": "538, 73, -784",
+    "tip": "On the road between Canifis and Mausoleum."
   },
-  "Ok co": {
-    "id": "cook",
-    "location": "-372, 72, 193",
-    "tip": "Lumbridge"
+  {
+    "id": "master",
+    "location": "-1327, 79, -852",
+    "tip": "On the crossroad between Burthorpe and Warriors' Guild."
   },
-  "Peaty Pert": {
-    "id": "party pete",
-    "location": "-854, 68, -295",
-    "tip": "Falador"
+  {
+    "id": "master",
+    "location": "-1257, 80, -868",
+    "tip": "In northern Burthorpe."
   },
-  "An Earl": {
-    "id": "ranael",
-    "location": "-21, 73, 365",
-    "tip": "Glory Amulet to Al-Kharid"
+  {
+    "id": "master",
+    "location": "-1252, 79, -943",
+    "tip": "In Burthorpe guard camp."
   },
-  "Me Am The Calc": {
-    "id": "cam the camel",
-    "location": "-129, 69, 109",
-    "tip": "Lumbridge / Glory Amulet to Al-Kharid / Ring of Dueling to Duel Arena"
+  {
+    "id": "master",
+    "location": "-1812, 69, -624",
+    "tip": "Next to Seers' Village bank."
   },
-  "Them Cal Came": {
-    "id": "cam the camel",
-    "location": "-129, 69, 109",
-    "tip": "Lumbridge / Glory Amulet to Al-Kharid / Ring of Dueling to Duel Arena"
+  {
+    "id": "master",
+    "location": "-1612, 69, -554",
+    "tip": "Near Catherby Farming patches."
   },
-  "O Birdz A Zany En Pc": {
-    "id": "cap n izzy no beard",
-    "location": "-1810, 81, 155",
-    "tip": "Games Necklace to Agility"
+  {
+    "id": "master",
+    "location": "-31, 74, -126",
+    "tip": "At Al-Kharid Mine oasis."
   },
-  "Profs Lose Wrong Pie": {
-    "id": "professor onglewip",
-    "location": "-658, 84, 354",
-    "tip": "Glory Amulet to Al-Kharid"
+  {
+    "id": "master",
+    "location": "529, 72, -706",
+    "tip": "Path between Canifis and Mausoleum."
   },
-  "Thickno": {
-    "id": "hickton",
-    "location": "-1542, 68, -493",
-    "tip": "Camelot"
+  {
+    "id": "master",
+    "location": "-1222, 69, 189",
+    "tip": "Infront of scientist's house in Rimmington."
   },
-  "Veil Veda": {
-    "id": "evil dave",
-    "location": "-778, 68, -645",
-    "tip": "Edgeville"
+  {
+    "id": "master",
+    "location": "-269, 69, 483",
+    "tip": "Near the Kalphite Cave entrance."
   },
-  "Que Sir": {
-    "id": "squire",
-    "location": "-1079, 71, -186",
-    "tip": "Falador"
+  {
+    "id": "master",
+    "location": "437, 72, 139",
+    "tip": "Near Burgh de Rott well."
   },
-  "Dragons Lament": {
-    "id": "strange old man",
-    "location": "716, 81, -56",
-    "tip": "Games Necklace to Barrows"
+  {
+    "id": "master",
+    "location": "45, 69, -224",
+    "tip": "Next to Varrock park's pond."
   },
-  "Kay Sir": {
-    "id": "sir kay",
-    "location": "-1738, 68, -649",
-    "tip": "Camelot"
+  {
+    "id": "master",
+    "location": "-1361, 770, -368",
+    "tip": "At Rellekka entrance."
   },
-  "A Bas": {
-    "id": "saba",
-    "location": "-1422, 79, -948",
-    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  {
+    "id": "master",
+    "location": "-2102, 72, -393",
+    "tip": "At Fishing Guild entrance."
   },
-  "Heroic": {
-    "id": "eohric",
-    "location": "-1322, 96, -919",
-    "tip": "Skills Necklace to Warrior's Guild / Taverley"
+  {
+    "id": "master",
+    "location": "-1110, 66, -455",
+    "tip": "Between two tents north Falador."
   },
-  "I Cord": {
-    "id": "doric",
-    "location": "-1155, 65, -516",
-    "tip": "Falador/Taverley"
+  {
+    "id": "master",
+    "location": "-1241, 74, -474",
+    "tip": "Along Taverley road."
   },
-  "In Bar": {
-    "id": "brian",
-    "location": "-943, 71, 94",
-    "tip": "Port Sarim"
+  {
+    "id": "master",
+    "location": "-970, 75, -488",
+    "tip": "Dwarven Mine entrance at the foot of Ice Mountain."
   },
-  "Sir Share Red": {
-    "id": "hairdresser",
-    "location": "-1176, 68, -299",
-    "tip": "Falador"
+  {
+    "id": "master",
+    "location": "-639, 72, -595",
+    "tip": "In the smuggler camp west of Grand Exchange."
   },
-  "Leakey": {
-    "id": "kaylee",
-    "location": "-1148, 68, -280",
-    "tip": "Falador"
+  {
+    "id": "master",
+    "location": "-1153, 69, -313",
+    "tip": "Just outside a house in West Falador."
   },
-  "Taunt Roof": {
-    "id": "fortunato",
-    "location": "-754, 68, 67",
-    "tip": "Glory Amulet to Draynor"
+  {
+    "id": "master",
+    "location": "-918, 69, -242",
+    "tip": "In the grass just outside of Macey's Maces in Falador."
   },
-  "Rug Deter": {
-    "id": "gertrude",
-    "location": "-561, 70, -400",
-    "tip": "Varrock"
+  {
+    "id": "easy",
+    "location": "-639, 70, -87",
+    "tip": "Among the trees near Draynor Manor's fallen tree."
+  },
+  {
+    "id": "easy",
+    "location": "-119, 71, 86",
+    "tip": "At the Al-Kharid oasis."
+  },
+  {
+    "id": "easy",
+    "location": "-694, 69, 2",
+    "tip": "Near Maria's house in Draynor Village."
+  },
+  {
+    "id": "easy",
+    "location": "-84, 64, 249",
+    "tip": "In Al-Kharid, next to a general store."
+  },
+  {
+    "id": "easy",
+    "location": "-437, 73, -135",
+    "tip": "In Lumbridge hard Agility course."
+  },
+  {
+    "id": "easy",
+    "location": "-263, 71, 250",
+    "tip": "In Lumbridge cemetery's large tomb."
+  },
+  {
+    "id": "easy",
+    "location": "-79, 69, 242",
+    "tip": "Infront of Janet's house in Al-Kharid."
+  },
+  {
+    "id": "easy",
+    "location": "-94, 69, 176",
+    "tip": "Near Tin ore rocks in north eastern Al-Kharid Mine."
+  },
+  {
+    "id": "easy",
+    "location": "-339, 70, 14",
+    "tip": "Just north of Lumbridge."
+  },
+  {
+    "id": "easy",
+    "location": "-564, 69, -74",
+    "tip": "In Lumbridge's barn yard."
+  },
+  {
+    "id": "easy",
+    "location": "-542, 71, -176",
+    "tip": "Near a haybale, north of Lumbridge's easy Agility course."
+  },
+  {
+    "id": "easy",
+    "location": "-285, 69, -173",
+    "tip": "North of a crossroad south of Varrock."
+  },
+  {
+    "id": "easy",
+    "location": "-493, 68, -204",
+    "tip": "On a small patch of grass in the river, near Champions Guild bridge."
+  },
+  {
+    "id": "easy",
+    "location": "-364, 64, -215",
+    "tip": "In the middle of a Flax field, near Champions Guild."
+  },
+  {
+    "id": "easy",
+    "location": "-218, 70, -221",
+    "tip": "Next to a pond in sheep pen, south of Varrock."
+  },
+  {
+    "id": "easy",
+    "location": "-48, 71, 135",
+    "tip": "Next to a red marquee infront of Al-Kharid Duel Arena."
   }
-}
+]
