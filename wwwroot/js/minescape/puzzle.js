@@ -1,4 +1,7 @@
 import Puzzle from './puzzle-async-solver'
+//import unzipSync from 'fflate'
+const { unzipSync } = require('fflate');
+
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -111,7 +114,7 @@ class PartitionData {
         for (let partition of json['partitions']) {
             let fileName = `15_`
                 + partition.join(',')
-                + '.db';
+                + '.zip';
 
             promises.push(fetch(`../Data/15/${fileName}`)
                 .then(response => {
@@ -121,9 +124,19 @@ class PartitionData {
                         throw new Error('Database could not be loaded');
                     }
                 }).then(buffer => {
-                    this.partitions.push(partition);
 
-                    this.dbs.push(buffer);
+                    let decompressedData;
+                    try {
+                        let uint8Array = new Uint8Array(buffer);
+                        decompressedData = unzipSync(uint8Array);
+                    } catch (error) {
+                        throw new Error(`Decompression failed: ${error}`);
+                    }
+
+                    let fileContent = decompressedData[Object.keys(decompressedData)[0]];
+
+                    this.partitions.push(partition);
+                    this.dbs.push(fileContent);
                 }));
         }
 
