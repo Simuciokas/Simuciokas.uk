@@ -1,5 +1,3 @@
-var hotColdX, hotColdZ, hotColdDistance, hotColdTier
-
 var suggestions = []
 
 var hotcolds = null
@@ -62,16 +60,13 @@ function UpdateLabels() {
         const regex = /#\/(-*\d+)\/-*\d+\/(-*\d+)/
 
         const matches = url.match(regex)
-
         let tip = document.getElementById("HotColdMapTip")
         if (matches && matches.length >= 3) {
-            hotColdX = matches[1]
-            hotColdZ = matches[2]
+            let x = matches[1]
+            let z = matches[2]
             tip.style.display = "none"
-            document.getElementById("hotcold-location").innerHTML = hotColdX + ', ' + hotColdZ
+            document.getElementById("hotcold-location").innerHTML = x + ', ' + z
         } else {
-            hotColdX = undefined
-            hotColdZ = undefined
             tip.innerHTML = "Invalid URL"
             tip.style.display = ""
             document.getElementById("hotcold-location").innerHTML = "not provided"
@@ -119,7 +114,7 @@ function GetMapURL(location) {
     let y = location.split(", ")[1]
     let z = location.split(", ")[2]
 
-    return `https://map.minescape.net/#/${x}/${y}/${z}/-1/minescape/minescape`;
+    return `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`;
 }
 
 function TrySolve() {
