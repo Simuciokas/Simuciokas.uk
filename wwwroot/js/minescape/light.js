@@ -177,6 +177,9 @@ function GetMatrix(index) {
         matrix.push(row);
     }
 
+    if (debug) console.log("matrix")
+    if (debug) console.log(matrix)
+
     if (index > 0 && JSON.stringify(matrices[index - 1]) == JSON.stringify(matrix)) {
         return "Matches Previous Image";
     }
@@ -189,8 +192,31 @@ function TopLeftBlack(src) {
     for (let y = 0; y < src.size().height - 1; y++) {
         for (let x = 0; x < src.size().width - 1; x++) {
             let rgba = src.ucharPtr(y, x)
-            if (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5)
+            if (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5) {
+                let btnRgba = src.ucharPtr(y + 1, x)
+                i = 1
+
+                // Loop downwards through black pixels until color is reached
+                while (btnRgba[0] < 16 && btnRgba[0] < 16 && btnRgba[0] < 16) {
+                    i++
+                    btnRgba = src.ucharPtr(y+i, x)
+                }
+
+                // Button color
+                if (btnRgba[0] == 136 && btnRgba[1] == 136 && btnRgba[2] == 122) {
+                    x = src.size().width
+                    continue
+                }
+
+                // Button out of bounds color
+                if (btnRgba[0] == 58 && btnRgba[1] == 51 && (btnRgba[2] >= 44 && btnRgba[2] <= 48)) {
+                    x = src.size().width
+                    continue
+                }
+
+                // Found light bulb, return data
                 return { x, y }
+            }
         }
     }
 }
@@ -213,7 +239,12 @@ function GetDistanceBetweenPos(x1, x2) {
 }
 
 function IsOn(src, x, y) {
-    let rgba = src.ucharPtr(y, x);
+    let rgba = src.ucharPtr(y, x)
+    let i = 0
+    while (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5) {
+        i++
+        rgba = src.ucharPtr(y + i, x)
+    }
     if (debug) console.log("IsOn:");
     if (debug) console.log(y, x);
     if (debug) console.log(rgba);
