@@ -1,3 +1,4 @@
+//using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,8 +8,8 @@ builder.Services.AddRazorPages();
 
 //builder.Services.AddResponseCompression(options =>
 //{
-//    //options.Enable = true;
-//    //options.Providers.Add<GzipCompressionProvider>();
+//    options.EnableForHttps = true;
+//    options.Providers.Add<GzipCompressionProvider>();
 //});
 
 builder.Services.AddResponseCaching(options =>
@@ -44,7 +45,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 var provider = new FileExtensionContentTypeProvider();
-provider.Mappings[".gzip"] = "application/x-msdownload";
 provider.Mappings[".7z"] = "application/x-msdownload";
 provider.Mappings[".zip"] = "application/x-msdownload";
 provider.Mappings[".db"] = "application/x-msdownload";
@@ -62,6 +62,7 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseRouting();
 
 app.UseAuthorization();
+//app.UseResponseCompression();
 
 app.MapRazorPages();
 

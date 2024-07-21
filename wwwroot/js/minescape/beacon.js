@@ -55,10 +55,12 @@ function autocomplete(inp, arr) {
                     let z = location.split(", ")[2]
                     let tip = beacons[inp.value].tip
 
-                    let text = `https://map.minescape.net/#/${x}/${y}/${z}/-1/minescape/minescape`
+                    let text = `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`
                     document.getElementById("solution-beacon-tip").innerText = tip;
                     document.getElementById("solution-beacon-url").href = text;
                     document.getElementById("solution-beacon-url").innerText = location;
+                    document.getElementById("solution-beacon-map").innerHTML = ""
+                    document.getElementById("solution-beacon-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${text}\"></iframe>`
 
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
@@ -104,14 +106,11 @@ function autocomplete(inp, arr) {
         x[currentFocus].classList.add("autocomplete-active");
     }
     function removeActive(x) {
-        /*a function to remove the "active" class from all autocomplete items:*/
         for (var i = 0; i < x.length; i++) {
             x[i].classList.remove("autocomplete-active");
         }
     }
     function closeAllLists(elmnt) {
-        /*close all autocomplete lists in the document,
-        except the one passed as an argument:*/
         var x = document.getElementsByClassName("autocomplete-items");
         for (var i = 0; i < x.length; i++) {
             if (elmnt != x[i] && elmnt != inp) {
@@ -119,7 +118,7 @@ function autocomplete(inp, arr) {
             }
         }
     }
-    /*execute a function when someone clicks in the document:*/
+
     document.addEventListener("click", function (e) {
         closeAllLists(e.target);
     });
