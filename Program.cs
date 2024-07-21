@@ -44,6 +44,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".gzip"] = "application/x-msdownload";
+provider.Mappings[".7z"] = "application/x-msdownload";
+provider.Mappings[".zip"] = "application/x-msdownload";
 provider.Mappings[".db"] = "application/x-msdownload";
 provider.Mappings[".json"] = "application/json";
 
