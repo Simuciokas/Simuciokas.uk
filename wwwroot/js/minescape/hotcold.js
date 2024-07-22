@@ -1,6 +1,6 @@
-var suggestions = []
+import database from './data.js'
 
-var hotcolds = null
+var suggestions = []
 
 var config = {
     "easy": {
@@ -19,13 +19,6 @@ Startup();
 
 async function Startup() {
 
-    let response = await fetch(`../Data/hotcold.json`)
-
-    if (response.ok)
-        hotcolds = await response.json()
-    else
-        console.error("Cannot load")
-
     document.getElementById('rBeginner').checked = true
 
     Reset()
@@ -38,7 +31,7 @@ function Reset() {
     suggestions = []
 
     const tier = document.querySelectorAll('input.selRadio:checked')[0].value.toLowerCase()
-    const data = hotcolds.filter(x => { return x.id == tier })
+    const data = database.hotcolds.filter(x => { return x.id == tier })
     document.getElementById("solution-hotcold-header").innerHTML = `<b>Possible Locations (${data.length}):</b>`
     let solutionDiv = document.getElementById("solution-hotcold")
     solutionDiv.innerHTML = ""
@@ -99,7 +92,6 @@ function GetClosestItems(locations, tier, location, distance) {
             const [itemX, , itemZ] = item.location.split(', ').map(Number)
             item.distance = Math.floor(Math.sqrt(Math.pow(targetX - itemX, 2) + Math.pow(targetZ - itemZ, 2)))
             const [threshold, step] = GetSteps(thresholds, steps, distance)
-            console.log(`${Math.abs(item.distance - distance)} <= ${step} || (${limit} != null && (${item.distance} + ${step}) >= ${limit}))`)
             if ((Math.abs(item.distance - distance) <= step) || (limit != null && distance == limit && ((item.distance + step) >= limit))) {
                 itemsWithDistances.push(item)
             }
@@ -127,7 +119,7 @@ function TrySolve() {
 
     if (location == undefined || location == null || location == '') return
 
-    if (hotcolds == null) return
+    if (database.hotcolds == null) return
 
     const tier = document.querySelectorAll('input.selRadio:checked')[0].value.toLowerCase()
 
@@ -135,7 +127,7 @@ function TrySolve() {
 
     let items = []
     if (suggestions.length == 0) {
-        items = GetClosestItems(hotcolds, tier, location, distance)
+        items = GetClosestItems(database.hotcolds, tier, location, distance)
     }
     else {
         items = GetClosestItems(suggestions, tier, location, distance)

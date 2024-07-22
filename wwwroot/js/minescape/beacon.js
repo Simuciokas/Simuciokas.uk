@@ -1,17 +1,9 @@
-var beacons = null;
+import database from './data.js'
 
 Startup();
 
 async function Startup() {
-
-    let response = await fetch(`../Data/beacons.json`)
-
-    if (response.ok)
-        beacons = await response.json()
-    else
-        console.error("Cannot load")
-
-    autocomplete(document.getElementById("BeaconInput"), Object.keys(beacons))
+    autocomplete(document.getElementById("BeaconInput"), Object.keys(database.beacons))
 }
 
 function autocomplete(inp, arr) {
@@ -48,12 +40,12 @@ function autocomplete(inp, arr) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
 
-                    let name = beacons[inp.value].id
-                    let location = beacons[inp.value].location
+                    let name = database.beacons[inp.value].id
+                    let location = database.beacons[inp.value].location
                     let x = location.split(", ")[0]
                     let y = location.split(", ")[1]
                     let z = location.split(", ")[2]
-                    let tip = beacons[inp.value].tip
+                    let tip = database.beacons[inp.value].tip
 
                     let text = `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`
                     document.getElementById("solution-beacon-tip").innerText = tip;

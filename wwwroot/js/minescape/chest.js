@@ -1,17 +1,9 @@
-var chests = null;
+import database from './data.js'
 
 Startup();
 
 async function Startup() {
-
-    let response = await fetch(`../Data/chests.json`)
-
-    if (response.ok)
-        chests = await response.json()
-    else
-        console.error("Cannot load")
-
-    autocomplete(document.getElementById("ChestInput"), Object.keys(chests))
+    autocomplete(document.getElementById("ChestInput"), Object.keys(database.chests))
 }
 
 function autocomplete(inp, arr) {
@@ -47,12 +39,12 @@ function autocomplete(inp, arr) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
 
-                    let name = chests[inp.value].id
-                    let location = chests[inp.value].location
+                    let name = database.chests[inp.value].id
+                    let location = database.chests[inp.value].location
                     let x = location.split(", ")[0]
                     let y = location.split(", ")[1]
                     let z = location.split(", ")[2]
-                    let tip = chests[inp.value].tip
+                    let tip = database.chests[inp.value].tip
 
                     let text = `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`
                     document.getElementById("solution-chest-tip").innerText = tip;

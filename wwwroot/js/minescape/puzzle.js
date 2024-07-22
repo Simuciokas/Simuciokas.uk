@@ -6,7 +6,7 @@ const { unzipSync } = require('fflate');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let debug = document.getElementById("PuzzleDebug").checked;
+let debug = false //document.getElementById("PuzzleDebug").checked;
 
 window.addEventListener("paste", function (e) {
     if (currentPage != "Puzzle") return;
@@ -154,19 +154,25 @@ function Solve() {
 
     let sTopLeftPos = SolvedTopLeftCorner(imageData, width, height);
 
+    if (debug) console.log("sTopLeftPos");
+    if (debug) console.log(sTopLeftPos);
+
     if (sTopLeftPos == undefined) {
         document.getElementById('solution').innerText = "Bad image. Include a picture that contains Unsolved and Solved puzzle";
         return;
     }
 
+
     let tileSize = GetTileSize(imageData, width, height, { x: sTopLeftPos.x, y: sTopLeftPos.y });
+
+    if (debug) console.log("tileSize");
+    if (debug) console.log(tileSize);
 
     if (tileSize == undefined) {
         document.getElementById('solution').innerText = "Bad image. Include a picture that contains Unsolved and Solved puzzle";
         return;
     }
 
-    if (debug) console.log(tileSize);
 
     let uTopLeftPos = { x: (sTopLeftPos.x - (tileSize * 5)), y: sTopLeftPos.y }
 
@@ -224,8 +230,8 @@ function Solve() {
 }
 
 function SolvedTopLeftCorner(imageData, width, height) {
-    for (let x = width / 2; x <= width; x++) {
-        for (let y = 0; y <height; y++) {
+    for (let x = parseInt(width / 2); x <= width; x++) {
+        for (let y = 0; y < height; y++) {
             let rgba = getRGBA(imageData, width, x, y)
             if (rgba[0] == 0 && rgba[1] == 0 && rgba[2] == 0)
                 return { x, y };
