@@ -1,26 +1,21 @@
-var anagrams = null;
+import database from './data.js'
 
 Startup();
 
 async function Startup() {
 
-    let response = await fetch(`../Data/anagrams.json`)
-
-    if (response.ok)
-        anagrams = await response.json()
-
     document.getElementById("CypherInput").addEventListener("input", function (e, val) {
         let cipher = e.target.value.toLowerCase()
-        let ciphers = Object.keys(anagrams).filter(function (val) {
-            return anagrams[val].id.length == cipher.length && anagrams[val].id.length > 0
+        let ciphers = Object.keys(database.anagrams).filter(function (val) {
+            return database.anagrams[val].id.length == cipher.length && database.anagrams[val].id.length > 0
         })
 
         let found = null;
         for (let i = 1; i <= 26; i++) {
             let shifted = caesarShift(cipher, i)
             for (let j = 0; j < ciphers.length; j++) {
-                if (anagrams[ciphers[j]].id == shifted) {
-                    found = anagrams[ciphers[j]]
+                if (database.anagrams[ciphers[j]].id == shifted) {
+                    found = database.anagrams[ciphers[j]]
                     break
                 }
             }
