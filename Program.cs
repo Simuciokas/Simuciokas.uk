@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 
 //builder.Services.AddResponseCompression(options =>
@@ -18,26 +17,14 @@ builder.Services.AddResponseCaching(options =>
     options.UseCaseSensitivePaths = true;
 });
 
-/*builder.Services.AddMvc(options =>
-{
-    options.CacheProfiles.Add("Default",
-        new Microsoft.AspNetCore.Mvc.CacheProfile()
-        {
-            Duration = 17408, //86400,
-            Location = Microsoft.AspNetCore.Mvc.ResponseCacheLocation.Any,
-        });
-});*/
-
 var app = builder.Build();
 
 //app.UseResponseCompression();
 app.UseResponseCaching();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

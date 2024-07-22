@@ -148,16 +148,18 @@ class PartitionData {
 var partitionData = new PartitionData();
 
 function Solve() {
-    let src = cv.imread('canvas');
+    const width = canvas.width
+    const height = canvas.height
+    const imageData = ctx.getImageData(0, 0, width, height).data
 
-    let sTopLeftPos = SolvedTopLeftCorner(src);
+    let sTopLeftPos = SolvedTopLeftCorner(imageData, width, height);
 
     if (sTopLeftPos == undefined) {
         document.getElementById('solution').innerText = "Bad image. Include a picture that contains Unsolved and Solved puzzle";
         return;
     }
 
-    let tileSize = GetTileSize(src, { x: sTopLeftPos.x, y: sTopLeftPos.y });
+    let tileSize = GetTileSize(imageData, width, height, { x: sTopLeftPos.x, y: sTopLeftPos.y });
 
     if (tileSize == undefined) {
         document.getElementById('solution').innerText = "Bad image. Include a picture that contains Unsolved and Solved puzzle";
@@ -170,29 +172,26 @@ function Solve() {
 
     let solvedTiles = [];
     for (let i = 0; i < 4; i++) {
-        let y = sTopLeftPos.y + (i * tileSize);
+        const y = sTopLeftPos.y + (i * tileSize);
         for (let k = 0; k < 4; k++) {
-            let x = sTopLeftPos.x +(k * tileSize);
-            let rect = new cv.Rect(x, y, tileSize, tileSize);
-            solvedTiles.push(src.roi(rect));
-            if (debug)
-                cv.imshow(`scanvas${i}-${k}`, src.roi(rect));
+            const x = sTopLeftPos.x +(k * tileSize);
+            const rect = getRectangleImageData(imageData, width, x, y, tileSize, tileSize);
+            solvedTiles.push({ rect, tileSize });
+            if (debug) console.log(rect)
         }
     }
 
     let unsolvedTiles = [];
     for (let i = 0; i < 4; i++) {
-        let y = uTopLeftPos.y + (i * tileSize);
+        const y = uTopLeftPos.y + (i * tileSize);
         for (let k = 0; k < 4; k++) {
-            let x = uTopLeftPos.x + (k * tileSize);
-            let rect = new cv.Rect(x, y, tileSize, tileSize);
-            let pos = FindPos(solvedTiles, src.roi(rect));
+            const x = uTopLeftPos.x + (k * tileSize);
+            const rect = getRectangleImageData(imageData, width, x, y, tileSize, tileSize);
+            const pos = FindPos(solvedTiles, { rect, tileSize });
             unsolvedTiles.push(pos == null ? 15 : pos);
-            if (debug)
-                cv.imshow(`canvas${i}-${k}`, src.roi(rect));
+            if (debug) console.log(rect)
         }
     }
-    src.delete();
 
     const goalState = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const initialState = unsolvedTiles;
@@ -224,25 +223,25 @@ function Solve() {
     });
 }
 
-function SolvedTopLeftCorner(src) {
-    for (let x = src.size().width / 2; x <= src.size().width; x++) {
-        for (let y = 0; y < src.size().height; y++) {
-            let rgba = src.ucharPtr(y, x);
+function SolvedTopLeftCorner(imageData, width, height) {
+    for (let x = width / 2; x <= width; x++) {
+        for (let y = 0; y <height; y++) {
+            let rgba = getRGBA(imageData, width, x, y)
             if (rgba[0] == 0 && rgba[1] == 0 && rgba[2] == 0)
                 return { x, y };
         }
     }
 }
 
-function GetTileSize(src, pos) {
+function GetTileSize(imageData, width, height, pos) {
     try {
         let i = 0;
-        let rgba = src.ucharPtr(pos.y, pos.x);
+        let rgba = getRGBA(imageData, width, pos.x, pos.y)
         while (i < 5 || (rgba[0] != 0 || rgba[1] != 0 || rgba[2] != 0)) {
             i++;
             pos.x++;
             pos.y++;
-            rgba = src.ucharPtr(pos.y, pos.x);
+            rgba = getRGBA(imageData, width, pos.x, pos.y)
         }
 
         let k = 0;
@@ -250,7 +249,7 @@ function GetTileSize(src, pos) {
             k++;
             pos.x++;
             pos.y++;
-            rgba = src.ucharPtr(pos.y, pos.x);
+            rgba = getRGBA(imageData, width, pos.x, pos.y)
         }
         k = Math.floor(k / 2);
         return i + k;
@@ -261,16 +260,16 @@ function GetTileSize(src, pos) {
 }
 
 function CompareMats(mat1, mat2) {
-    if (mat1.rows !== mat2.rows || mat1.cols !== mat2.cols) {
+    if (mat1.rect.length !== mat2.rect.length) {
         if (debug) console.error("Dimensions of the Mats are different.");
         return false;
     }
 
-    for (let i = 0; i < mat1.rows; i++) {
-        for (let j = 0; j < mat1.cols; j++) {
-            let pixel1 = mat1.ucharPtr(j, i);
-            let pixel2 = mat2.ucharPtr(j, i);
-            if (pixel1[0] != pixel2[0] || pixel1[1] != pixel2[1] || pixel1[2] != pixel2[2]) {
+    for (let x = 0; x < mat1.tileSize; x++) {
+        for (let y = 0; y < mat1.tileSize; y++) {
+            let rgbaMat1 = getRGBA(mat1.rect, mat1.tileSize, x, y) //mat1.ucharPtr(j, i);
+            let rgbaMat2 = getRGBA(mat2.rect, mat1.tileSize, x, y) //mat2.ucharPtr(j, i);
+            if (rgbaMat1[0] != rgbaMat2[0] || rgbaMat1[1] != rgbaMat2[1] || rgbaMat1[2] != rgbaMat2[2]) {
                 return false;
             }
         }
@@ -286,4 +285,26 @@ function FindPos(solvedTiles, mat2) {
             found = index;
     });
     return found;
+}
+
+function getRGBA(imageData, width, x, y) {
+    const index = (y * width + x) * 4;
+    const r = imageData[index];
+    const g = imageData[index + 1];
+    const b = imageData[index + 2];
+    const a = imageData[index + 3];
+    return [r, g, b, a];
+}
+
+function getRectangleImageData(imageData, imageWidth, x, y, width, height) {
+    const rectangleData = [];
+
+    for (let row = 0; row < height; row++) {
+        for (let col = 0; col < width; col++) {
+            const pixelIndex = ((y + row) * imageWidth + (x + col)) * 4;
+            rectangleData.push(imageData[pixelIndex], imageData[pixelIndex + 1], imageData[pixelIndex + 2], imageData[pixelIndex + 3]);
+        }
+    }
+
+    return new Uint8ClampedArray(rectangleData);
 }

@@ -61,14 +61,15 @@ function imageOnLoad(img) {
     let canvas = document.getElementById('canvas-lb-' + lightIndex)
     canvas.width = img.width
     canvas.height = img.height
-    canvas.getContext('2d').drawImage(img, 0, 0)
+    const context = canvas.getContext('2d')
+    context.drawImage(img, 0, 0)
 
     let preview = document.getElementById('canvas-preview-' + lightIndex)
     preview.height = img.height
     preview.width = img.width
     preview.getContext('2d').drawImage(img, 0, 0)
     let previewLabel = document.getElementById("LightPreview").querySelectorAll("label")[lightIndex].style.display = ""
-    var result = GetMatrix(lightIndex)
+    var result = GetMatrix(lightIndex, context, img.width, img.height)
     if (result == "") {
         preview.style.display = "";
         document.getElementById('LightTip' + lightIndex).style.display = "none"
@@ -139,21 +140,18 @@ Array.prototype.forEach.call(document.getElementsByClassName("lights-input"), fu
 
 
 
-function GetMatrix(index) {
+function GetMatrix(index, context, width, height) {
     if (debug) console.log("canvas-lb-" + index)
-    let src = cv.imread('canvas-lb-' + index)
+    const imageData = context.getImageData(0, 0, width, height).data
 
-    if (debug) console.log("src")
-    if (debug) console.log(src)
-
-    let topLeftBlack = TopLeftBlack(src)
+    let topLeftBlack = TopLeftBlack(imageData, width, height)
 
     if (debug) console.log("topLeftBlack")
     if (debug) console.log(topLeftBlack)
 
     if (topLeftBlack == undefined) return "Invalid Photo"
 
-    let nextLeftBlack = GetNextTopLeftBlack(src, { x: topLeftBlack.x, y: topLeftBlack.y })
+    let nextLeftBlack = GetNextTopLeftBlack(imageData, width, height, { x: topLeftBlack.x, y: topLeftBlack.y })
 
     if (debug) console.log("nextLeftBlack")
     if (debug) console.log(nextLeftBlack)
@@ -171,7 +169,7 @@ function GetMatrix(index) {
         let row = [];
         for (let k = 0; k < 6; k++) {
             let x = topLeftBlack.x + (distanceBetween * k);
-            let isOn = IsOn(src, x, y + 1);
+            let isOn = IsOn(imageData, width, x, y + 1);
             row.push(isOn);
         }
         matrix.push(row);
@@ -188,29 +186,37 @@ function GetMatrix(index) {
     return "";
 }
 
-function TopLeftBlack(src) {
-    for (let y = 0; y < src.size().height - 1; y++) {
-        for (let x = 0; x < src.size().width - 1; x++) {
-            let rgba = src.ucharPtr(y, x)
-            if (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5) {
-                let btnRgba = src.ucharPtr(y + 1, x)
-                i = 1
+function getRGBA(imageData, width, x, y) {
+    const index = (y * width + x) * 4;
+    const r = imageData[index];
+    const g = imageData[index + 1];
+    const b = imageData[index + 2];
+    const a = imageData[index + 3];
+    return [r, g, b, a];
+}
 
+function TopLeftBlack(imageData, width, height) {
+    for (let y = 0; y < height - 1; y++) {
+        for (let x = 0; x < width - 1; x++) {
+            const rgba = getRGBA(imageData, width, x, y)
+            if (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5) {
+                let btnRgba = getRGBA(imageData, width, x, y+1)
+                i = 1
                 // Loop downwards through black pixels until color is reached
                 while (btnRgba[0] < 16 && btnRgba[0] < 16 && btnRgba[0] < 16) {
                     i++
-                    btnRgba = src.ucharPtr(y+i, x)
+                    btnRgba = getRGBA(imageData, width, x, y+i)
                 }
 
                 // Button color
                 if (btnRgba[0] == 136 && btnRgba[1] == 136 && btnRgba[2] == 122) {
-                    x = src.size().width
+                    x = width
                     continue
                 }
 
                 // Button out of bounds color
                 if (btnRgba[0] == 58 && btnRgba[1] == 51 && (btnRgba[2] >= 44 && btnRgba[2] <= 48)) {
-                    x = src.size().width
+                    x = width
                     continue
                 }
 
@@ -221,13 +227,13 @@ function TopLeftBlack(src) {
     }
 }
 
-function GetNextTopLeftBlack(src, pos) {
+function GetNextTopLeftBlack(imageData, width, height, pos) {
     let x = pos.x
     pos.x += 10
-    let rgba = src.ucharPtr(pos.y, pos.x)
+    let rgba = getRGBA(imageData, width, pos.x, pos.y)
     while (rgba[0] > 5 || rgba[1] > 5 || rgba[2] > 5) {
         pos.x++
-        rgba = src.ucharPtr(pos.y, pos.x)
+        rgba = getRGBA(imageData, width, pos.x, pos.y)
         if (pos.x - x > 200)
             return undefined
     }
@@ -238,12 +244,12 @@ function GetDistanceBetweenPos(x1, x2) {
     return Math.abs(x1 - x2)
 }
 
-function IsOn(src, x, y) {
-    let rgba = src.ucharPtr(y, x)
+function IsOn(imageData, width, x, y) {
+    let rgba = getRGBA(imageData, width, x, y)
     let i = 0
     while (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5) {
         i++
-        rgba = src.ucharPtr(y + i, x)
+        rgba = getRGBA(imageData, width, x, y + i)
     }
     if (debug) console.log("IsOn:");
     if (debug) console.log(y, x);
