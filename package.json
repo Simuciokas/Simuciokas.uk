@@ -1,5 +1,5 @@
 {
-  "name": "webapplication1",
+  "name": "simuciokasuk",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ndarray": "^1.0.19",
-    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "fflate": "^0.8.2"
+    "fflate": "^0.8.2",
+    "ndarray": "^1.0.19",
+    "webpack-cli": "^5.1.4"
   }
 }

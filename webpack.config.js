@@ -16,23 +16,6 @@ module.exports = {
                 loader: 'worker-loader',
                 options: { name: '[name].js' }
             },
-            //{
-            //    test: /\.m?js$/,
-            //    loader: 'babel-loader',
-            //    include: [
-            //        __dirname, "/wwwroot/dist",
-            //    ],
-            //    options: {
-            //        presets: ["@babel/preset-env"]
-            //    }
-            //},
-            //{
-            //    test: /\.css$/,
-            //    use: [
-            //        { loader: "style-loader" },
-            //        { loader: "css-loader" }
-            //    ]
-            //}
         ]
     },
     plugins: [
@@ -44,5 +27,5 @@ module.exports = {
         colors: true
     },
     devtool: 'eval-source-map',
-    mode: 'development',
+    mode: 'production',
 };
