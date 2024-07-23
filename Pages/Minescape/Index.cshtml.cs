@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Pages.Minescape
+namespace SimuciokasUK.Pages.Minescape
 {
     public class IndexModel : PageModel
     {
