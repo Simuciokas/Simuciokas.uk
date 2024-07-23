@@ -7,9 +7,12 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 let debug = false //document.getElementById("PuzzleDebug").checked;
+function getCurrentPage() {
+    return document.getElementById("Navigation").querySelectorAll("input:checked")[0].value
+}
 
 window.addEventListener("paste", function (e) {
-    if (currentPage != "Puzzle") return;
+    if (getCurrentPage() != "Puzzle") return;
     var item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
 
     var blob = item.getAsFile();
