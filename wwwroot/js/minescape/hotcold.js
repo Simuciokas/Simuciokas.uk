@@ -31,7 +31,7 @@ function Reset() {
     suggestions = []
 
     const tier = document.querySelectorAll('input.selRadio:checked')[0].value.toLowerCase()
-    const data = database.hotcolds.filter(x => { return x.id == tier })
+    const data = database.hotcold.filter(x => { return x.id == tier })
     document.getElementById("solution-hotcold-header").innerHTML = `<b>Possible Locations (${data.length}):</b>`
     let solutionDiv = document.getElementById("solution-hotcold")
     solutionDiv.innerHTML = ""
@@ -119,7 +119,7 @@ function TrySolve() {
 
     if (location == undefined || location == null || location == '') return
 
-    if (database.hotcolds == null) return
+    if (database.hotcold == null) return
 
     const tier = document.querySelectorAll('input.selRadio:checked')[0].value.toLowerCase()
 
@@ -127,7 +127,7 @@ function TrySolve() {
 
     let items = []
     if (suggestions.length == 0) {
-        items = GetClosestItems(database.hotcolds, tier, location, distance)
+        items = GetClosestItems(database.hotcold, tier, location, distance)
     }
     else {
         items = GetClosestItems(suggestions, tier, location, distance)

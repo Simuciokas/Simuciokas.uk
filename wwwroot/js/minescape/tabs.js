@@ -1,10 +1,3 @@
-/*var puzzleNav = document.getElementById("rPuzzle");
-var lightNav = document.getElementById("rLight");
-var cypherNav = document.getElementById("rCypher");
-var anagramNav = document.getElementById("rAnagram");
-var chestNav = document.getElementById("rChest");
-var hotColdNav = document.getElementById("rHotCold");*/
-
 var radios = document.getElementById("Navigation").querySelectorAll("input")
 var currentPage = "Puzzle"
 resetPage();
@@ -20,8 +13,6 @@ for (let i = 0; i < radios.length; i++) {
         changePage(this.value);
     });
 }
-
-
 
 function changePage(page) {
     if (currentPage == page)

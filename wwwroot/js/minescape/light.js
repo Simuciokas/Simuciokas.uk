@@ -98,8 +98,12 @@ function imageOnLoad(img) {
     }
 }
 
+function getCurrentPage() {
+    return document.getElementById("Navigation").querySelectorAll("input:checked")[0].value
+}
+
 window.addEventListener("paste", function (e) {
-    if (currentPage != "Light" || lightIndex > 8) return;
+    if (getCurrentPage() != "Light" || lightIndex > 8) return;
     let item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
 
     let blob = item.getAsFile();
