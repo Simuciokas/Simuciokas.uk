@@ -1,10 +1,22 @@
 import Puzzle from './puzzle-async-solver'
 //import unzipSync from 'fflate'
-const { unzipSync } = require('fflate');
+const { unzipSync } = require('fflate')
+
+const colors = {
+    tile: '#ccc',
+    highlight: '#f00',
+    empty: '#000'
+};
 
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext('2d')
+var solutionContext = null
+var solutionCanvas = null
+var solutionTileSize = 75
+var solutionInitial = null
+var solutionStep = 0
+var solutionSteps = null
 
 let debug = false //document.getElementById("PuzzleDebug").checked;
 function getCurrentPage() {
@@ -226,10 +238,130 @@ function Solve() {
         partitionData.partitions,
         partitionData.dbs
     ).then(ans => {
-        document.getElementById('solution').innerText = "Solution: \n\n" + ans + "\n\nInstructions: \n\nu - tile goes up\nd - tile goes down\nr - tile goes right\nl - tile goes left";
+        solutionInitial = initialState
+        solutionSteps = ans
+        ResetSolution()
+        //document.getElementById('solution').innerText = "Solution: \n\n" + ans + "\n\nInstructions: \n\nu - tile goes up\nd - tile goes down\nr - tile goes right\nl - tile goes left";
     }).catch(e => {
         if (debug) console.error(e.message);
     });
+}
+
+function ResetSolution() {
+    let solutionDiv = document.getElementById('solution')
+    solutionDiv.innerHTML = "<br /><span>Click on the drawing to show the next step</span><br />"
+    solutionStep = 0
+    let resetButton = document.createElement("button")
+    resetButton.innerText = "Reset to beginning"
+
+    resetButton.addEventListener('click', () => {
+        ResetSolution()
+    })
+
+    solutionCanvas = document.createElement("canvas")
+    solutionCanvas.width = 300
+    solutionCanvas.height = 300
+    solutionDiv.appendChild(solutionCanvas)
+    //solutionDiv.appendChild(resetButton)
+    solutionContext = solutionCanvas.getContext('2d');
+
+    DrawSolution()
+
+    solutionCanvas.addEventListener('click', () => {
+        const direction = solutionSteps[solutionStep]
+        moveTile(direction)
+        solutionStep++
+        DrawSolution()
+    });
+}
+
+function DrawSolution() {
+    solutionContext.clearRect(0, 0, solutionCanvas.width, solutionCanvas.height);
+    // Draw each tile
+    for (let i = 0; i < solutionInitial.length; i++) {
+        const tile = solutionInitial[i];
+        const x = (i % 4) * solutionTileSize;
+        const y = Math.floor(i / 4) * solutionTileSize;
+        if (tile === 15) {
+            // Draw the empty tile
+            solutionContext.fillStyle = colors.empty;
+        } else {
+            solutionContext.fillStyle = colors.tile;
+        }
+        solutionContext.fillRect(x, y, solutionTileSize, solutionTileSize);
+
+        // Draw tile numbers
+        if (tile !== 15) {
+            solutionContext.fillStyle = '#000';
+            solutionContext.font = '24px Arial';
+            solutionContext.textAlign = 'center';
+            solutionContext.textBaseline = 'middle';
+            solutionContext.fillText(tile, x + solutionTileSize / 2, y + solutionTileSize / 2);
+        }
+    }
+
+    // Highlight the tile to move
+    highlightMove();
+}
+
+// Function to highlight the tile to move
+function highlightMove() {
+    const emptyIndex = solutionInitial.indexOf(15);
+    const direction = solutionSteps[solutionStep];
+    let tileToMoveIndex;
+
+    switch (direction) {
+        case 'u':
+            tileToMoveIndex = emptyIndex + 4;
+            break;
+        case 'd':
+            tileToMoveIndex = emptyIndex - 4;
+            break;
+        case 'l':
+            tileToMoveIndex = emptyIndex + 1;
+            break;
+        case 'r':
+            tileToMoveIndex = emptyIndex - 1;
+            break;
+    }
+
+    if (tileToMoveIndex !== undefined && tileToMoveIndex >= 0 && tileToMoveIndex < solutionInitial.length) {
+        const x = (tileToMoveIndex % 4) * solutionTileSize;
+        const y = Math.floor(tileToMoveIndex / 4) * solutionTileSize;
+
+        solutionContext.fillStyle = colors.highlight;
+        solutionContext.fillRect(x, y, solutionTileSize, solutionTileSize);
+
+        // Draw number on highlighted tile
+        solutionContext.fillStyle = '#fff';
+        solutionContext.fillText(solutionInitial[tileToMoveIndex], x + solutionTileSize / 2, y + solutionTileSize / 2);
+    }
+}
+
+// Function to move the tile in the specified direction
+function moveTile(direction) {
+    const emptyIndex = solutionInitial.indexOf(15);
+    let tileToMoveIndex;
+
+    switch (direction) {
+        case 'u':
+            tileToMoveIndex = emptyIndex + 4;
+            break;
+        case 'd':
+            tileToMoveIndex = emptyIndex - 4;
+            break;
+        case 'l':
+            tileToMoveIndex = emptyIndex + 1;
+            break;
+        case 'r':
+            tileToMoveIndex = emptyIndex - 1;
+            break;
+    }
+
+    if (tileToMoveIndex !== undefined && tileToMoveIndex >= 0 && tileToMoveIndex < solutionInitial.length) {
+        // Swap the tiles
+        [solutionInitial[emptyIndex], solutionInitial[tileToMoveIndex]] = [solutionInitial[tileToMoveIndex], solutionInitial[emptyIndex]];
+    }
 }
 
 function SolvedTopLeftCorner(imageData, width, height) {
