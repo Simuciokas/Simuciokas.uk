@@ -383,5 +383,45 @@
     "id": "",
     "location": "258, 84, -853",
     "tip": "Canifis"
+  },
+  "": {
+    "id": "",
+    "location": ",,",
+    "tip": ""
+  },
+  "As the water next to me turns, I provide my feathery friends with nourishment.": {
+    "id": "",
+    "location": "-345, 70, -43",
+    "tip": "Lumbridge"
+  },
+  "From up high, this flag should protect me from the rain.": {
+    "id": "",
+    "location": "-370, 90, 180",
+    "tip": "Lumbridge"
+  },
+  "Newbies visit this crumbled place, to fight those with pesky green faces.": {
+    "id": "",
+    "location": "-257, 70, 103",
+    "tip": "Lumbridge"
+  },
+  "People come to me to quench their thirst from this heat.": {
+    "id": "",
+    "location": "-124, 70, 89",
+    "tip": "Ring of Dueling to Duel Arena / Lumbridge"
+  },
+  "Stuck in the muggy bog, I seek shelter under this abandoned structure.": {
+    "id": "",
+    "location": "-399, 70, 323",
+    "tip": "Lumbridge"
+  },
+  "To find me you should look near a well. A place of feathers, that should do.": {
+    "id": "",
+    "location": "-454, 70, 28",
+    "tip": "Lumbridge"
+  },
+  "Walked over by the masses, I hide beneath what goes up.": {
+    "id": "",
+    "location": "-393, 70, 148",
+    "tip": "Lumbridge"
   }
 }
