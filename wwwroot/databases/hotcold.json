@@ -283,5 +283,55 @@
     "id": "easy",
     "location": "-48, 71, 135",
     "tip": "Next to a red marquee infront of Al-Kharid Duel Arena."
+  },
+  {
+    "id": "beginner",
+    "location": "-430, 75, -110",
+    "tip": "Directly under the agility course starting point in Lumbridge."
+  },
+  {
+    "id": "beginner",
+    "location": "-440, 70, 50",
+    "tip": "In the dirt patch to the west of the Lumbridge sheep pen."
+  },
+  {
+    "id": "beginner",
+    "location": "-545, 70, 95",
+    "tip": "In the stone ruins near the Draynor Village prison."
+  },
+  {
+    "id": "beginner",
+    "location": "-330, 70, -70",
+    "tip": "Just north of the chicken coop northeast of Lumbridge Castle."
+  },
+  {
+    "id": "beginner",
+    "location": "-315, 70, -15",
+    "tip": "By the cart near the large waterwheel close to the Lumbridge cow pen."
+  },
+  {
+    "id": "beginner",
+    "location": "-335, 70, -85",
+    "tip": "North of the large waterwheel in Lumbridge."
+  },
+  {
+    "id": "beginner",
+    "location": "-650, 70, 205",
+    "tip": "Next to the short pillar north of the Wizards' Tower bridge."
+  },
+  {
+    "id": "beginner",
+    "location": "-235, 70, 60",
+    "tip": "By the southern-most hay bale in the Lumbridge cow pen."
+  },
+  {
+    "id": "beginner",
+    "location": "-495, 70, 185",
+    "tip": "Next to the well in the forest behind Lumbridge Castle."
+  },
+  {
+    "id": "beginner",
+    "location": "-705, 70, 165",
+    "tip": "Next to the rocks between Draynor Village bank and the bridge to the Wizards' Tower."
   }
 ]
