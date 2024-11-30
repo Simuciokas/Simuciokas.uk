@@ -9,11 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-  },
   "dependencies": {
     "fflate": "^0.8.2",
     "ndarray": "^1.0.19",
+    "tesseract.js": "^5.1.0",
     "webpack-cli": "^5.1.4"
   }
 }

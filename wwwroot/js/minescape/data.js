@@ -22,7 +22,8 @@ const urls = [
     `../Data/anagrams.json`,
     `../Data/beacons.json`,
     `../Data/chests.json`,
-    `../Data/hotcold.json`
+    `../Data/hotcold.json`,
+    `../Data/maps.json`
 ];
 
 const data = await fetchMultipleUrls(urls);

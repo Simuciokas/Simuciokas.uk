@@ -1,0 +1,224 @@
+[
+  {
+    "id": "beginner",
+    "name": "Clue_map_beginner_chicken_farm",
+    "location": "-330, 70, 50",
+    "tip": "Behind the Lumbridge waterwheel chicken farm"
+  },
+  {
+    "id": "beginner",
+    "name": "Clue_map_beginner_lumbridge_al_kharid",
+    "location": "-215, 70, 175",
+    "tip": "Between Al-Kharid entrance and Lumbridge stone bridge"
+  },
+  {
+    "id": "beginner",
+    "name": "Clue_map_beginner_wizard_tower",
+    "location": "-640, 80, 345",
+    "tip": "By the Wizards' Tower, behind Texius' tent"
+  },
+  {
+    "id": "beginner",
+    "name": "Clue_map_beginner_lumbridge_pond",
+    "location": "-495, 70, 20",
+    "tip": "At the pond's shore, next to Weirdo's house"
+  },
+  {
+    "id": "beginner",
+    "name": "Clue_map_beginner_lumbridge_swamp",
+    "location": "-525, 70, 330",
+    "tip": "At the Lumbridge Swamp, next to a dead tree near water altar and western mine."
+  },
+  {
+    "id": "easy",
+    "name": "Clue_map_easy_lumbridge_carrot_field",
+    "location": "-563, 67, 0",
+    "tip": "Lumbridge's carrot field"
+  },
+  {
+    "id": "easy",
+    "name": "Clue_map_easy_lumbridge_river",
+    "location": "-386, 70, -105",
+    "tip": "Between the three trees, next to the Lumbridge river shortcut"
+  },
+  {
+    "id": "easy",
+    "name": "Clue_map_easy_draynor_jail",
+    "location": "-649, 72, 108",
+    "tip": "Next to the Draynor Village jail by the sewer entrance"
+  },
+  {
+    "id": "easy",
+    "name": "Clue_map_easy_varrock_south_ruins",
+    "location": "-290, 72, -234",
+    "tip": "In the fenced, ruined building between Lumbridge and Varrock"
+  },
+  {
+    "id": "easy",
+    "name": "Clue_map_easy_varrock_park_bridge",
+    "location": "-32, 69, -326",
+    "tip": "Varrock park by the bridge"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_varrock_wizard_statue",
+    "location": "-147, 70, -549",
+    "tip": "Near the wizard statue east of Varrock"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_canifis_roadsign",
+    "location": "367, 71, -638",
+    "tip": "Near the road sign between Canifis and Pasterdomus temple"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_varrock_hole",
+    "location": "-414, 70, -394",
+    "tip": "Next to the hole in Varrock"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_falador_clan_camp",
+    "location": "-1032, 68, -30",
+    "tip": "South eastern corned of the clan camp, south of Falador"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_varrock_jail_cages",
+    "location": "-328, 69, -408",
+    "tip": "At the Varrock jail cages"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_falador_mining_guild",
+    "location": "-938, 69, -184",
+    "tip": "Near the Mining Guild entrance in Falador"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_falador_fenced_rocks",
+    "location": "-925, 66, -374",
+    "tip": "Among the fenced rocks north of Falador"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_al-kharid_tents",
+    "location": "-77, 69, 206",
+    "tip": "In Al-Kharid by the orange and gray tents"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_al-kharid_mine",
+    "location": "-89, 72, -6",
+    "tip": "At the south end of Al-Kharid Mine"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_varrock_lumber_yard",
+    "location": "-100, 70, -662",
+    "tip": "Varrock Lumberyard behind the saw"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_ice_cave_hut",
+    "location": "-1031, 69, 400",
+    "tip": "South of Port Sarim, next to the hut near the Ice Caves entrance"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_draynor_square",
+    "location": "-728, 70, 53",
+    "tip": "Draynor Village square"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_draynor_manor_maze",
+    "location": "-659, 69, -195",
+    "tip": "Draynor Manor maze"
+  },
+  {
+    "id": "medium",
+    "name": "Clue_map_medium_port_sarim_green_space",
+    "location": "-966, 72, 138",
+    "tip": "In a small green space in Port Sarim by the ship to Karamja"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_monastery",
+    "location": "-834, 71, -551",
+    "tip": "South of Edgeville Monastery"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_druidic_circle",
+    "location": "-1290, 76, -683",
+    "tip": "In the Druidic circle between Taverley and Burthorpe"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_varrock_palace_garden",
+    "location": "-325, 69, -589",
+    "tip": "Garden plot in Varrock Palace garden"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_seers_village_beehives",
+    "location": "-1726, 72, -505",
+    "tip": "Seers' Village beehives"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_brimhaven_agility_facility",
+    "location": "-1812, 77, 146",
+    "tip": "Front corner in Brimhaven agility facility"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_white_wolf_mountain_camp",
+    "location": "-1464, 125, -700",
+    "tip": "Camp at the top of the White Wolf Mountain"
+  },
+  {
+    "id": "hard",
+    "name": "Clue_map_hard_ranging_guild",
+    "location": "-2014, 76, -523",
+    "tip": "In front of the Ranging Guild"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_crandor_shipwreck",
+    "location": "-1474, 58, 131",
+    "tip": "Crandor, in front of the burning ship"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_burthorpe_guard_camp",
+    "location": "-1238, 79, -939",
+    "tip": "Burthorpe guard camp"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_burgh_de_rott_bank",
+    "location": "515, 74, 213",
+    "tip": "Burgh de Rott, in front of bank"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_desert_mine",
+    "location": "107, 69, 508",
+    "tip": "Al-Kharid, past the Shantay Pass by the desert quarry"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_barrows_house",
+    "location": "711, 78, -90",
+    "tip": "Barrows, Strange Old Man's house"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_chaos_altar",
+    "location": "-279, 76, -1010",
+    "tip": "Chaos Temple in the Wilderness"
+  }
+]
