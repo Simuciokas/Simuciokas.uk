@@ -1,9 +1,9 @@
 {
-  //"": {
-  //  "id": "draynor magmatius wraths",
-  //  "location": ""
-  //  "tip": "Glory Amulet to Draynor / Lumbridge"
-  //}
+  "Draynor Magmatius Wraths": {
+    "id": "draynor magmatius wraths",
+    "location": "-775, 69, 59",
+    "tip": "Glory Amulet to Draynor / Lumbridge"
+  },
   "Lilal": {
     "id": "lalli",
     "location": "-1741, 74, -1056",

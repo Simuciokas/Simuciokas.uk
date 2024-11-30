@@ -36,12 +36,21 @@ provider.Mappings[".7z"] = "application/x-msdownload";
 provider.Mappings[".zip"] = "application/x-msdownload";
 provider.Mappings[".db"] = "application/x-msdownload";
 provider.Mappings[".json"] = "application/json";
+provider.Mappings[".webp"] = "image/webp";
 
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
         Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "databases")),
     RequestPath = "/Data",
+    ContentTypeProvider = provider,
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "maps")),
+    RequestPath = "/MapImages",
     ContentTypeProvider = provider,
 });
 

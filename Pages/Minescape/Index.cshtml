@@ -17,6 +17,8 @@
             <label class="navRadio prevent-select" for="rChest">Chest Solver</label><br />
             <input class="navRadio" type="radio" id="rHotCold" name="radios" value="HotCold">
             <label class="navRadio prevent-select" for="rHotCold">Hot and Cold Solver</label><br />
+            <input class="navRadio" type="radio" id="rMap" name="radios" value="Map">
+            <label class="navRadio prevent-select" for="rMap">Map Solver</label><br />
         </div>
     </div>
 
@@ -246,6 +248,28 @@
         <input type="number" id="HotColdDistance" placeholder="Input distance"><br /><br />
 
 
+
+    </div>
+
+    <div class="main" id="Map" style="display: none;">
+
+        <span>Tier of Clue:</span><br />
+        <input class="mapTierRadio" type="radio" id="rBeginnerM" name="clueTier" value="Beginner">
+        <label for="rBeginnerM">Beginner</label>
+        <input class="mapTierRadio" type="radio" id="rEasyM" name="clueTier" value="Easy">
+        <label for="rEasyM">Easy</label>
+        <input class="mapTierRadio" type="radio" id="rMediumM" name="clueTier" value="Medium">
+        <label for="rMediumM">Medium</label>
+        <input class="mapTierRadio" type="radio" id="rHardM" name="clueTier" value="Hard">
+        <label for="rHardM">Hard</label>
+        <input class="mapTierRadio" type="radio" id="rEliteM" name="clueTier" value="Elite">
+        <label for="rEliteM">Elite</label><br />
+
+        <span id="solution-map-header"><b>Select your map:</b></span>
+        <div id="solution-map" style="height: 375px; overflow: hidden; overflow-y: scroll;">
+        </div><br />
+
+        <div id="solution-map-map"></div>
 
     </div>
 
