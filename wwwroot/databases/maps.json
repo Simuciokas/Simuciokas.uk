@@ -2,7 +2,7 @@
   {
     "id": "beginner",
     "name": "Clue_map_beginner_chicken_farm",
-    "location": "-330, 70, 50",
+    "location": "-330, 70, -50",
     "tip": "Behind the Lumbridge waterwheel chicken farm"
   },
   {
@@ -188,13 +188,13 @@
   {
     "id": "elite",
     "name": "Clue_map_elite_crandor_shipwreck",
-    "location": "-1474, 58, 131",
+    "location": "-1475, 68, 134",
     "tip": "Crandor, in front of the burning ship"
   },
   {
     "id": "elite",
     "name": "Clue_map_elite_burthorpe_guard_camp",
-    "location": "-1238, 79, -939",
+    "location": "-1233, 79, -956",
     "tip": "Burthorpe guard camp"
   },
   {

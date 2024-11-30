@@ -17,7 +17,6 @@ function Reset() {
 
     const tier = document.querySelectorAll('input.mapTierRadio:checked')[0].value.toLowerCase()
     const data = database.maps.filter(x => { return x.id == tier })
-    document.getElementById("solution-map-header").innerHTML = `<b>Select your map (${data.length}):</b>`
     let solutionDiv = document.getElementById("solution-map")
     solutionDiv.innerHTML = ""
     data.forEach(function (item, ind) {
