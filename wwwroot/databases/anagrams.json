@@ -1,4 +1,9 @@
 {
+  //"": {
+  //  "id": "draynor magmatius wraths",
+  //  "location": ""
+  //  "tip": "Glory Amulet to Draynor / Lumbridge"
+  //}
   "Lilal": {
     "id": "lalli",
     "location": "-1741, 74, -1056",
@@ -142,7 +147,7 @@
   "Profs Lose Wrong Pie": {
     "id": "professor onglewip",
     "location": "-658, 84, 354",
-    "tip": "Glory Amulet to Al-Kharid"
+    "tip": "Glory Amulet to Draynor"
   },
   "Thickno": {
     "id": "hickton",
