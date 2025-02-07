@@ -1,6 +1,8 @@
 ﻿@page
 @model IndexModel
 @{
+    ViewData["Title"] = "Clue Helper";
+
     <div class="container">
         <div class="btn-container" id="Navigation">
             <input class="navRadio" type="radio" id="rPuzzle" name="radios" value="Puzzle">
@@ -265,7 +267,7 @@
         <input class="mapTierRadio" type="radio" id="rEliteM" name="clueTier" value="Elite">
         <label for="rEliteM">Elite</label><br />
 
-        <div id="solution-map" style="height: 375px; overflow: hidden; overflow-y: scroll;">
+        <div id="solution-map" style="height: 490px; overflow: hidden; overflow-y: scroll;">
         </div><br />
 
         <div id="solution-map-map"></div>

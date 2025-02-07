@@ -22,7 +22,7 @@ function Reset() {
     data.forEach(function (item, ind) {
         solutionDiv.innerHTML += `
             <div style="display: flex; align-items: flex-start;">
-                <image style="max-width: 300px; margin-right: 20px;" src="/MapImages/${item.name}.webp"></image>
+                <image style="max-width: 250px; margin-right: 20px;" src="/MapImages/${item.name}.webp"></image>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <span><b>Tip: </b> ${item.tip}</span>
                     <span><b>Map location: </b><a id="solution-map-url-${ind + 1}" href="${GetMapURL(item.location)}" target="_blank">${item.location}</a></span>
