@@ -206,7 +206,7 @@
   {
     "id": "elite",
     "name": "Clue_map_elite_desert_mine",
-    "location": "107, 69, 508",
+    "location": "227, 64, 512",
     "tip": "Al-Kharid, past the Shantay Pass by the desert quarry"
   },
   {
@@ -220,5 +220,29 @@
     "name": "Clue_map_elite_chaos_altar",
     "location": "-279, 76, -1010",
     "tip": "Chaos Temple in the Wilderness"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_witchhaven",
+    "location": "-1986, 64, -32",
+    "tip": "Witchaven, ruins"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_kraken_cove",
+    "location": "-3242, 64, -1093",
+    "tip": "Kraken cove, stones towards Piscatoris"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_waterbirth",
+    "location": "-2449, 64, -1406",
+    "tip": "Waterbirth/Dagannoth entrance, Rellekka -> boatman far-West (500gp)"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_unkah",
+    "location": "-469, 64, 1407",
+    "tip": "Ruins of Unkah, near Temporos, pond in outskirts"
   }
 ]
