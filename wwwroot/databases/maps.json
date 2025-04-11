@@ -244,5 +244,17 @@
     "name": "Clue_map_elite_unkah",
     "location": "-469, 64, 1407",
     "tip": "Ruins of Unkah, near Temporos, pond in outskirts"
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_shilo",
+    "location": "-1582, 64, 859",
+    "tip": "Shilo Village, "
+  },
+  {
+    "id": "elite",
+    "name": "Clue_map_elite_Gunatoth",
+    "location": "-2498, 86, 791",
+    "tip": "Gu'tanoth Blood Altar, South of Yanille', "
   }
 ]
