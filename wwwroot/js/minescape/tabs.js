@@ -22,3 +22,15 @@ function changePage(page) {
     document.getElementById(page).style.display = ""
     currentPage = page
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.substring(1); // Remove the "#" symbol
+    console.log(hash);
+    if (!hash) return;
+
+    // Find the radio input with matching value
+    const radio = document.querySelector(`input.navRadio[value="${hash}"]`);
+    if (radio) {
+        radio.checked = true;
+    }
+});
