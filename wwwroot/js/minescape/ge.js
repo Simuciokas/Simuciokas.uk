@@ -1,0 +1,492 @@
+﻿import {
+    Chart,
+    TimeScale,
+    LinearScale,
+    CategoryScale,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import 'chartjs-adapter-luxon';
+import { CandlestickController, CandlestickElement } from 'chartjs-chart-financial';
+import ZoomPlugin from 'chartjs-plugin-zoom';
+
+Chart.register(
+    TimeScale,
+    LinearScale,
+    CategoryScale,
+    Title,
+    Tooltip,
+    Legend,
+    CandlestickController,
+    CandlestickElement,
+    ZoomPlugin
+);
+
+const units = [
+    { value: 1e15, symbol: 'P' },  // Peta
+    { value: 1e12, symbol: 'T' },  // Tera
+    { value: 1e9, symbol: 'B' },  // Billion
+    { value: 1e6, symbol: 'M' },  // Million
+    { value: 1e3, symbol: 'k' }   // Thousand
+];
+let items = [];
+const userCache = {};
+let candleChart, volumeChart;
+const buyIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4caf50" width="20" height="20">
+  <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10-6V5H6v7H4v2h2v7h2v-7h8v7h2v-7h2v-2h-2zm-2 0H8V7h8v5z"/>
+</svg>`;
+
+const sellIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f44336" width="20" height="20">
+  <path d="M19 13H5v-2h14v2z"/>
+</svg>`;
+
+
+Startup();
+
+async function Startup() {
+    try {
+        const response = await fetch('https://api.gameslabs.net/1.0.0/exchange/');
+        const data = await response.json();
+        items = data.map(entry => ({
+            symbol: entry.symbol,
+            name: entry.buy.name
+        }));
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+function normalize(text) {
+    return text
+        .toLowerCase()
+        .replace(/[_\s]+/g, ' ')
+        .trim();
+}
+
+function fuzzyMatch(query, text) {
+    const queryWords = query.split(' ');
+    const textWords = text.split(' ');
+
+    return queryWords.every(qWord =>
+        textWords.some(tWord => {
+            return tWord.includes(qWord) || levenshteinDistance(qWord, tWord) <= 1;
+        })
+    );
+}
+
+function exactMatch(query, text) {
+    const queryWords = query.split(' ');
+    const textWords = text.split(' ');
+
+    return queryWords.every(qWord =>
+        textWords.some(tWord => tWord.includes(qWord))
+    );
+}
+
+function levenshteinDistance(a, b) {
+    const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+
+    for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+    for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            if (a[i - 1] === b[j - 1]) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j - 1] + 1
+                );
+            }
+        }
+    }
+
+    return matrix[a.length][b.length];
+}
+
+function searchItems(query) {
+    const normalizedQuery = normalize(query);
+    const useFuzzy = document.getElementById('fuzzySearchToggle').checked;
+
+    const results = items.filter(item => {
+        const normalizedSymbol = normalize(item.symbol);
+        const normalizedName = normalize(item.name);
+
+        if (useFuzzy) {
+            return fuzzyMatch(normalizedQuery, normalizedSymbol) || fuzzyMatch(normalizedQuery, normalizedName);
+        } else {
+            return exactMatch(normalizedQuery, normalizedSymbol) || exactMatch(normalizedQuery, normalizedName);
+        }
+    });
+
+    displaySearchResults(results);
+}
+
+function displaySearchResults(results) {
+    const searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+
+    if (results.length > 0) {
+        searchResults.style.display = 'block';
+        results.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item.name;
+            div.addEventListener('click', () => {
+                selectItem(item);
+            });
+            searchResults.appendChild(div);
+        });
+    } else {
+        searchResults.style.display = 'none';
+    }
+}
+
+
+async function selectItem(item) {
+    document.getElementById('searchInput').value = item.name;
+    document.getElementById('searchResults').style.display = 'none';
+
+    try {
+        const [detailsRes, candlesRes] = await Promise.all([
+            fetch(`https://api.gameslabs.net/1.0.0/exchange/symbol/${item.symbol}`),
+            fetch(`https://api.gameslabs.net/1.0.0/exchange/symbol/${item.symbol}/candles?timeFrame=day`)
+        ]);
+
+        const detailsData = await detailsRes.json();
+        const candlesData = await candlesRes.json();
+
+        await displayDetails(detailsData);
+        displayCandlestickChart(candlesData, item.name);
+
+    } catch (error) {
+        console.error('Error fetching item details or candles:', error);
+    }
+}
+
+async function resolveUser(userId) {
+    if (userCache[userId]) {
+        return userCache[userId];
+    }
+    try {
+        const response = await fetch(`https://api.gameslabs.net/1.0.0/users/${userId}`);
+        const data = await response.json();
+        userCache[userId] = data.name;
+        return data.name;
+    } catch (error) {
+        console.error('Error resolving user:', error);
+        return userId;
+    }
+}
+
+function formatNumber(num) {
+
+    for (let i = 0; i < units.length; i++) {
+        if (num >= units[i].value) {
+            return (num / units[i].value).toFixed(2).replace(/\.0$/, '') + units[i].symbol;
+        }
+    }
+
+    return num.toString();
+}
+
+
+async function displayDetails(data) {
+    const table = document.getElementById('detailsTable');
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    const combined = [...data.buy, ...data.sell];
+
+    for (const entry of combined) {
+        const row = document.createElement('tr');
+        const username = await resolveUser(entry.user);
+        const typeIcon = entry.type === 'buy' ? buyIcon : sellIcon;
+        row.innerHTML = `
+          <td style="display: flex; align-items: center; gap: 6px;">
+                ${typeIcon}
+                <span>${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</span>
+            </td>
+          <td>${formatNumber(entry.amount)}</td>
+          <td>${formatNumber(entry.price)}</td>
+          <td>${username}</td>
+          <td data-timestamp="${entry.timestamp}">${new Date(entry.timestamp).toLocaleString()}</td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    table.style.display = 'table';
+}
+
+function displayCandlestickChart(candles, name) {
+    const ctx = document.getElementById('candlesChart').getContext('2d');
+
+    const formattedData = candles.map(candle => {
+        let open = candle.open;
+        let close = candle.close;
+
+        let adjustedOpen = open;
+        let adjustedClose = close;
+        if (open === close) {
+            adjustedOpen += 0.5;
+            adjustedClose -= 0.5;
+        }
+
+        return {
+            x: candle.timestamp,
+            o: adjustedOpen,
+            h: candle.high,
+            l: candle.low,
+            c: adjustedClose,
+            realO: open,
+            realC: close
+        };
+    });
+
+    if (candleChart) {
+        candleChart.destroy();
+    }
+
+    candleChart = new Chart(ctx, {
+        type: 'candlestick',
+        data: {
+            datasets: [{
+                label: ``,
+                data: formattedData,
+                color: {
+                    up: '#00ff00',
+                    down: '#ff0000',
+                    unchanged: '#999'
+                }
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const dataPoint = context.raw;
+                            return [
+                                `Open: ${dataPoint.realO}`,
+                                `High: ${dataPoint.h}`,
+                                `Low: ${dataPoint.l}`,
+                                `Close: ${dataPoint.realC}`
+                            ];
+                        }
+                    }
+                }
+            },
+            elements: {
+                candlestick: {
+                    borderWidth: {
+                        top: 2,
+                        bottom: 2
+                    }
+                }
+            }
+        }
+    });
+
+    document.getElementById('candlesChart').style.display = 'block';
+
+    const volumectx = document.getElementById('volumeChart').getContext('2d');
+
+    const formattedVolumeData = candles.map(candle => ({
+        x: candle.timestamp,
+        y: candle.volume
+    }));
+
+    if (volumeChart) {
+        volumeChart.destroy();
+    }
+
+    volumeChart = new Chart(volumectx, {
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: `Volume`,
+                data: formattedVolumeData,
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day'
+                    },
+                    ticks: {
+                        maxRotation: 0,
+                        autoSkip: true
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Volume'
+                    }
+                }
+            },
+            plugins: {
+                zoom: {
+                    zoom: {
+                        wheel: {
+                            enabled: true
+                        },
+                        mode: 'x',
+                        onZoom: syncZoom
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        onPan: syncZoom
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        }
+    });
+
+    document.getElementById('volumeChart').style.display = 'block';
+}
+
+function syncZoom({ chart }) {
+    const min = chart.scales.x.min;
+    const max = chart.scales.x.max;
+
+    if (chart === candleChart) {
+        volumeChart.options.scales.x.min = min;
+        volumeChart.options.scales.x.max = max;
+        volumeChart.update('none');
+    } else if (chart === volumeChart) {
+        candleChart.options.scales.x.min = min;
+        candleChart.options.scales.x.max = max;
+        candleChart.update('none');
+    }
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    searchItems(e.target.value);
+});
+
+window.addEventListener('click', function (e) {
+    if (!document.getElementById('searchInput').contains(e.target) &&
+        !document.getElementById('searchResults').contains(e.target)) {
+        document.getElementById('searchResults').style.display = 'none';
+    }
+});
+
+document.getElementById('fuzzySearchToggle').addEventListener('change', () => {
+    const currentQuery = document.getElementById('searchInput').value;
+    document.getElementById('searchInput').focus();
+    searchItems(currentQuery);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const table = document.getElementById('detailsTable');
+    const headers = table.querySelectorAll('th');
+    let sortDirection = {};
+
+    headers.forEach((header, index) => {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', () => {
+            sortTableByColumn(table, index);
+            updateSortIcons(index);
+        });
+    });
+
+    function sortTableByColumn(table, columnIndex) {
+        const tbody = table.querySelector('tbody');
+        const rowsArray = Array.from(tbody.querySelectorAll('tr'));
+
+        const isNumericColumn = columnIndex === 1 || columnIndex === 2;
+        const isDateColumn = columnIndex === 4;
+
+        // Determine sort direction
+        sortDirection[columnIndex] = !sortDirection[columnIndex];
+
+        rowsArray.sort((a, b) => {
+            const aText = a.children[columnIndex].innerText.trim();
+            const bText = b.children[columnIndex].innerText.trim();
+
+            if (isNumericColumn) {
+                const aNum = parseAbbreviatedNumber(aText);
+                const bNum = parseAbbreviatedNumber(bText);
+                return sortDirection[columnIndex] ? aNum - bNum : bNum - aNum;
+            } else if (isDateColumn) {
+                const aTimestamp = parseInt(a.children[columnIndex].getAttribute('data-timestamp'), 10);
+                const bTimestamp = parseInt(b.children[columnIndex].getAttribute('data-timestamp'), 10);
+
+                return sortDirection[columnIndex]
+                    ? aTimestamp - bTimestamp
+                    : bTimestamp - aTimestamp;
+            } else {
+                return sortDirection[columnIndex]
+                    ? aText.localeCompare(bText)
+                    : bText.localeCompare(aText);
+            }
+        });
+
+        rowsArray.forEach(row => tbody.appendChild(row));
+    }
+    function updateSortIcons(activeIndex) {
+        headers.forEach((header, index) => {
+            header.querySelector('.sort-icon')?.remove(); // Remove any existing icons
+
+            if (index === activeIndex) {
+                const icon = document.createElement('span');
+                icon.className = 'sort-icon';
+                icon.style.marginLeft = '5px';
+                icon.style.position = 'absolute';
+                icon.textContent = sortDirection[index] ? '▲' : '▼';
+                header.appendChild(icon);
+            }
+        });
+    }
+});
+
+function parseAbbreviatedNumber(value) {
+    const multipliers = {
+        k: 1_000,
+        m: 1_000_000,
+        b: 1_000_000_000,
+        t: 1_000_000_000_000,
+        p: 1_000_000_000_000_000
+    };
+
+    const match = value.toLowerCase().match(/^([\d,.]+)([kmbtpe]?)$/);
+
+    if (!match) return parseFloat(value.replace(/,/g, '')) || 0;
+
+    const [, num, suffix] = match;
+    const cleanNum = parseFloat(num.replace(/,/g, ''));
+
+    return cleanNum * (multipliers[suffix] || 1);
+}
