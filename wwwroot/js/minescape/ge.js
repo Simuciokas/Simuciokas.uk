@@ -222,7 +222,53 @@ async function displayDetails(data) {
     table.style.display = 'table';
 }
 
+// Observe theme changes
+const observer = new MutationObserver(() => {
+    const newColors = getThemeColors();
+
+    // Update candle chart
+    candleChart.options.scales.x.ticks.color = newColors.textColor;
+    candleChart.options.scales.x.grid.color = newColors.gridColor;
+    candleChart.options.scales.y.ticks.color = newColors.textColor;
+    candleChart.options.scales.y.grid.color = newColors.gridColor;
+    candleChart.options.plugins.tooltip.bodyColor = newColors.textColor;
+    candleChart.options.plugins.tooltip.titleColor = newColors.textColor;
+    candleChart.update();
+
+    // Update volume chart
+    volumeChart.options.scales.x.ticks.color = newColors.textColor;
+    volumeChart.options.scales.x.grid.color = newColors.gridColor;
+    volumeChart.options.scales.y.ticks.color = newColors.textColor;
+    volumeChart.options.scales.y.grid.color = newColors.gridColor;
+    volumeChart.options.scales.y.title.color = newColors.textColor;
+    volumeChart.options.plugins.tooltip.bodyColor = newColors.textColor;
+    volumeChart.options.plugins.tooltip.titleColor = newColors.textColor;
+    volumeChart.update();
+});
+
+observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-bs-theme']
+});
+
+function isDarkTheme() {
+    return document.documentElement.getAttribute('data-bs-theme') === 'dark';
+}
+
+function getThemeColors() {
+    const isDark = isDarkTheme();
+    return {
+        textColor: isDark ? '#ffffff' : '#000000',
+        textColorPopup: isDark ? '#ffffff' : '#ffffff',
+        gridColor: isDark ? '#444444' : '#dddddd',
+        bgColor: isDark ? '#1e1e1e' : '#ffffff'
+    };
+}
+
+
 function displayCandlestickChart(candles, name) {
+    const colors = getThemeColors();
+
     const ctx = document.getElementById('candlesChart').getContext('2d');
 
     const formattedData = candles.map(candle => {
@@ -271,6 +317,20 @@ function displayCandlestickChart(candles, name) {
                     type: 'time',
                     time: {
                         unit: 'day'
+                    },
+                    ticks: {
+                        color: colors.textColor
+                    },
+                    grid: {
+                        color: colors.gridColor
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: colors.textColor
+                    },
+                    grid: {
+                        color: colors.gridColor
                     }
                 }
             },
@@ -289,7 +349,9 @@ function displayCandlestickChart(candles, name) {
                                 `Close: ${dataPoint.realC}`
                             ];
                         }
-                    }
+                    },
+                    bodyColor: colors.textColorPopup,
+                    titleColor: colors.textColorPopup
                 }
             },
             elements: {
@@ -337,7 +399,11 @@ function displayCandlestickChart(candles, name) {
                     },
                     ticks: {
                         maxRotation: 0,
-                        autoSkip: true
+                        autoSkip: true,
+                        color: colors.textColor
+                    },
+                    grid: {
+                        color: colors.gridColor
                     }
                 },
                 y: {
@@ -345,6 +411,12 @@ function displayCandlestickChart(candles, name) {
                     title: {
                         display: true,
                         text: 'Volume'
+                    },
+                    ticks: {
+                        color: colors.textColor
+                    },
+                    grid: {
+                        color: colors.gridColor
                     }
                 }
             },
@@ -368,7 +440,9 @@ function displayCandlestickChart(candles, name) {
                 },
                 tooltip: {
                     mode: 'index',
-                    intersect: false
+                    intersect: false,
+                    bodyColor: colors.textColor,
+                    titleColor: colors.textColor
                 }
             }
         }

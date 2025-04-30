@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Clue Helper";
 
-    <div class="container">
-        <div class="btn-container" id="Navigation">
+    <div class="continer-fluid">
+        <div class="w-100 bg-secondary-subtle border-secondary-subtle border border-top-0 rounded-bottom-4 d-flex mb-3" id="Navigation">
             <input class="navRadio" type="radio" id="rPuzzle" name="radios" value="Puzzle">
             <label class="navRadio prevent-select" for="rPuzzle">Puzzle Boxes</label><br />
             <input class="navRadio" type="radio" id="rLight" name="radios" value="Light">
@@ -176,7 +176,7 @@
         <span><b>Tip: </b></span><span id="solution-anagram-tip">not found</span><br />
         <span><b>Map location: </b></span><a id="solution-anagram-url" target="_blank">not found</a><br /><br />
         <div class="autocomplete" style="width:300px;">
-            <input type="text" id="AnagramInput" placeholder="Input an anagram">
+            <input class="textInput" type="text" id="AnagramInput" placeholder="Input an anagram" autocomplete="off" style="width: 300px;">
         </div>
         <br />
         <div id="solution-anagram-map"></div>
@@ -187,7 +187,7 @@
         <span><b>Tip: </b></span><span id="solution-cypher-tip">not found</span><br />
         <span><b>Map location: </b></span><a id="solution-cypher-url" target="_blank">not found</a><br /><br />
         <div class="autocomplete" style="width:300px;">
-            <input type="text" id="CypherInput" placeholder="Input a cypher">
+            <input class="textInput" type="text" id="CypherInput" placeholder="Input a cypher">
         </div>
         <br />
         <div id="solution-cypher-map"></div>
@@ -201,7 +201,7 @@
         <span><b>Tip: </b></span><span id="solution-beacon-tip">not found</span><br />
         <span><b>Map location: </b></span><a id="solution-beacon-url" target="_blank">not found</a><br /><br />
         <div class="autocomplete" style="width:300px;">
-            <input type="text" id="BeaconInput" placeholder="Input a beacon">
+            <input class="textInput" type="text" id="BeaconInput" placeholder="Input a beacon">
         </div>
         <br />
         <div id="solution-beacon-map"></div>
@@ -211,7 +211,7 @@
         <span><b>Tip: </b></span><span id="solution-chest-tip">not found</span><br />
         <span><b>Map location: </b></span><a id="solution-chest-url" target="_blank">not found</a><br /><br />
         <div class="autocomplete" style="width:300px;">
-            <input type="text" id="ChestInput" placeholder="Input a chest">
+            <input class="textInput" type="text" id="ChestInput" placeholder="Input a chest">
         </div>
         <br />
         <div id="solution-chest-map"></div>
@@ -250,10 +250,10 @@
         <input type="number" oninput="this.value = Math.round(this.value);" id="HotColdZ" placeholder="Input your Z coordinate"><br /><br /> --->
 
         <span>Input the URL you get from /map</span><br />
-        <input type="text" id="HotColdMap" placeholder="Input URL from /map" style="width: 520px"><span id="HotColdMapTip" style="padding-left: 10px;color: red; display:none;"></span><br /><br />
+        <input class="textInput" type="text" id="HotColdMap" placeholder="Input URL from /map" style="width: 520px"><span id="HotColdMapTip" style="padding-left: 10px;color: red; display:none;"></span><br /><br />
 
         <span>Input the distance you get standing at your location</span><br />
-        <input type="number" id="HotColdDistance" placeholder="Input distance"><br /><br />
+        <input class="textInput" type="number" id="HotColdDistance" placeholder="Input distance"><br /><br />
 
 
 
@@ -284,7 +284,7 @@
         <div id="searchContainer">
             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-                    <input type="text" id="searchInput" placeholder="Search item by name or symbol..." autocomplete="off" style="width: 300px;">
+                    <input class="textInput" type="text" id="searchInput" placeholder="Search item by name or symbol..." autocomplete="off" style="width: 300px;">
 
                     <div style="display: flex; align-items: center; gap: 5px;">
                         <input type="checkbox" id="fuzzySearchToggle" checked>

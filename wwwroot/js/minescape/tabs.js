@@ -24,11 +24,12 @@ function changePage(page) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    const hash = window.location.hash.substring(1);
-    if (!hash) return;
+    const hash = window.location.hash.substring(1)
+    if (!hash) return
 
-    const radio = document.querySelector(`input.navRadio[value="${hash}"]`);
+    const radio = document.querySelector(`input.navRadio[value="${hash}"]`)
     if (radio) {
-        radio.checked = true;
+        radio.checked = true
+        changePage(hash)
     }
 });

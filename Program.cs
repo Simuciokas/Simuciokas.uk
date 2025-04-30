@@ -37,6 +37,7 @@ provider.Mappings[".zip"] = "application/x-msdownload";
 provider.Mappings[".db"] = "application/x-msdownload";
 provider.Mappings[".json"] = "application/json";
 provider.Mappings[".webp"] = "image/webp";
+provider.Mappings[".svg"] = "image/svg+xml";
 
 app.UseStaticFiles(new StaticFileOptions
 {

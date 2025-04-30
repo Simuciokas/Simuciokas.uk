@@ -1,27 +1,60 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - Simuciokas.uk</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-5.3.5-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/SimuciokasUK.styles.css" asp-append-version="true" />
+    <script src="~/lib/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/main.js"></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" style="margin-left: 15px" asp-page="/Index">Simuciokas.uk</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-light bg-secondary-subtle">
+            <a class="navbar-brand ms-3" asp-page="/Index">Simuciokas.uk</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link text-dark" asp-page="/Index">Home</a>
+                        <a class="nav-link" asp-page="/Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-page="/Minescape/Index">Minescape</a>
+                        <a class="nav-link" asp-page="/Minescape/Index">Minescape</a>
                     </li>
-
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-link nav-link px-0 px-lg-2 py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (auto)">
+                            <svg class="bi my-1 theme-icon-active" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#circle-half"></use></svg>
+                            <span class="d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#sun-fill"></use></svg>
+                                    Light
+                                    <svg class="bi ms-auto d-none" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#check2"></use></svg>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#moon-stars-fill"></use></svg>
+                                    Dark
+                                    <svg class="bi ms-auto d-none" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#check2"></use></svg>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+                                    <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#circle-half"></use></svg>
+                                    Auto
+                                    <svg class="bi ms-auto d-none" aria-hidden="true"><use href="/lib/bootstrap-icons-1.11.3/bootstrap-icons.svg#check2"></use></svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -32,8 +65,8 @@
         </main>
     </div>
 
-    <footer class="footer text-muted">
-        <span style="margin-left: 15px">&copy; 2025 - Simuciokas.uk - <a asp-page="/Privacy">Privacy</a></span>
+    <footer class="position-fixed w-100 bottom-0 text-muted bg-secondary-subtle">
+        <span class="ms-3">&copy; 2025 - Simuciokas.uk - <a asp-page="/Privacy">Privacy</a></span>
     </footer>
 </body>
 </html>
