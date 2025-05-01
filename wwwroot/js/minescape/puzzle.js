@@ -18,6 +18,8 @@ var solutionInitial = null
 var solutionStep = 0
 var solutionSteps = null
 
+let showDebug = false
+let showDebug2 = false
 let debug = false //document.getElementById("PuzzleDebug").checked;
 function getCurrentPage() {
     return document.getElementById("Navigation").querySelectorAll("input:checked")[0].value
@@ -190,34 +192,68 @@ function Solve() {
 
 
     let uTopLeftPos = { x: (sTopLeftPos.x - (tileSize * 5)), y: sTopLeftPos.y }
+    if (debug) console.log("uTopLeftPos");
+    if (debug) console.log(uTopLeftPos);
 
-    let solvedTiles = [];
+    let solvedTiles = []
     for (let i = 0; i < 4; i++) {
-        const y = sTopLeftPos.y + (i * tileSize);
+        const y = sTopLeftPos.y + (i * tileSize)
         for (let k = 0; k < 4; k++) {
-            const x = sTopLeftPos.x +(k * tileSize);
-            const rect = getRectangleImageData(imageData, width, x, y, tileSize, tileSize);
-            solvedTiles.push({ rect, tileSize });
-            if (debug) console.log(rect)
+            const x = sTopLeftPos.x +(k * tileSize)
+            const rect = getRectangleImageData(imageData, width, x, y, tileSize, tileSize)
+            solvedTiles.push({ rect, tileSize })
+            //if (debug) console.log(rect)
         }
     }
+    if (debug) console.log("solvedTiles")
+    if (debug) console.log(solvedTiles)
 
-    let unsolvedTiles = [];
+    let unsolvedTiles = []
     for (let i = 0; i < 4; i++) {
-        const y = uTopLeftPos.y + (i * tileSize);
+        const y = uTopLeftPos.y + (i * tileSize)
         for (let k = 0; k < 4; k++) {
-            const x = uTopLeftPos.x + (k * tileSize);
-            const rect = getRectangleImageData(imageData, width, x, y, tileSize, tileSize);
-            const pos = FindPos(solvedTiles, { rect, tileSize });
-            unsolvedTiles.push(pos == null ? 15 : pos);
-            if (debug) console.log(rect)
+            const x = uTopLeftPos.x + (k * tileSize)
+            if (debug) console.log("x")
+            if (debug) console.log(x)
+            if (debug) console.log("y")
+            if (debug) console.log(y)
+            const rect = getRectangleImageData(imageData, width, x, y, tileSize, tileSize)
+            if (debug && x == 68 && y == 33) {
+                const debugCanvas = document.createElement("canvas")
+                debugCanvas.width = tileSize
+                debugCanvas.height = tileSize
+                document.body.appendChild(debugCanvas)
+                const debugCtx = debugCanvas.getContext('2d')
+                const debugImageData = new ImageData(rect, tileSize, tileSize);
+                debugCtx.putImageData(debugImageData, 0, 0);
+            }
+            if (debug && x == 68 && y == 33) {
+                showDebug = true
+            }
+            const pos = FindPos(solvedTiles, { rect, tileSize })
+            unsolvedTiles.push(pos == null ? 15 : pos)
+            showDebug = false
+            //if (debug) console.log(rect)
         }
     }
+    if (debug) console.log("unsolvedTiles")
+    if (debug) console.log(unsolvedTiles)
+
+    if (debug) { 
+        const debugCanvas = document.createElement("canvas")
+        debugCanvas.width = tileSize
+        debugCanvas.height = tileSize
+        document.body.appendChild(debugCanvas)
+        const debugCtx = debugCanvas.getContext('2d')
+        const debugImageData = new ImageData(solvedTiles[4].rect, tileSize, tileSize);
+        debugCtx.putImageData(debugImageData, 0, 0);
+    }
+    //
+    //solvedTiles[12]
 
     const goalState = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const initialState = unsolvedTiles;
 
-    if (debug) console.log(initialState);
     let sum = 0;
     for (const num of initialState) {
         sum += num;
@@ -402,30 +438,46 @@ function GetTileSize(imageData, width, height, pos) {
 
 function CompareMats(mat1, mat2) {
     if (mat1.rect.length !== mat2.rect.length) {
-        if (debug) console.error("Dimensions of the Mats are different.");
-        return false;
+        if (debug) console.error("Dimensions of the Mats are different.")
+        return false
     }
 
     for (let x = 0; x < mat1.tileSize; x++) {
         for (let y = 0; y < mat1.tileSize; y++) {
-            let rgbaMat1 = getRGBA(mat1.rect, mat1.tileSize, x, y) //mat1.ucharPtr(j, i);
-            let rgbaMat2 = getRGBA(mat2.rect, mat1.tileSize, x, y) //mat2.ucharPtr(j, i);
-            if (rgbaMat1[0] != rgbaMat2[0] || rgbaMat1[1] != rgbaMat2[1] || rgbaMat1[2] != rgbaMat2[2]) {
-                return false;
+            let rgbaMat1 = getRGBA(mat1.rect, mat1.tileSize, x, y)
+            let rgbaMat2 = getRGBA(mat2.rect, mat1.tileSize, x, y)
+            if (Math.abs(rgbaMat1[0] - rgbaMat2[0]) > 1
+                || Math.abs(rgbaMat1[1] - rgbaMat2[1]) > 1
+                || Math.abs(rgbaMat1[2] - rgbaMat2[2]) > 1) {
+                if (showDebug2) console.log("x")
+                if (showDebug2) console.log(x)
+                if (showDebug2) console.log("y")
+                if (showDebug2) console.log(y)
+                if (showDebug2) console.log("rgbaMat1")
+                if (showDebug2) console.log(rgbaMat1)
+                if (showDebug2) console.log("rgbaMat2")
+                if (showDebug2) console.log(rgbaMat2)
+                return false
             }
         }
     }
 
-    return true;
+    return true
 }
 
 function FindPos(solvedTiles, mat2) {
-    let found = null;
+    let found = null
     solvedTiles.forEach(function (val, index) {
+        if (index == 4 && showDebug) {
+            console.log(val)
+            showDebug2 = true
+        }
+        if (index == 4 && showDebug) console.log(mat2)
         if (CompareMats(val, mat2))
-            found = index;
+            found = index
+        showDebug2 = false
     });
-    return found;
+    return found
 }
 
 function getRGBA(imageData, width, x, y) {
