@@ -30,6 +30,7 @@ const units = [
     { value: 1e6, symbol: 'M' },  // Million
     { value: 1e3, symbol: 'k' }   // Thousand
 ];
+let initialOffers = [];
 let items = [];
 const userCache = {};
 let candleChart, volumeChart;
@@ -48,12 +49,33 @@ Startup();
 
 async function Startup() {
     try {
-        const response = await fetch('https://api.gameslabs.net/1.0.0/exchange/');
-        const data = await response.json();
-        items = data.map(entry => ({
+        const [exchangeRes, sellRes, buyRes] = await Promise.all([
+            fetch('https://api.gameslabs.net/1.0.0/exchange/'),
+            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell'),
+            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/buy')
+        ]);
+
+        const [exchangeData, sellData, buyData] = await Promise.all([
+            exchangeRes.json(),
+            sellRes.json(),
+            buyRes.json()
+        ]);
+
+        items = exchangeData.map(entry => ({
             symbol: entry.symbol,
             name: entry.buy.name
         }));
+
+        initialOffers = [...sellData, ...buyData].map(entry => ({
+            symbol: entry.symbol,
+            type: entry.type,
+            price: entry.price,
+            amount: entry.amount,
+            user: entry.user,
+            timestamp: entry.timestamp
+        })).sort((a, b) => b.timestamp - a.timestamp);
+
+        await displayInitial();
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -194,8 +216,36 @@ function formatNumber(num) {
     return num.toString();
 }
 
+async function displayInitial() {
+    const table = document.getElementById('detailsTable');
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    for (const entry of initialOffers) {
+        const row = document.createElement('tr');
+        const username = await resolveUser(entry.user);
+        const typeIcon = entry.type === 'buy' ? buyIcon : sellIcon;
+        const item = items.find(i => i.symbol === entry.symbol);
+        const itemName = item ? item.name : entry.symbol;
+        row.innerHTML = `
+          <td style="display: flex; align-items: center; gap: 6px;">
+                ${typeIcon}
+                <span>${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</span>
+            </td>
+          <td>${itemName}</td>
+          <td>${formatNumber(entry.amount)}</td>
+          <td>${formatNumber(entry.price)}</td>
+          <td>${username}</td>
+          <td data-timestamp="${entry.timestamp}">${new Date(entry.timestamp).toLocaleString()}</td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    table.style.display = 'table';
+}
 
 async function displayDetails(data) {
+    document.getElementById('detailsTableItem').style.display = 'none';
     const table = document.getElementById('detailsTable');
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
@@ -222,28 +272,29 @@ async function displayDetails(data) {
     table.style.display = 'table';
 }
 
-// Observe theme changes
 const observer = new MutationObserver(() => {
     const newColors = getThemeColors();
 
-    // Update candle chart
-    candleChart.options.scales.x.ticks.color = newColors.textColor;
-    candleChart.options.scales.x.grid.color = newColors.gridColor;
-    candleChart.options.scales.y.ticks.color = newColors.textColor;
-    candleChart.options.scales.y.grid.color = newColors.gridColor;
-    candleChart.options.plugins.tooltip.bodyColor = newColors.textColor;
-    candleChart.options.plugins.tooltip.titleColor = newColors.textColor;
-    candleChart.update();
+    if (candleChart) {
+        candleChart.options.scales.x.ticks.color = newColors.textColor;
+        candleChart.options.scales.x.grid.color = newColors.gridColor;
+        candleChart.options.scales.y.ticks.color = newColors.textColor;
+        candleChart.options.scales.y.grid.color = newColors.gridColor;
+        candleChart.options.plugins.tooltip.bodyColor = newColors.textColor;
+        candleChart.options.plugins.tooltip.titleColor = newColors.textColor;
+        candleChart.update();
+    }
 
-    // Update volume chart
-    volumeChart.options.scales.x.ticks.color = newColors.textColor;
-    volumeChart.options.scales.x.grid.color = newColors.gridColor;
-    volumeChart.options.scales.y.ticks.color = newColors.textColor;
-    volumeChart.options.scales.y.grid.color = newColors.gridColor;
-    volumeChart.options.scales.y.title.color = newColors.textColor;
-    volumeChart.options.plugins.tooltip.bodyColor = newColors.textColor;
-    volumeChart.options.plugins.tooltip.titleColor = newColors.textColor;
-    volumeChart.update();
+    if (volumeChart) {
+        volumeChart.options.scales.x.ticks.color = newColors.textColor;
+        volumeChart.options.scales.x.grid.color = newColors.gridColor;
+        volumeChart.options.scales.y.ticks.color = newColors.textColor;
+        volumeChart.options.scales.y.grid.color = newColors.gridColor;
+        volumeChart.options.scales.y.title.color = newColors.textColor;
+        volumeChart.options.plugins.tooltip.bodyColor = newColors.textColor;
+        volumeChart.options.plugins.tooltip.titleColor = newColors.textColor;
+        volumeChart.update();
+    }
 });
 
 observer.observe(document.documentElement, {
