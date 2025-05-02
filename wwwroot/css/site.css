@@ -1,22 +1,12 @@
-html {
-    font-size: 14px;
+#searchResults div {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
+    #searchResults div:hover {
+        background-color: var(--bs-secondary);
     }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
-}

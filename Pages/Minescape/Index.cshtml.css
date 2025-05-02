@@ -1,11 +1,4 @@
-﻿.GE {
-    --primary-color: #4f46e5; /* Indigo */
-    --hover-bg: #eef2ff;
-    --text-color: #111827;
-    --accent-color: #6366f1;
-}
-
-.GE #searchContainer {
+﻿.GE #searchContainer {
     position: relative; /* Parent relative positioning */
 }
 
@@ -20,105 +13,20 @@
 
     .textInput:focus {
         outline: none;
-        border-color: var(--accent-color);
         box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
     }
 
-.GE #searchResults {
+#searchResults {
     border: 1px solid var(--bs-secondary);
     border-radius: 12px;
     max-height: 400px;
     overflow-y: auto;
-    /*width: 300px;*/
     margin-top: 8px;
     display: none;
     position: absolute;
     z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     top: 100%;
-    left: 0;
     width: 100%;
-}
-
-    .GE #searchResults div {
-        padding: 10px 14px;
-        margin-left: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-    }
-
-        .GE #searchResults div:hover {
-            background-color: var(--bs-primary);
-        }
-
-.GE table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid var(--bs-secondary);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-}
-
-.GE th, td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-    .GE th {
-        background: var(--accent-color);
-        color: white;
-        font-weight: 600;
-        font-size: 14px;
-        position: relative; /* Make sure the th is the relative container */
-        padding-right: 20px; /* Add some space to the right for the icon */
-    }
-
-.GE .sort-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%); /* Center the icon vertically */
-    font-size: 14px; /* Size of the icon */
-    cursor: pointer;
-}
-
-.GE td {
-    font-size: 14px;
-}
-
-
-    .GE table td svg {
-        vertical-align: middle;
-    }
-
-
-.GE .section {
-    margin-top: 40px;
-}
-
-.GE canvas {
-    max-width: 100%;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    height: 400px;
-    margin-top: 20px;
-}
-
-body {
-    font-family: "Open Sans", sans-serif;
-    /*background-color: #faf3e3;*/
-    background: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
 }
 
 .active,
@@ -149,9 +57,6 @@ input[type="radio"].navRadio:checked + label {
     border-bottom-left-radius: 13px;
     border-bottom-right-radius: 13px;
 }
-#rPuzzle input[type="radio"].navRadio:checked + label {
-}
-
 
 #PuzzleCanvas {
     position: absolute;
