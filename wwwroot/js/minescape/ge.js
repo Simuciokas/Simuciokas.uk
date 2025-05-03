@@ -47,6 +47,33 @@ const sellIcon = `
 
 Startup();
 
+async function ViewInitialOffers() {
+    try {
+        const [sellRes, buyRes] = await Promise.all([
+            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell'),
+            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/buy')
+        ]);
+
+        const [sellData, buyData] = await Promise.all([
+            sellRes.json(),
+            buyRes.json()
+        ]);
+
+        initialOffers = [...sellData, ...buyData].map(entry => ({
+            symbol: entry.symbol,
+            type: entry.type,
+            price: entry.price,
+            amount: entry.amount,
+            user: entry.user,
+            timestamp: entry.timestamp
+        })).sort((a, b) => b.timestamp - a.timestamp);
+
+        await displayInitial();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
 async function Startup() {
     try {
         const [exchangeRes, sellRes, buyRes] = await Promise.all([
@@ -217,6 +244,8 @@ function formatNumber(num) {
 }
 
 async function displayInitial() {
+    document.getElementById('candlesChart').style.display = 'none';
+    document.getElementById('volumeChart').style.display = 'none';
     const table = document.getElementById('detailsTable');
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
@@ -516,6 +545,10 @@ function syncZoom({ chart }) {
         candleChart.update('none');
     }
 }
+
+document.getElementById('viewLatestOffers').addEventListener("click", function () {
+    ViewInitialOffers();
+});
 
 document.getElementById('searchInput').addEventListener('input', (e) => {
     searchItems(e.target.value);
