@@ -52,10 +52,6 @@ async function ViewInitialOffers() {
         const settings = GetSettings();
         const pages = Array.from({ length: settings.pageRange }, (_, i) => settings.page + i);
 
-        console.log(settings)
-        console.log(pages)
-        console.log(settings.mode === 'both')
-
         const sellRequests = (settings.mode === 'sell' || settings.mode === 'both')
             ? pages.map(p => fetch(`https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell?page=${p}`))
             : []
@@ -608,8 +604,6 @@ genericButtons.forEach(button => {
             button.textContent = pageNum
         });
 
-        console.log(currentPage)
-
         UpdateLabels()
         ViewInitialOffers()
     });
@@ -632,8 +626,6 @@ numberedButtons.forEach(button => {
 
             button.textContent = pageNum
         });
-
-        console.log(newPage)
 
         UpdateLabels()
         ViewInitialOffers()

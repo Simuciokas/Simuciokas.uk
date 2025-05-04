@@ -38,7 +38,6 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function (e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
-                    console.log(this.getElementsByTagName("input")[0]);
                     let name = database.chests[inp.value].id
                     let location = database.chests[inp.value].location
                     let x = location.split(", ")[0]
