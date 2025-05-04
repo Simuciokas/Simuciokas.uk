@@ -258,6 +258,10 @@ async function displayInitial() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
 
+    await Promise.all(
+        [...new Set(initialOffers.map(entry => entry.user))].map(entry => resolveUser(entry))
+    );
+
     for (const entry of initialOffers) {
         const row = document.createElement('tr');
         const username = await resolveUser(entry.user);
@@ -290,6 +294,10 @@ async function displayDetails(data) {
     tbody.innerHTML = '';
 
     const combined = [...data.buy, ...data.sell];
+
+    await Promise.all(
+        [...new Set(initialOffers.map(entry => entry.user))].map(entry => resolveUser(entry))
+    );
 
     for (const entry of combined) {
         const row = document.createElement('tr');
