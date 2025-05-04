@@ -49,24 +49,36 @@ Startup();
 
 async function ViewInitialOffers() {
     try {
-        const [sellRes, buyRes] = await Promise.all([
-            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell'),
-            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/buy')
-        ]);
+        const settings = GetSettings();
+        const pages = Array.from({ length: settings.pageRange }, (_, i) => settings.page + i);
 
-        const [sellData, buyData] = await Promise.all([
-            sellRes.json(),
-            buyRes.json()
-        ]);
+        console.log(settings)
+        console.log(pages)
+        console.log(settings.mode === 'both')
 
-        initialOffers = [...sellData, ...buyData].map(entry => ({
+        const sellRequests = (settings.mode === 'sell' || settings.mode === 'both')
+            ? pages.map(p => fetch(`https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell?page=${p}`))
+            : []
+
+        const buyRequests = (settings.mode === 'buy' || settings.mode === 'both')
+            ? pages.map(p => fetch(`https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/buy?page=${p}`))
+            : []
+        
+
+        const allRequests = [...sellRequests, ...buyRequests];
+        const responses = await Promise.all(allRequests);
+        const jsonData = await Promise.all(responses.map(res => res.json()));
+
+        const combinedOffers = jsonData.flat().map(entry => ({
             symbol: entry.symbol,
             type: entry.type,
             price: entry.price,
             amount: entry.amount,
             user: entry.user,
             timestamp: entry.timestamp
-        })).sort((a, b) => b.timestamp - a.timestamp);
+        }));
+
+        initialOffers = combinedOffers.sort((a, b) => b.timestamp - a.timestamp);
 
         await displayInitial();
     } catch (error) {
@@ -257,7 +269,7 @@ async function displayInitial() {
         const item = items.find(i => i.symbol === entry.symbol);
         const itemName = item ? item.name : entry.symbol;
         row.innerHTML = `
-          <td style="display: flex; align-items: center; gap: 6px;">
+          <td>
                 ${typeIcon}
                 <span>${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</span>
             </td>
@@ -275,6 +287,8 @@ async function displayInitial() {
 
 async function displayDetails(data) {
     document.getElementById('detailsTableItem').style.display = 'none';
+    document.getElementById('geLatestFilter').style.display = 'none';
+    document.getElementById('geNavigation').style.display = 'none';
     const table = document.getElementById('detailsTable');
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
@@ -344,7 +358,6 @@ function getThemeColors() {
         bgColor: isDark ? '#1e1e1e' : '#ffffff'
     };
 }
-
 
 function displayCandlestickChart(candles, name) {
     const colors = getThemeColors();
@@ -546,7 +559,101 @@ function syncZoom({ chart }) {
     }
 }
 
+function GetSettings() {
+    const page = parseInt(document.querySelector('#geNavigation button:not(.generic).active')?.textContent) || 1
+    const pageRange = parseInt(document.getElementById('geItemsPerType')?.value) / 10 || 1
+    const selectedRadio = document.querySelector('input[name="GE"]:checked')
+    let mode = 'both';
+    if (selectedRadio) {
+        if (selectedRadio.id === 'geSell') mode = 'sell'
+        else if (selectedRadio.id === 'geBuy') mode = 'buy'
+    }
+    return { page, pageRange, mode }
+}
+
+function UpdateLabels() {
+    const genericButtons = document.querySelectorAll('#geNavigation .generic')
+    let currentPage = parseInt(document.querySelector('#geNavigation button:not(.generic).active')?.textContent) || 1
+    const firstButton = genericButtons[0]
+    const previousButton = genericButtons[1]
+
+    firstButton.disabled = currentPage <= 1
+    previousButton.disabled = currentPage <= 1
+}
+
+const genericButtons = document.querySelectorAll('#geNavigation .generic');
+genericButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        const buttonText = this.textContent
+
+        let currentPage = parseInt(document.querySelector('#geNavigation button:not(.generic).active')?.textContent) || 1
+
+        if (buttonText === 'First')
+            currentPage = 1
+        else if (buttonText === 'Previous' && currentPage > 1)
+            currentPage--
+        else if (buttonText === 'Next')
+            currentPage++
+
+        let startPage = currentPage <= 3 ? 1 : currentPage - 2
+
+        numberedButtons.forEach((button, index) => {
+            const pageNum = startPage + index
+
+            if (pageNum === currentPage)
+                button.classList.add('active')
+            else
+                button.classList.remove('active')
+
+            button.textContent = pageNum
+        });
+
+        console.log(currentPage)
+
+        UpdateLabels()
+        ViewInitialOffers()
+    });
+});
+
+const numberedButtons = document.querySelectorAll('#geNavigation button:not(.generic)');
+numberedButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        //let currentPage = parseInt(document.querySelector('#geNavigation button:not(.generic).active')?.textContent) || 1;
+        numberedButtons.forEach(btn => btn.classList.remove('active'))
+
+        const newPage = parseInt(this.textContent) || 1
+        let startPage = newPage <= 3 ? 1 : newPage - 2
+
+        numberedButtons.forEach((button, index) => {
+            const pageNum = startPage + index
+
+            if (pageNum === newPage)
+                button.classList.add('active')
+
+            button.textContent = pageNum
+        });
+
+        console.log(newPage)
+
+        UpdateLabels()
+        ViewInitialOffers()
+    });
+});
+
+const radioButtons = document.querySelectorAll('input[name="GE"]');
+radioButtons.forEach(button => {
+    button.addEventListener('change', function () {
+        ViewInitialOffers();
+    });
+});
+
+document.getElementById('geItemsPerType').addEventListener('change', function () {
+    ViewInitialOffers();
+});
+
 document.getElementById('viewLatestOffers').addEventListener("click", function () {
+    document.getElementById('geLatestFilter').style.display = '';
+    document.getElementById('geNavigation').style.display = '';
     ViewInitialOffers();
 });
 
