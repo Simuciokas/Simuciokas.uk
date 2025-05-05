@@ -219,58 +219,61 @@
 
     <div class="main" id="HotCold" style="display: none;">
 
-        <span>Tier of Clue:</span><br />
-        <input class="selRadio" type="radio" id="rBeginner" name="clueTier" value="Beginner">
-        <label for="rBeginner">Beginner</label><br />
-        <input class="selRadio" type="radio" id="rEasy" name="clueTier" value="Easy">
-        <label for="rEasy">Easy</label><br />
-        <!---<input class="selRadio" type="radio" id="rMedium" name="clueTier" value="Medium">
-        <label for="rMedium">Medium</label><br />
-        <input class="selRadio" type="radio" id="rHard" name="clueTier" value="Hard">
-        <label for="rHard">Hard</label><br />
-        <input class="selRadio" type="radio" id="rElite" name="clueTier" value="Elite">
-        <label for="rElite">Elite</label><br />-->
-        <input class="selRadio" type="radio" id="rMaster" name="clueTier" value="Master">
-        <label for="rMaster">Master</label><br /><br />
+        <div class="input-group mb-2">
+            <label class="input-group-text" style="width: 130px;">Tier of Clue:</label>
+            <input class="btn-check" type="radio" id="rBeginner" name="holdColdClueTier" value="Beginner" autocomplete="off" checked />
+            <label class="btn btn-outline-secondary" for="rBeginner">Beginner</label>
+            <input class="btn-check" type="radio" id="rEasy" name="holdColdClueTier" value="Easy" autocomplete="off" />
+            <label class="btn btn-outline-secondary" for="rEasy">Easy</label>
+            <input class="btn-check" type="radio" id="rMaster" name="holdColdClueTier" value="Master" autocomplete="off" />
+            <label class="btn btn-outline-secondary" for="rMaster">Master</label>
+        </div>
 
-        <span id="solution-hotcold-header"><b>Possible locations:</b></span>
-        <div id="solution-hotcold" style="height: 200px; width: 520px; overflow: hidden; overflow-y: scroll;">
+        <div class="input-group mb-2">
+            <label class="input-group-text" style="width: 130px;">In-game /map</label>
+            <input class="form-control" type="text" id="HotColdMap" placeholder="Input URL from /map">
+        </div>
+
+        <div class="input-group mb-2">
+            <label class="input-group-text" style="width: 130px;">Distance</label><br />
+            <input class="form-control" type="number" id="HotColdDistance" placeholder="Input distance">
+        </div>
+
+        <div class="btn-group mb-4">
+            <button class="btn btn-outline-primary" id="HotColdSolve">Try Solve</button>
+            <button class="btn btn-outline-danger" id="HotColdReset">Reset</button>
+        </div>
+
+        <div class="input-group mb-1">
+            <label class="input-group-text fw-bold" style="width: 160px;">Provided Location</label>
+            <span class="form-control" id="hotcold-location">not provided</span>
+        </div>
+
+        <div class="input-group mb-1">
+            <label class="input-group-text fw-bold" style="width: 160px;">Provided Distance</label>
+            <span class="form-control" id="hotcold-distance">not provided</span>
+        </div>
+
+        <span class="fw-bold h3"  id="solution-hotcold-header">Possible locations:</span>
+        <div class="container" id="solution-hotcold" style="height: 400px; overflow: hidden; overflow-y: scroll;">
             <span><b>Tip: </b></span><span id="solution-hotcold-tip">not found</span><br />
             <span><b>Map location: </b></span><a id="solution-hotcold-url" target="_blank">not found</a><br />
         </div><br />
-
-        <span><b>Provided Location: </b></span><span id="hotcold-location">not provided</span><br />
-        <span><b>Provided Distance: </b></span><span id="hotcold-distance">not provided</span><br /><br />
-
-        <button id="HotColdSolve">Try Solve</button> <button id="HotColdReset">Reset</button><br /><br />
-
-
-        <!--- <span>Input your location with X and Z coordiantes</span><br />
-        <input type="number" oninput="this.value = Math.round(this.value);" id="HotColdX" placeholder="Input your X coordinate">
-        <input type="number" oninput="this.value = Math.round(this.value);" id="HotColdZ" placeholder="Input your Z coordinate"><br /><br /> --->
-
-        <span>Input the URL you get from /map</span><br />
-        <input class="textInput" type="text" id="HotColdMap" placeholder="Input URL from /map" style="width: 520px"><span id="HotColdMapTip" style="padding-left: 10px;color: red; display:none;"></span><br /><br />
-
-        <span>Input the distance you get standing at your location</span><br />
-        <input class="textInput" type="number" id="HotColdDistance" placeholder="Input distance"><br /><br />
-
-
 
     </div>
 
     <div class="main" id="Map" style="display: none;">
 
         <span>Tier of Clue:</span>
-        <input class="mapTierRadio" type="radio" id="rBeginnerM" name="clueTier" value="Beginner">
+        <input class="mapTierRadio" type="radio" id="rBeginnerM" name="mapClueTier" value="Beginner">
         <label for="rBeginnerM">Beginner</label>
-        <input class="mapTierRadio" type="radio" id="rEasyM" name="clueTier" value="Easy">
+        <input class="mapTierRadio" type="radio" id="rEasyM" name="mapClueTier" value="Easy">
         <label for="rEasyM">Easy</label>
-        <input class="mapTierRadio" type="radio" id="rMediumM" name="clueTier" value="Medium">
+        <input class="mapTierRadio" type="radio" id="rMediumM" name="mapClueTier" value="Medium">
         <label for="rMediumM">Medium</label>
-        <input class="mapTierRadio" type="radio" id="rHardM" name="clueTier" value="Hard">
+        <input class="mapTierRadio" type="radio" id="rHardM" name="mapClueTier" value="Hard">
         <label for="rHardM">Hard</label>
-        <input class="mapTierRadio" type="radio" id="rEliteM" name="clueTier" value="Elite">
+        <input class="mapTierRadio" type="radio" id="rEliteM" name="mapClueTier" value="Elite">
         <label for="rEliteM">Elite</label><br />
 
         <div id="solution-map" style="max-height: 80vh; height: 80vh; overflow: hidden; overflow-y: scroll;">
