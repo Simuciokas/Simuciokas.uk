@@ -44,13 +44,24 @@ const sellIcon = `
   <path d="M19 13H5v-2h14v2z"/>
 </svg>`;
 
+const select = document.getElementById('geItemsPerType');
+for (let i = 10; i <= 300; i += 10) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.textContent = i;
+    if (i === 10) option.selected = true;
+        select.appendChild(option);
+}
+
+let showingInitial = true;
 
 Startup();
 
 async function ViewInitialOffers() {
     try {
-        const settings = GetSettings();
-        const pages = Array.from({ length: settings.pageRange }, (_, i) => settings.page + i);
+        showingInitial = true
+        const settings = GetSettings()
+        const pages = Array.from({ length: settings.pageRange }, (_, i) => settings.page + i)
 
         const sellRequests = (settings.mode === 'sell' || settings.mode === 'both')
             ? pages.map(p => fetch(`https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell?page=${p}`))
@@ -286,23 +297,26 @@ async function displayInitial() {
 }
 
 async function displayDetails(data) {
-    document.getElementById('detailsTableItem').style.display = 'none';
-    document.getElementById('geLatestFilter').style.display = 'none';
-    document.getElementById('geNavigation').style.display = 'none';
-    const table = document.getElementById('detailsTable');
-    const tbody = table.querySelector('tbody');
-    tbody.innerHTML = '';
+    showingInitial = false
+    document.getElementById('detailsTableItem').style.display = 'none'
+    document.getElementById('geLatestFilter').style.display = 'none'
+    document.getElementById('geNavigation').classList.remove("d-flex")
+    document.getElementById('geNavigation').classList.add("d-none")
+    document.getElementById('viewLatestOffers').style.display = ''
+    const table = document.getElementById('detailsTable')
+    const tbody = table.querySelector('tbody')
+    tbody.innerHTML = ''
 
-    const combined = [...data.buy, ...data.sell];
+    const combined = [...data.buy, ...data.sell]
 
     await Promise.all(
         [...new Set(initialOffers.map(entry => entry.user))].map(entry => resolveUser(entry))
-    );
+    )
 
     for (const entry of combined) {
-        const row = document.createElement('tr');
-        const username = await resolveUser(entry.user);
-        const typeIcon = entry.type === 'buy' ? buyIcon : sellIcon;
+        const row = document.createElement('tr')
+        const username = await resolveUser(entry.user)
+        const typeIcon = entry.type === 'buy' ? buyIcon : sellIcon
         row.innerHTML = `
           <td style="display: flex; align-items: center; gap: 6px;">
                 ${typeIcon}
@@ -312,11 +326,11 @@ async function displayDetails(data) {
           <td>${formatNumber(entry.price)}</td>
           <td>${username}</td>
           <td data-timestamp="${entry.timestamp}">${new Date(entry.timestamp).toLocaleString()}</td>
-        `;
-        tbody.appendChild(row);
+        `
+        tbody.appendChild(row)
     }
 
-    table.style.display = 'table';
+    table.style.display = 'table'
 }
 
 const observer = new MutationObserver(() => {
@@ -653,7 +667,9 @@ document.getElementById('geItemsPerType').addEventListener('change', function ()
 
 document.getElementById('viewLatestOffers').addEventListener("click", function () {
     document.getElementById('geLatestFilter').style.display = '';
-    document.getElementById('geNavigation').style.display = '';
+    document.getElementById('geNavigation').classList.remove("d-none")
+    document.getElementById('geNavigation').classList.add("d-flex")
+    document.getElementById('viewLatestOffers').style.display = 'none';
     ViewInitialOffers();
 });
 
@@ -691,8 +707,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const tbody = table.querySelector('tbody');
         const rowsArray = Array.from(tbody.querySelectorAll('tr'));
 
-        const isNumericColumn = columnIndex === 1 || columnIndex === 2;
-        const isDateColumn = columnIndex === 4;
+        const isNumericColumn = showingInitial ? (columnIndex === 2 || columnIndex === 3) : (columnIndex === 1 || columnIndex === 2);
+        const isDateColumn = showingInitial ? (columnIndex === 5) : (columnIndex === 4);
 
         // Determine sort direction
         sortDirection[columnIndex] = !sortDirection[columnIndex];
@@ -706,6 +722,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const bNum = parseAbbreviatedNumber(bText);
                 return sortDirection[columnIndex] ? aNum - bNum : bNum - aNum;
             } else if (isDateColumn) {
+
                 const aTimestamp = parseInt(a.children[columnIndex].getAttribute('data-timestamp'), 10);
                 const bTimestamp = parseInt(b.children[columnIndex].getAttribute('data-timestamp'), 10);
 
