@@ -101,7 +101,7 @@
   },
   "Hidden on a path to the slayer city, I'm surrounded by mushrooms.": {
     "id": "",
-    "location": "191, 0, -640",
+    "location": "191, 76, -640",
     "tip": "Canifis / Varrock"
   },
   "I await for my friends to come, to help me at my comp. I want to start a new group, what do you call it a Cl...": {
@@ -246,7 +246,7 @@
   },
   "Do you really want to pass over me? I mean, those people are pretty wild.": {
     "id": "",
-    "location": "-685, 0, -430",
+    "location": "-685, 64, -430",
     "tip": "Edgeville"
   },
   "Enter east, then go south. I shall hide in the masses of the city.": {
@@ -341,7 +341,7 @@
   },
   "I hold items of those, killed by the guard dogs.": {
     "id": "",
-    "location": "-2002, 0, -610",
+    "location": "-2002, 64, -610",
     "tip": "Skills Necklace to Ranging Guild"
   },
   "I see gold. I see a castle of knights. I fear a war.": {
@@ -371,12 +371,12 @@
   },
   "People used to cook food here, but then a war came and now they're afraid to visit me.": {
     "id": "",
-    "location": "-951, 0, -1314",
+    "location": "-951, 64, -1314",
     "tip": "Edgeville"
   },
   "They seek for a lever in these ruins, but it is not here.": {
     "id": "",
-    "location": "-743, 0, -2091",
+    "location": "-743, 85, -2091",
     "tip": "Edgeville"
   },
   "We slay the mighty! ": {
