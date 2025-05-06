@@ -15,30 +15,38 @@ function Reset() {
 
     suggestions = []
 
-    const tier = document.querySelectorAll('input.mapTierRadio:checked')[0].value.toLowerCase()
+    document.getElementById("solution-map-map").innerHTML = ""
+    const tier = document.querySelector('#Map input.btn-check:checked').value.toLowerCase()
     const data = database.maps.filter(x => { return x.id == tier })
     let solutionDiv = document.getElementById("solution-map")
     solutionDiv.innerHTML = ""
     data.forEach(function (item, ind) {
         solutionDiv.innerHTML += `
-            <div style="display: flex; align-items: flex-start;">
-                <image style="max-width: 250px; margin-right: 20px;" src="/MapImages/${item.name}.webp"></image>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <span><b>Tip: </b> ${item.tip}</span>
-                    <span><b>Map location: </b><a id="solution-map-url-${ind + 1}" href="${GetMapURL(item.location)}" target="_blank">${item.location}</a></span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <input style="margin: 0;" class="mapRadio" id="${ind + 1}-map" type="radio" name="mapSelector"/>
-                        <label for="${ind + 1}-map">Select to show map position</label>
+            <label>
+                <input class="mapRadio d-none" type="radio" name="mapSelector"/>
+                <div class="card mb-3" style="width: 350px; height: 160px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="/MapImages/${item.name}.webp" class="img-fluid rounded-start" alt="${item.name}.webp" width="166" height="166"/>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <p class="card-text">${item.tip} <span id="map${ind + 1}">${item.location}</span></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div><br />
+            </label>
             `
     });
+    //<a id="solution-map-url-${ind + 1}" href="${GetMapURL(item.location)}" target="_blank">${item.location}</a>
 
-    document.querySelectorAll("input.mapRadio").forEach(x => {
+    document.querySelectorAll("input.mapRadio").forEach(function(x, ind) {
         x.addEventListener('change', function (e) {
-            const index = x.id.replace("-map", "")
-            const url = document.getElementById(`solution-map-url-${index}`).href
+            
+            document.querySelectorAll("#solution-map div.card").forEach(y => y.classList.remove("border-primary"))
+            x.nextElementSibling.classList.add("border-primary")
+            const url = GetMapURL(document.querySelector(`#map${ind + 1}`).innerText)
             document.getElementById("solution-map-map").innerHTML = ""
             document.getElementById("solution-map-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
         })
@@ -54,7 +62,7 @@ function GetMapURL(location) {
     return `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`;
 }
 
-document.querySelectorAll("input.mapTierRadio").forEach(x => {
+document.querySelectorAll("#Map input.btn-check").forEach(x => {
     x.addEventListener('change', function (e) {
         Reset()
     })
