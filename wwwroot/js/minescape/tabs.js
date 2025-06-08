@@ -21,6 +21,8 @@ function changePage(page) {
     document.getElementById(currentPage).style.display = "none"
     document.getElementById(page).style.display = ""
     currentPage = page
+
+    history.replaceState(null, null, `#${currentPage}`);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
