@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-    #searchResults div:hover {
+    #searchResults div:is(:hover, .highlight) {
         background-color: var(--bs-secondary);
     }
 

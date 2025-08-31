@@ -214,6 +214,37 @@ function displaySearchResults(results) {
     }
 }
 
+let currentIndex = -1;
+
+function updateHighlight(items) {
+    items.forEach(item => item.classList.remove('highlight'));
+    if (currentIndex >= 0) {
+        items[currentIndex].classList.add('highlight');
+        items[currentIndex].scrollIntoView({ block: 'nearest' });
+    }
+}
+
+document.getElementById('searchInput').addEventListener('keydown', (e) => {
+    const items = document.getElementById('searchResults').querySelectorAll("div");
+    if (items.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        currentIndex = (currentIndex + 1) % items.length;
+        updateHighlight(items);
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updateHighlight(items);
+    } else if (e.key === 'Enter') {
+        if (currentIndex >= 0) {
+            e.preventDefault();
+            document.getElementById('searchInput').value = items[currentIndex].textContent;
+            items[currentIndex].click();
+        }
+    }
+});
+
 
 async function selectItem(item) {
     document.getElementById('searchInput').value = item.name;
@@ -675,6 +706,11 @@ document.getElementById('viewLatestOffers').addEventListener("click", function (
 
 document.getElementById('searchInput').addEventListener('input', (e) => {
     searchItems(e.target.value);
+});
+
+document.getElementById('searchInput').addEventListener('click', (e) => {
+    searchItems(e.target.value);
+    currentIndex = -1;
 });
 
 window.addEventListener('click', function (e) {
