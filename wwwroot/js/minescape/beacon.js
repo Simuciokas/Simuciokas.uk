@@ -101,6 +101,14 @@ window.addEventListener('click', function (e) {
     }
 });
 
+function updateHighlight(items) {
+    items.forEach(item => item.classList.remove('highlight'));
+    if (currentIndex >= 0) {
+        items[currentIndex].classList.add('highlight');
+        items[currentIndex].scrollIntoView({ block: 'nearest' });
+    }
+}
+
 document.getElementById('BeaconInput').addEventListener('keydown', (e) => {
     const items = document.getElementById('searchResultsBeacon').querySelectorAll("div");
     if (items.length === 0) return;

@@ -109,6 +109,14 @@ window.addEventListener('click', function (e) {
     }
 });
 
+function updateHighlight(items) {
+    items.forEach(item => item.classList.remove('highlight'));
+    if (currentIndex >= 0) {
+        items[currentIndex].classList.add('highlight');
+        items[currentIndex].scrollIntoView({ block: 'nearest' });
+    }
+}
+
 document.getElementById('AnagramInput').addEventListener('keydown', (e) => {
     const items = document.getElementById('searchResultsAnagram').querySelectorAll("div");
     if (items.length === 0) return;
