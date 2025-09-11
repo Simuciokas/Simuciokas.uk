@@ -172,48 +172,90 @@
     </div>
 
     <div class="main" id="Anagram" style="display: none;">
-        <span><b>Name: </b></span><span id="solution-anagram-name">not found</span><br />
-        <span><b>Tip: </b></span><span id="solution-anagram-tip">not found</span><br />
-        <span><b>Map location: </b></span><a id="solution-anagram-url" target="_blank">not found</a><br /><br />
-        <div class="autocomplete" style="width:300px;">
-            <input class="textInput" type="text" id="AnagramInput" placeholder="Input an anagram" autocomplete="off" style="width: 300px;">
+        <div class="position-relative">
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">NPC Name:</span>
+                <span class="form-control" id="solution-anagram-name">not found</span>
+            </div>
+            
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Tip:</span>
+                <span class="form-control" id="solution-anagram-tip">not found</span>
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Map location:</span>
+                <a class="form-control" id="solution-anagram-url" target="_blank">not found</a>
+            </div>
+
+            <input class="form-control mb-2" type="text" id="AnagramInput" placeholder="Input Anagram Text" autocomplete="off">
+            <div class="bg-secondary-subtle search-results" id="searchResultsAnagram"></div>
         </div>
-        <br />
         <div id="solution-anagram-map"></div>
     </div>
 
     <div class="main" id="Cypher" style="display: none;">
-        <span><b>Name: </b></span><span id="solution-cypher-name">not found</span><br />
-        <span><b>Tip: </b></span><span id="solution-cypher-tip">not found</span><br />
-        <span><b>Map location: </b></span><a id="solution-cypher-url" target="_blank">not found</a><br /><br />
-        <div class="autocomplete" style="width:300px;">
-            <input class="textInput" type="text" id="CypherInput" placeholder="Input a cypher">
-        </div>
-        <br />
-        <div id="solution-cypher-map"></div>
+        <div class="position-relative">
 
-        <div class="Tips">
-            <span><b>Tip #1: </b></span><span>Minimum of 3 characters are required to find a potential result</span><br />
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Name:</span>
+                <span class="form-control" id="solution-cypher-name">not found</span>
+            </div>
+            
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Tip:</span>
+                <span class="form-control" id="solution-cypher-tip">not found</span>
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Map location:</span>
+                <a class="form-control" id="solution-cypher-url" target="_blank">not found</a>
+            </div>
+
+            <input class="form-control mb-2" type="text" id="CypherInput" placeholder="Input Cypher Text" autocomplete="off">
+            <div class="Tips">
+                <span class="fw-bold">Tip #1: </span><span>Minimum of 3 characters are required to find a potential result</span>
+            </div>
         </div>
+        <div id="solution-cypher-map"></div>
     </div>
 
     <div class="main" id="Beacon" style="display: none;">
-        <span><b>Tip: </b></span><span id="solution-beacon-tip">not found</span><br />
-        <span><b>Map location: </b></span><a id="solution-beacon-url" target="_blank">not found</a><br /><br />
-        <div class="autocomplete" style="width:300px;">
-            <input class="textInput" type="text" id="BeaconInput" placeholder="Input a beacon">
+        <div class="position-relative">
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Tip:</span>
+                <span class="form-control" id="solution-beacon-tip">not found</span>
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Map location:</span>
+                <a class="form-control" id="solution-beacon-url" target="_blank">not found</a>
+            </div>
+
+            <input class="form-control mb-2" type="text" id="BeaconInput" placeholder="Input Beacon Code" autocomplete="off">
+            <div class="bg-secondary-subtle search-results" id="searchResultsBeacon"></div>
         </div>
-        <br />
         <div id="solution-beacon-map"></div>
     </div>
 
     <div class="main" id="Chest" style="display: none;">
-        <span><b>Tip: </b></span><span id="solution-chest-tip">not found</span><br />
-        <span><b>Map location: </b></span><a id="solution-chest-url" target="_blank">not found</a><br /><br />
-        <div class="autocomplete" style="width:300px;">
-            <input class="textInput" type="text" id="ChestInput" placeholder="Input a chest">
+        <div class="position-relative">
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Tip:</span>
+                <span class="form-control" id="solution-chest-tip">not found</span>
+            </div>
+
+            <div class="input-group mb-2">
+                <span class="input-group-text" style="width: 130px;">Map location:</span>
+                <a class="form-control" id="solution-chest-url" target="_blank">not found</a>
+            </div>
+
+            <input class="form-control mb-2" type="text" id="ChestInput" placeholder="Input Chest Text" autocomplete="off">
+            <div class="bg-secondary-subtle search-results" id="searchResultsChest"></div>
         </div>
-        <br />
         <div id="solution-chest-map"></div>
     </div>
 
@@ -231,12 +273,12 @@
 
         <div class="input-group mb-2">
             <label class="input-group-text" style="width: 130px;">In-game /map</label>
-            <input class="form-control" type="text" id="HotColdMap" placeholder="Input URL from /map">
+            <input class="form-control" type="text" id="HotColdMap" placeholder="Input URL from /map" autocomplete="off">
         </div>
 
         <div class="input-group mb-2">
             <label class="input-group-text" style="width: 130px;">Distance</label><br />
-            <input class="form-control" type="number" id="HotColdDistance" placeholder="Input distance">
+            <input class="form-control" type="number" id="HotColdDistance" placeholder="Input distance" autocomplete="off">
         </div>
 
         <div class="btn-group mb-4">
@@ -276,6 +318,9 @@
             <input class="btn-check" type="radio" id="rEliteM" name="mapClueTier" value="Elite" autocomplete="off" />
             <label class="btn btn-outline-secondary" for="rEliteM">Elite</label>
         </div>
+        <div class="Tips">
+            <span class="fw-bold">Tip #1: </span><span>Click to preview map</span>
+        </div>
 
         <div id="solution-map">
         </div><br />
@@ -304,7 +349,7 @@
 
                     <div class="input-group w-auto">
                         <input class="form-control" type="text" id="searchInput" placeholder="Search item by name or symbol..." autocomplete="off" style="width: 300px;">
-                        <div class="input-group-text ">
+                        <div class="input-group-text">
                             <div class="form-check form-switch">
                                 <input class="form-check-input info-switch" type="checkbox" id="fuzzySearchToggle" checked>
                                 <label class="form-check-label prevent-select" for="fuzzySearchToggle">Fuzzy Search</label>
@@ -313,7 +358,7 @@
                     </div>
                 </div>
 
-                <div class="bg-secondary-subtle" id="searchResults"></div>
+                <div class="bg-secondary-subtle search-results" id="searchResults"></div>
             </div>
         </div>
 

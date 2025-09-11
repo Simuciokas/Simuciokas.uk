@@ -12,18 +12,8 @@
         box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
     }
 
-#searchResults {
-    border: 1px solid var(--bs-secondary);
-    border-radius: 12px;
-    max-height: 400px;
-    overflow-y: auto;
-    margin-top: 8px;
-    display: none;
-    position: absolute;
-    z-index: 1000;
-    top: 100%;
-    width: 100%;
-}
+
+
 
 .active,
 input[type="radio"]:checked + label {
