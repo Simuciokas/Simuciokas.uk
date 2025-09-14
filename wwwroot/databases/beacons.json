@@ -208,5 +208,15 @@
     "id": "",
     "location": "-576, 211, -1296",
     "tip": "Edgeville"
+  },
+  "Qua": {
+    "id": "",
+    "location": "-490, 70, 1127",
+    "tip": "Glory Amulet to Al-Kharid"
+  },
+  "Gi": {
+    "id": "",
+    "location": "86, 105, 396",
+    "tip": "Glory Amulet to Al-Kharid"
   }
 }
