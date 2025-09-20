@@ -35,40 +35,44 @@ function Reset() {
 
     suggestions = []
 
+    document.getElementById("solution-hotcold-map").innerHTML = ""
     const tier = document.querySelectorAll('#HotCold input.btn-check:checked')[0].value.toLowerCase()
     const data = database.hotcold.filter(x => { return x.id == tier })
+
     document.getElementById("solution-hotcold-header").innerHTML = `Possible Locations (${data.length})`
     let solutionDiv = document.getElementById("solution-hotcold")
     solutionDiv.innerHTML = ""
     data.forEach(function (item, ind) {
-        /*
-            <span>#${ind + 1} CLICK Try Solve</span><br />
-            <span><b>Tip: </b></span><span>${item.tip}</span><br />
-            <span><b>Map location: </b></span><a id="solution-hotcold-url" href="${GetMapURL(item.location)}" target="_blank">${item.location}</a><br />
-            <span><b>Distance: </b></span>CLICK Try Solve<br /><br />
-         */
         const htmlContent =
             `
-            <div class="card col" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">#${ind + 1}</h5>
-                <p class="card-text">${item.tip}</p>
-                <a class="btn btn-primary" href="${GetMapURL(item.location)}" target="_blank">Open Map (${item.location})</a>
-              </div>
-            </div>
+            <label class="col d-flex h-100">
+                <input class="hotcoldRadio d-none" type="radio" name="hotcoldSelector"/>
+                <div class="col d-flex">
+                    <div class="card h-100 w-100">
+                      <div class="card-body d-flex flex-column">
+                        <p class="card-text">${item.tip}</p>
+                        <p class="card-text">${item.location}</p>
+                      </div>
+                    </div>
+                </div>
+            </label>
             `
-        const isRow = (ind % 3 == 0)
-        if (isRow) {
-            let div = document.createElement('div')
-            div.classList.add('row')
-            solutionDiv.appendChild(div)
-        }
+            //<btn class="btn btn-primary mt-auto" href="${GetMapURL(item.location)}" target="_blank">Select Map (${item.location})</btn>
         let temp = document.createElement('div')
         temp.innerHTML = htmlContent.trim()
-        let row = [...solutionDiv.querySelectorAll('div.row')].pop()
-        row.appendChild(temp.firstElementChild)
-            
+        solutionDiv.appendChild(temp)
     });
+
+    document.querySelectorAll("input.hotcoldRadio").forEach(function (x, ind) {
+        x.addEventListener('change', function (e) {
+            document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
+            x.nextElementSibling.querySelector("div").classList.add("border-primary")
+            const anchor = x.closest('label').querySelectorAll('.card-text')[1]
+            const url = GetMapURL(anchor.innerText)
+            document.getElementById("solution-hotcold-map").innerHTML = ""
+            document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+        })
+    })
 }
 
 function UpdateLabels() {
@@ -176,20 +180,46 @@ function TrySolve() {
 
     document.getElementById("solution-hotcold-header").innerHTML = `Possible Locations (${items.length})`
     let solutionDiv = document.getElementById("solution-hotcold")
+
     solutionDiv.innerHTML = ""
     items.forEach(function(item, ind) {
         const htmlContent = 
             `
-            <div class="card col" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">#${ind + 1}</h5>
-                <p class="card-text">${item.tip}</p>
-                <a class="btn btn-primary" href="${GetMapURL(item.location)}" target="_blank">Open Map (${item.location})</a>
-              </div>
-            </div>
+            <label class="col d-flex h-100">
+                <input class="hotcoldRadio d-none" type="radio" name="hotcoldSelector"/>
+                <div class="col d-flex">
+                    <div class="card h-100 w-100">
+                      <div class="card-body d-flex flex-column">
+                            <p class="card-text">${item.tip}</p>
+                            <p class="card-text">${item.location}</p>
+                        </div>
+                    </div>
+                </div>
+            </label>
             `
         solutionDiv.innerHTML += htmlContent
     });
+
+    if (items.length == 1) {
+        document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
+        const x = document.querySelector("input.hotcoldRadio")
+        x.nextElementSibling.querySelector("div").classList.add("border-primary")
+        const anchor = x.closest('label').querySelectorAll('.card-text')[1]
+        const url = GetMapURL(anchor.innerText)
+        document.getElementById("solution-hotcold-map").innerHTML = ""
+        document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+    }
+
+    document.querySelectorAll("input.hotcoldRadio").forEach(function (x, ind) {
+        x.addEventListener('change', function (e) {
+            document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
+            x.nextElementSibling.querySelector("div").classList.add("border-primary")
+            const anchor = x.closest('label').querySelectorAll('.card-text')[1]
+            const url = GetMapURL(anchor.innerText)
+            document.getElementById("solution-hotcold-map").innerHTML = ""
+            document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+        })
+    })
 }
 
 document.getElementById("HotColdDistance").addEventListener('change', function (e) {

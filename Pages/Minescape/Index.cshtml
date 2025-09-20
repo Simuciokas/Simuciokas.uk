@@ -274,34 +274,33 @@
         <div class="input-group mb-2">
             <label class="input-group-text" style="width: 130px;">In-game /map</label>
             <input class="form-control" type="text" id="HotColdMap" placeholder="Input URL from /map" autocomplete="off">
+            <label class="input-group-text fw-bold" style="width: 160px;">Provided Location</label>
+            <span class="form-control" id="hotcold-location">not provided</span>
         </div>
 
         <div class="input-group mb-2">
             <label class="input-group-text" style="width: 130px;">Distance</label><br />
             <input class="form-control" type="number" id="HotColdDistance" placeholder="Input distance" autocomplete="off">
-        </div>
-
-        <div class="btn-group mb-4">
-            <button class="btn btn-outline-primary" id="HotColdSolve">Try Solve</button>
-            <button class="btn btn-outline-danger" id="HotColdReset">Reset</button>
-        </div>
-
-        <div class="input-group mb-1">
-            <label class="input-group-text fw-bold" style="width: 160px;">Provided Location</label>
-            <span class="form-control" id="hotcold-location">not provided</span>
-        </div>
-
-        <div class="input-group mb-1">
             <label class="input-group-text fw-bold" style="width: 160px;">Provided Distance</label>
             <span class="form-control" id="hotcold-distance">not provided</span>
         </div>
 
-        <span class="fw-bold h3"  id="solution-hotcold-header">Possible locations:</span>
-        <div class="container" id="solution-hotcold" style="height: 400px; overflow: hidden; overflow-y: scroll;">
+        <div class="btn-group mb-2">
+            <button class="btn btn-outline-primary" id="HotColdSolve">Try Solve</button>
+            <button class="btn btn-outline-danger" id="HotColdReset">Reset</button>
+            <span class="fw-bold h3" id="solution-hotcold-header">Possible locations:</span>
+        </div>
+
+        <div class="Tips">
+            <span class="fw-bold">Tip #1: </span><span>Click to preview location</span>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" id="solution-hotcold" style="height: 259px; overflow: hidden; overflow-y: scroll;">
             <span><b>Tip: </b></span><span id="solution-hotcold-tip">not found</span><br />
             <span><b>Map location: </b></span><a id="solution-hotcold-url" target="_blank">not found</a><br />
-        </div><br />
+        </div>
 
+        <div id="solution-hotcold-map">
+        </div>
     </div>
 
     <div class="main" id="Map" style="display: none;">
