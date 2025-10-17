@@ -59,6 +59,7 @@ Startup();
 
 async function ViewInitialOffers() {
     try {
+        document.getElementById('detailsTableItem').style.display = ''
         showingInitial = true
         const settings = GetSettings()
         const pages = Array.from({ length: settings.pageRange }, (_, i) => settings.page + i)
