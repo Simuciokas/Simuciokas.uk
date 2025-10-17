@@ -19,15 +19,18 @@ async function Startup() {
             return database.anagrams[val].id.length == cipher.length && database.anagrams[val].id.length > 0
         })*/
 
-        let foundList = null
+        let foundList = []
         if (cipher.length >= 3) {
-            for (let i = 1; i <= 26; i++) {
-                let shifted = caesarShift(cipher, i)
-                foundList = objects.filter(function (val) {
-                    return val.id === shifted || val.id.startsWith(shifted)
-                })
-                if (foundList.length >= 1) {
-                    break
+            for (let i = 0; i < 26; i++) {
+                let shifted = caesarShift(cipher, i);
+                let results = objects.filter(val =>
+                    val.id.startsWith(shifted)
+                );
+
+                for (let item of results) {
+                    if (!foundList.includes(item)) {
+                        foundList.push(item);
+                    }
                 }
             }
         }
