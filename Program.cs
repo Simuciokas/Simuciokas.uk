@@ -30,7 +30,9 @@ using (var conn = new SqliteConnection(builder.Configuration.GetConnectionString
 
 app.MapPost("/api/feedback", async (HttpContext http, Feedback feedback, FeedbackRepository repo, IConfiguration config) =>
 {
-    var ip = http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+         ?? http.Connection.RemoteIpAddress?.ToString()
+         ?? "unknown";
 
     var recentFeedback = repo.Get(ip);
 
@@ -49,7 +51,9 @@ app.MapPost("/api/feedback", async (HttpContext http, Feedback feedback, Feedbac
 
 app.MapGet("/api/feedback/needed", async (HttpContext http, FeedbackRepository repo, IConfiguration config) =>
 {
-    var ip = http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+         ?? http.Connection.RemoteIpAddress?.ToString()
+         ?? "unknown";
 
     var recentFeedback = repo.Get(ip);
 
