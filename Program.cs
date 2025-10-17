@@ -1,15 +1,13 @@
-//using Microsoft.AspNetCore.ResponseCompression;
+using Dapper;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Data.Sqlite;
+using SimuciokasUK.Models;
+using SimuciokasUK.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
-
-//builder.Services.AddResponseCompression(options =>
-//{
-//    options.EnableForHttps = true;
-//    options.Providers.Add<GzipCompressionProvider>();
-//});
+builder.Services.AddSingleton<FeedbackRepository>();
 
 builder.Services.AddResponseCaching(options =>
 {
@@ -19,7 +17,46 @@ builder.Services.AddResponseCaching(options =>
 
 var app = builder.Build();
 
-//app.UseResponseCompression();
+using (var conn = new SqliteConnection(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=app.db"))
+{
+    conn.Execute(@"CREATE TABLE IF NOT EXISTS Feedback (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        IPAddress TEXT,
+        Rating INTEGER NOT NULL,
+        Notes TEXT,
+        Created TEXT NOT NULL
+    );");
+}
+
+app.MapPost("/api/feedback", async (HttpContext http, Feedback feedback, FeedbackRepository repo, IConfiguration config) =>
+{
+    var ip = http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+    var recentFeedback = repo.Get(ip);
+
+    if (recentFeedback != null && recentFeedback.Created > DateTime.UtcNow.AddDays(-30))
+    {
+        return Results.Ok(new { message = "Feedback already submitted recently." });
+    }
+
+    feedback.IPAddress = ip;
+    feedback.Created = DateTime.UtcNow;
+    repo.Insert(feedback);
+
+    return Results.Ok(new { message = "Thank you for your feedback!" });
+})
+.WithName("SubmitFeedback");
+
+app.MapGet("/api/feedback/needed", async (HttpContext http, FeedbackRepository repo, IConfiguration config) =>
+{
+    var ip = http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+    var recentFeedback = repo.Get(ip);
+
+    return Results.Ok(new { feedbackNeeded = recentFeedback == null || recentFeedback.Created <= DateTime.UtcNow.AddDays(-30) });
+})
+.WithName("FeedbackNeeded");
+
 app.UseResponseCaching();
 
 if (!app.Environment.IsDevelopment())
@@ -55,12 +92,7 @@ app.UseStaticFiles(new StaticFileOptions
     ContentTypeProvider = provider,
 });
 
-
 app.UseRouting();
-
 app.UseAuthorization();
-//app.UseResponseCompression();
-
 app.MapRazorPages();
-
 app.Run();
