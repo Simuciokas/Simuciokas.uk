@@ -3,6 +3,24 @@
 @{
     ViewData["Title"] = "Clue Helper";
 
+    <div class="modal fade" id="suggestionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Submit Suggestion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="suggestionNote" class="form-control" rows="4" placeholder="Enter your suggestion..."></textarea>
+                    <div id="suggestionMessage" class="mt-3 d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="suggestionSubmit" class="btn btn-primary w-100">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="continer-fluid">
         <div class="w-100 bg-secondary-subtle border-secondary-subtle border border-top-0 rounded-bottom-4 d-flex mb-3" id="Navigation">
             <input class="navRadio" type="radio" id="rPuzzle" name="radios" value="Puzzle">
@@ -78,7 +96,10 @@
         <div class="Tips">
             <a href="https://discord.com/channels/107916528011210752/1261723456790200472/1261723756712169522" target="_blank">Click Here for Sample screenshot (Discord)</a><br />
             <span><b>Tip #1: </b></span><span>On Windows use WIN+SHIFT+S to screenshot into clipboard</span><br />
-            <span><b>Tip #2: </b></span><span>Use CTRL+V to upload image from clipboard</span>
+            <span><b>Tip #2: </b></span><span>Use CTRL+V to upload image from clipboard</span><br />
+            <button type="button" class="btn btn-secondary" data-suggestion-type="Puzzle">
+                Provide Suggestion
+            </button>
         </div>
         <input type="checkbox" id="PuzzleDebug" style="display: none;"/><br />
     </div>
@@ -166,7 +187,10 @@
             <a href="https://discord.com/channels/107916528011210752/1261723456790200472/1262143288870174921" target="_blank">Click Here for Sample screenshots (Discord)</a><br />
             <span><b>NOTE: </b></span><span>Only lightbulbs should be contained in the screenshot, including buttons A to H will mark it as a wrong upload</span><br />
             <span><b>Tip #1: </b></span><span>On Windows use WIN+SHIFT+S to screenshot into clipboard</span><br />
-            <span><b>Tip #2: </b></span><span>Use CTRL+V to upload image from clipboard</span>
+            <span><b>Tip #2: </b></span><span>Use CTRL+V to upload image from clipboard</span><br />
+            <button type="button" class="btn btn-secondary" data-suggestion-type="Light">
+                Provide Suggestion
+            </button>
         </div>
         <input type="checkbox" id="LightDebug" style="display:none;" /><br />
     </div>
@@ -192,6 +216,9 @@
             <input class="form-control mb-2" type="text" id="AnagramInput" placeholder="Input Anagram Text" autocomplete="off">
             <div class="bg-secondary-subtle search-results" id="searchResultsAnagram"></div>
         </div>
+        <button type="button" class="btn btn-secondary" data-suggestion-type="Anagram">
+            Provide Suggestion
+        </button>
         <div id="solution-anagram-map"></div>
     </div>
 
@@ -215,7 +242,10 @@
 
             <input class="form-control mb-2" type="text" id="CypherInput" placeholder="Input Cypher Text" autocomplete="off">
             <div class="Tips">
-                <span class="fw-bold">Tip #1: </span><span>Minimum of 3 characters are required to find a potential result</span>
+                <span class="fw-bold">Tip #1: </span><span>Minimum of 3 characters are required to find a potential result</span><br/>
+                <button type="button" class="btn btn-secondary" data-suggestion-type="Cypher">
+                    Provide Suggestion
+                </button>
             </div>
         </div>
         <div id="solution-cypher-map"></div>
@@ -237,6 +267,9 @@
             <input class="form-control mb-2" type="text" id="BeaconInput" placeholder="Input Beacon Code" autocomplete="off">
             <div class="bg-secondary-subtle search-results" id="searchResultsBeacon"></div>
         </div>
+        <button type="button" class="btn btn-secondary" data-suggestion-type="Beacon">
+            Provide Suggestion
+        </button>
         <div id="solution-beacon-map"></div>
     </div>
 
@@ -256,6 +289,9 @@
             <input class="form-control mb-2" type="text" id="ChestInput" placeholder="Input Chest Text" autocomplete="off">
             <div class="bg-secondary-subtle search-results" id="searchResultsChest"></div>
         </div>
+        <button type="button" class="btn btn-secondary" data-suggestion-type="Chest">
+            Provide Suggestion
+        </button>
         <div id="solution-chest-map"></div>
     </div>
 
@@ -298,7 +334,9 @@
             <span><b>Tip: </b></span><span id="solution-hotcold-tip">not found</span><br />
             <span><b>Map location: </b></span><a id="solution-hotcold-url" target="_blank">not found</a><br />
         </div>
-
+        <button type="button" class="btn btn-secondary" data-suggestion-type="HotCold">
+            Provide Suggestion
+        </button>
         <div id="solution-hotcold-map">
         </div>
     </div>
@@ -319,6 +357,9 @@
         </div>
         <div class="Tips">
             <span class="fw-bold">Tip #1: </span><span>Click to preview map</span>
+            <button type="button" class="btn btn-secondary" data-suggestion-type="Map">
+                Provide Suggestion
+            </button>
         </div>
 
         <div id="solution-map">
@@ -393,6 +434,10 @@
             <canvas id="candlesChart" style="display: none; max-height: 400px;"></canvas>
             <canvas id="volumeChart" style="display: none; max-height: 200px;"></canvas>
         </div>
+
+        <button type="button" class="btn btn-secondary" data-suggestion-type="GE">
+            Provide Suggestion
+        </button>
     </div>
 
     <script src="@Url.Content("/dist/minescape-solvers.js")"></script>

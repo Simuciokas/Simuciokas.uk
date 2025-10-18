@@ -1,27 +1,21 @@
 ﻿using System.Data;
 using Dapper;
-using Microsoft.Data.Sqlite;
 using SimuciokasUK.Models;
 
 namespace SimuciokasUK.Repositories
 {
-    public class FeedbackRepository(IConfiguration _configuration)
+    public class FeedbackRepository(IDbConnection _connection)
     {
-        private readonly string _connectionString = _configuration.GetConnectionString("DefaultConnection") ?? "Data Source=app.db";
-
-        private IDbConnection Connection => new SqliteConnection(_connectionString);
-
         public void Insert(Feedback feedback)
         {
-            Connection.Execute(
+            _connection.Execute(
                 "INSERT INTO Feedback (IPAddress, Rating, Notes, Created) VALUES (@IPAddress, @Rating, @Notes, @Created)",
                 feedback
             );
         }
-
         public Feedback? Get(string ip)
         {
-            return Connection.QueryFirstOrDefault<Feedback>(
+            return _connection.QueryFirstOrDefault<Feedback>(
                 "SELECT * FROM Feedback WHERE IpAddress = @Ip ORDER BY Created DESC LIMIT 1",
                 new { Ip = ip }
             );

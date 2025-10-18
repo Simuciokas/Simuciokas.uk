@@ -72,6 +72,68 @@
             })
 
         showFeedbackPopup();
+
+        var selectedType = null;
+        const suggestionModal = new bootstrap.Modal(document.getElementById('suggestionModal'));
+        const messageBox = document.getElementById('suggestionMessage');
+
+        document.querySelectorAll('[data-suggestion-type]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedType = btn.getAttribute('data-suggestion-type');
+                document.querySelector('.modal-title').textContent = `Submit ${selectedType} Suggestion`;
+                document.getElementById('suggestionNote').value = '';
+                messageBox.classList.add('d-none');
+                suggestionModal.show();
+            });
+        });
+
+        const submitButton = document.getElementById('suggestionSubmit');
+        submitButton.addEventListener('click', async () => {
+            const note = document.getElementById('suggestionNote').value.trim();
+            if (!note) {
+                showMessage("Please enter a suggestion.", "danger");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+
+            try {
+
+                const response = await fetch(`/api/suggestion/${selectedType}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ note })
+                });
+
+                const result = await response.json();
+                showMessage(result.message, response.ok ? "success" : "danger");
+
+                if (response.ok) {
+                    submitButton.textContent = "Thank you!";
+                    setTimeout(() => {
+                        suggestionModal.hide();
+                        resetButton()
+                    }, 2150);
+                }
+                else {
+                    resetButton()
+                }
+            } catch (error) {
+                showMessage("Something went wrong. Try again later.", "danger")
+                resetButton()
+            }
+        });
+        function resetButton() {
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit";
+        }
+
+        function showMessage(text, type) {
+            messageBox.textContent = text;
+            messageBox.className = `alert alert-${type}`;
+            messageBox.classList.remove('d-none');
+        }
     })
 })()
 async function showFeedbackPopup() {
