@@ -77,14 +77,23 @@
         const suggestionModal = new bootstrap.Modal(document.getElementById('suggestionModal'));
         const messageBox = document.getElementById('suggestionMessage');
 
-        document.querySelectorAll('[data-suggestion-type]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                selectedType = btn.getAttribute('data-suggestion-type');
-                document.querySelector('.modal-title').textContent = `Submit ${selectedType} Suggestion`;
-                document.getElementById('suggestionNote').value = '';
-                messageBox.classList.add('d-none');
-                suggestionModal.show();
-            });
+        var btn = document.querySelector('[data-suggestion]')
+        btn.addEventListener('click', () => {
+            let hash = window.location.hash; // "#Map"
+            if (!hash) {
+                // Get by selected radio
+                hash = document.querySelector(".navRadio:checked")?.value
+            }
+
+            if (!hash)
+                alert("No suggestion can be made at this location");
+
+            selectedType = hash.replace('#', '');
+
+            document.querySelector('.modal-title').textContent = `Submit ${selectedType} Suggestion`;
+            document.getElementById('suggestionNote').value = '';
+            messageBox.classList.add('d-none');
+            suggestionModal.show();
         });
 
         const submitButton = document.getElementById('suggestionSubmit');
