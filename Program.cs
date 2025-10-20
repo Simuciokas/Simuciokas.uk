@@ -131,6 +131,14 @@ app.UseStaticFiles(new StaticFileOptions
     ContentTypeProvider = provider,
 });
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "icons")),
+    RequestPath = "/Icons",
+    ContentTypeProvider = provider,
+});
+
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
