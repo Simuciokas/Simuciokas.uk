@@ -33,8 +33,8 @@ function labelHtml(title, fontsize, color) {
 
 function addLabel(name, {x, y, z}) {
 	var latLng = overviewer.util.fromWorldToLatLng(x, y, z, ovconf)
-  label = new L.DivIcon({iconSize:[0,0], className:'wcLabel', html: labelHtml(name, '16', '#c4c2c2')});
-  l = L.marker(latLng, {icon:label, zIndexOffset:90000});
+  label = new L.DivIcon({iconSize:[0,0], className:'wcLabel', html: labelHtml(name, '12', '#c4c2c2')});
+  l = L.marker(latLng, {icon:label, zIndexOffset:0});
   l.addTo(overviewer.map);
 	locationLabels.push(l);
 }
