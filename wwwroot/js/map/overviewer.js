@@ -510,8 +510,8 @@ overviewer.util = {
         });
 
         overviewer.layerCtrl = L.control.layers(
-                [], //overviewer.collections.mapTypes[overviewerConfig.worlds[0]],
-                [], //overviewer.collections.overlays[overviewerConfig.worlds[0]],
+                overviewer.collections.mapTypes[overviewerConfig.worlds[0]],
+                overviewer.collections.overlays[overviewerConfig.worlds[0]],
                 {collapsed: false})
             .addTo(overviewer.map);
         overviewer.current_world = overviewerConfig.worlds[0];

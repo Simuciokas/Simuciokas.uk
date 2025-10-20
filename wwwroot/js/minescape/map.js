@@ -59,7 +59,7 @@ function GetMapURL(location) {
     let y = location.split(", ")[1]
     let z = location.split(", ")[2]
 
-    return `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`;
+    return `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`;
 }
 
 document.querySelectorAll("#Map input.btn-check").forEach(x => {

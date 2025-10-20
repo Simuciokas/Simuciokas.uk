@@ -1194,11 +1194,165 @@ var markersDB = {
         "created": false,
         "raw": [
             {
-                "x": 0,
+                "x": -1000,
+                "y": 69,
+                "z": 404,
+                "text": "AIQ outside of thurgo's house above ice caves",
+                "hovertext": "AIQ outside of thurgo's house above ice caves"
+            },
+            {
+                "x": 257,
                 "y": 70,
-                "z": 0,
-                "text": "...",
-                "hovertext": "..."
+                "z": -146,
+                "text": "BIP on an island near mort myre swamp",
+                "hovertext": "BIP on an island near mort myre swamp"
+            },
+            {
+                "x": -1736,
+                "y": 75,
+                "z": -1035,
+                "text": "AJR fremenik slayer dungeon",
+                "hovertext": "AJR fremenik slayer dungeon"
+            },
+            {
+                "x": -3122,
+                "y": 74,
+                "z": -991,
+                "text": "AKQ piscatoris hunter area",
+                "hovertext": "AKQ piscatoris hunter area"
+            },
+            {
+                "x": -2320,
+                "y": 82,
+                "z": 1001,
+                "text": "AKS south of yanille (hunter starting area)",
+                "hovertext": "AKS south of yanille (hunter starting area)"
+            },
+            {
+                "x": -2530,
+                "y": 89,
+                "z": -1083,
+                "text": "ALP Lighthouse",
+                "hovertext": "ALP Lighthouse"
+            },
+            {
+                "x": 833,
+                "y": 74,
+                "z": -703,
+                "text": "ALQ mort myre swamp ",
+                "hovertext": "ALQ mort myre swamp "
+            },
+            {
+                "x": -2033,
+                "y": 73,
+                "z": -636,
+                "text": "ALS MC Grubor's wood ",
+                "hovertext": "ALS MC Grubor'S wood "
+            },
+            {
+                "x": -3681,
+                "y": 68,
+                "z": 637,
+                "text": "BJS west of poison waste, , dead end without speed 2 or speed 3 pots",
+                "hovertext": "BJS west of poison waste, , dead end without speed 2 or speed 3 pots"
+            },
+            {
+                "x": -2930,
+                "y": 73,
+                "z": 743,
+                "text": "BKP south of castle wars",
+                "hovertext": "BKP south of castle wars"
+            },
+            {
+                "x": 417,
+                "y": 71,
+                "z": -425,
+                "text": "BKR near canifis, beware of food rotting immortal ghosts",
+                "hovertext": "BKR near canifis, beware of food rotting immortal ghosts"
+            },
+            {
+                "x": -1381,
+                "y": 8,
+                "z": 212,
+                "text": "BLP mor ul rek",
+                "hovertext": "BLP mor ul rek"
+            },
+            {
+                "x": -1846,
+                "y": 75,
+                "z": -224,
+                "text": "BLR outside of legends guild",
+                "hovertext": "BLR outside of legends guild"
+            },
+            {
+                "x": -1897,
+                "y": 70,
+                "z": -876,
+                "text": "CJR sinclair mansion",
+                "hovertext": "CJR sinclair mansion"
+            },
+            {
+                "x": -1619,
+                "y": 76,
+                "z": 850,
+                "text": "CKR outside of shilo village",
+                "hovertext": "CKR outside of shilo village"
+            },
+            {
+                "x": 348,
+                "y": 71,
+                "z": -614,
+                "text": "CKS corn dense area outside of canifis",
+                "hovertext": "CKS corn dense area outside of canifis"
+            },
+            {
+                "x": -1888,
+                "y": 98,
+                "z": 1841,
+                "text": "CLR Ape Atoll",
+                "hovertext": "CLR Ape Atoll"
+            },
+            {
+                "x": -2024,
+                "y": 82,
+                "z": 584,
+                "text": "CLS outside hazelmere house",
+                "hovertext": "CLS outside hazelmere house"
+            },
+            {
+                "x": -2118,
+                "y": 73,
+                "z": 148,
+                "text": "DJP tower of life ",
+                "hovertext": "DJP tower of life "
+            },
+            {
+                "x": -1312,
+                "y": 72,
+                "z": 537,
+                "text": "DKP good for fishing karambs",
+                "hovertext": "DKP good for fishing karambs"
+            },
+            {
+                "x": -1810,
+                "y": 85,
+                "z": -1328,
+                "text": "DKS fremenik hunter area",
+                "hovertext": "DKS fremenik hunter area"
+            },
+            {
+                "x": 436,
+                "y": 47,
+                "z": -489,
+                "text": "DLQ mort myre swamp",
+                "hovertext": "DLQ mort myre swamp"
+            },
+            {
+                "x": -3485,
+                "y": 73,
+                "z": 550,
+                "text": "DLR poison waste",
+                "hovertext": "DLR poison waste"
             }
         ],
         "name": "Teleports Fairy"
@@ -1312,5 +1466,274 @@ var markersDB = {
             }
         ],
         "name": "Teleports Island"
-    }
+    },
+    "teleportsCanoe": {
+        "created": false,
+        "raw": [
+            {
+                "x": -273,
+                "y": 67,
+                "z": -141,
+                "text": "Lumbridge",
+                "hovertext": "Lumbridge"
+            },
+            {
+                "x": -428,
+                "y": 67,
+                "z": -201,
+                "text": "Champion Guild",
+                "hovertext": "Champion Guild"
+            },
+            {
+                "x": -678,
+                "y": 67,
+                "z": -385,
+                "text": "Barbarian Village",
+                "hovertext": "Barbarian Village"
+            },
+            {
+                "x": -697,
+                "y": 67,
+                "z": -602,
+                "text": "Edgeville",
+                "hovertext": "Edgeville"
+            },
+            {
+                "x": -687,
+                "y": 68,
+                "z": -836,
+                "text": "Wilderness Moss Giants",
+                "hovertext": "Wilderness Moss Giants"
+            }
+        ],
+        "name": "Teleports Canoe"
+    },
+    "teleportsGlider": {
+        "created": false,
+        "raw": [
+            {
+                "x": -169,
+                "y": 71,
+                "z": 142,
+                "text": "Al-Kharid",
+                "hovertext": "Al-Kharid"
+            },
+            {
+                "x": -1256,
+                "y": 71,
+                "z": -677,
+                "text": "Karamja jungle",
+                "hovertext": "Karamja jungle"
+            },
+            {
+                "x": -1984,
+                "y": 73,
+                "z": 1582,
+                "text": "Northwest Ape Atoll",
+                "hovertext": "Northwest Ape Atoll"
+            },
+            {
+                "x": -2392,
+                "y": 79,
+                "z": -1019,
+                "text": "Feldip Hunter Area",
+                "hovertext": "Feldip Hunter Area"
+            },
+            {
+                "x": -2700,
+                "y": 98,
+                "z": -734,
+                "text": "Tree Gnome Stronghold",
+                "hovertext": "Tree Gnome Stronghold"
+            },
+            {
+                "x": -1511,
+                "y": 139,
+                "z": -711,
+                "text": "White Wolf Mountain",
+                "hovertext": "White Wolf Mountain"
+            },
+            {
+                "x": 83,
+                "y": 73,
+                "z": -375,
+                "text": "Lumberyard",
+                "hovertext": "Lumberyard"
+            }
+        ],
+        "name": "Teleports Glider"
+    },
+    "teleportsAnchor": {
+        "created": false,
+        "raw": [
+            {
+                "x": -2461,
+                "y": 73,
+                "z": 564,
+                "text": "Yanillel",
+                "hovertext": "Yanille"
+            },
+            {
+                "x": -337,
+                "y": 69,
+                "z": 186,
+                "text": "Lumbridge",
+                "hovertext": "Lumbridge"
+            },
+            {
+                "x": -789,
+                "y": 69,
+                "z": -693,
+                "text": "Edgeville",
+                "hovertext": "Edgeville"
+            },
+            {
+                "x": -361,
+                "y": 69,
+                "z": -302,
+                "text": "Varrock",
+                "hovertext": "Varrock"
+            },
+            {
+                "x": -111,
+                "y": 69,
+                "z": 292,
+                "text": "Al-Kharid",
+                "hovertext": "Al-Kharid"
+            },
+            {
+                "x": -1928,
+                "y": 75,
+                "z": -604,
+                "text": "Seer's village",
+                "hovertext": "Seer's village"
+            },
+            {
+                "x": -996,
+                "y": 64,
+                "z": 147,
+                "text": "Port Sarim",
+                "hovertext": "Port Sarim"
+            },
+            {
+                "x": -690,
+                "y": 64,
+                "z": -55,
+                "text": "Draynor",
+                "hovertext": "Draynor"
+            },
+            {
+                "x": -117,
+                "y": 64,
+                "z": -376,
+                "text": "Falador",
+                "hovertext": "Falador"
+            },
+            {
+                "x": -1376,
+                "y": 64,
+                "z": -485,
+                "text": "Taverley",
+                "hovertext": "Taverley"
+            },
+            {
+                "x": -1310,
+                "y": 79,
+                "z": -849,
+                "text": "Burthrope",
+                "hovertext": "Burthrope"
+            },
+            {
+                "x": -1497,
+                "y": 69,
+                "z": -488,
+                "text": "Catherby",
+                "hovertext": "Catherby"
+            },
+            {
+                "x": -1637,
+                "y": 77,
+                "z": 285,
+                "text": "Brimhaven",
+                "hovertext": "Brimhaven"
+            },
+            {
+                "x": 68,
+                "y": 64,
+                "z": 947,
+                "text": "Pollnivneach",
+                "hovertext": "Pollnivneach"
+            },
+            {
+                "x": -2240,
+                "y": 64,
+                "z": -80,
+                "text": "Ardougne",
+                "hovertext": "Ardougne"
+            },
+            {
+                "x": -2074,
+                "y": 64,
+                "z": -1093,
+                "text": "Rellekka",
+                "hovertext": "Rellekka"
+            },
+            {
+                "x": 529,
+                "y": 64,
+                "z": -700,
+                "text": "Canifis",
+                "hovertext": "Canifis"
+            }
+        ],
+        "name": "Teleports Anchor"
+    },
+    "teleportsTree": {
+        "created": false,
+        "raw": [
+            {
+                "x": -3372,
+                "y": 85,
+                "z": -297,
+                "text": "prifddinas",
+                "hovertext": "prifddinas"
+            },
+            {
+                "x": -3070,
+                "y": 71,
+                "z": 528,
+                "text": "east of poison waste",
+                "hovertext": "east of poison waste"
+            },
+            {
+                "x": -2410,
+                "y": 76,
+                "z": 58,
+                "text": "battlefield of khazard",
+                "hovertext": "battlefield of khazard"
+            },
+            {
+                "x": -2717,
+                "y": 74,
+                "z": -551,
+                "text": "tree gnome stronghold",
+                "hovertext": "tree gnome stronghold"
+            },
+            {
+                "x": -2462,
+                "y": 73,
+                "z": 335,
+                "text": "tree gnome village",
+                "hovertext": "tree gnome village"
+            },
+            {
+                "x": -2620,
+                "y": 76,
+                "z": 1325,
+                "text": "feldip hills",
+                "hovertext": "feldip hills"
+            }
+        ],
+        "name": "Teleports Tree"
+    },
 };

@@ -1,16 +1,16 @@
 var markers = {
     "minescape": [
         {
-            "groupName": "beacons",
-            "displayName": "Beacons",
-            "icon": "icons/beacons.png",
+            "groupName": "shortcuts",
+            "displayName": "Shortcuts",
+            "icon": "icons/shortcuts.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
-            "groupName": "shortcuts",
-            "displayName": "Shortcuts",
-            "icon": "icons/shortcuts.png",
+            "groupName": "beacons",
+            "displayName": "Beacons",
+            "icon": "icons/beacons.png",
             "createInfoWindow": true,
             "checked": true
         },
@@ -36,13 +36,6 @@ var markers = {
             "checked": true
         },
         {
-            "groupName": "teleportsFairy",
-            "displayName": "Teleports Fairy",
-            "icon": "icons/Transportation.png",
-            "createInfoWindow": true,
-            "checked": true
-        },
-        {
             "groupName": "teleportsSkills",
             "displayName": "Teleports Skills",
             "icon": "icons/Skills_necklace.png",
@@ -57,9 +50,72 @@ var markers = {
             "checked": true
         },
         {
+            "groupName": "teleportsFairy",
+            "displayName": "Teleports Fairy",
+            "icon": "icons/Transportation.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
             "groupName": "teleportsClue",
             "displayName": "Teleports Clue",
             "icon": "icons/Digsite_teleport.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsIsland",
+            "displayName": "Teleports Island",
+            "icon": "icons/Teleport_to_House.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsCanoe",
+            "displayName": "Teleports Canoe",
+            "icon": "icons/canoe_paddle_water.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsGlider",
+            "displayName": "Teleports Glider",
+            "icon": "icons/30px-Captain_Errdo_chathead.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsAnchor",
+            "displayName": "Teleports Anchor",
+            "icon": "icons/Max_cape.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsTree",
+            "displayName": "Teleports Tree",
+            "icon": "icons/Task_Master_icon.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsCape",
+            "displayName": "Teleports Cape",
+            "icon": "icons/Max_cape.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsCharter",
+            "displayName": "Teleports Charter",
+            "icon": "icons/Rune_essence.png",
+            "createInfoWindow": true,
+            "checked": true
+        },
+        {
+            "groupName": "teleportsAbyss",
+            "displayName": "Teleports Abyss",
+            "icon": "icons/Rune_essence.png",
             "createInfoWindow": true,
             "checked": true
         }
