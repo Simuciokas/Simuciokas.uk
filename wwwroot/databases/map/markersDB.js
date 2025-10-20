@@ -954,7 +954,7 @@ var markersDB = {
                 "hovertext": "Al-Kharid"
             },
             {
-                "x": -3046,
+                "x": -771,
                 "y": 69,
                 "z": 89,
                 "text": "Draynor",
@@ -1263,6 +1263,54 @@ var markersDB = {
                 "hovertext": "Tai Bwo Wannai"
             }
         ],
-        "name": "Teleports Fairy"
+        "name": "Teleports Clue"
     },
+    "teleportsIsland": {
+        "created": false,
+        "raw": [
+            {
+                "x": -2029,
+                "y": 70,
+                "z": -1028,
+                "text": "Rellekka",
+                "hovertext": "Rellekka"
+            },
+            {
+                "x": -1748,
+                "y": 73,
+                "z": 295,
+                "text": "Brimhaven",
+                "hovertext": "Brimhaven"
+            },
+            {
+                "x": 40,
+                "y": 73,
+                "z": 847,
+                "text": "Pollnivneach",
+                "hovertext": "Pollnivneach"
+            },
+            {
+                "x": -1166,
+                "y": 69,
+                "z": 168,
+                "text": "Rimmington",
+                "hovertext": "Rimmington"
+            },
+            {
+                "x": -1370,
+                "y": 78,
+                "z": -523,
+                "text": "Taverley",
+                "hovertext": "Taverley"
+            },
+            {
+                "x": -2452,
+                "y": 74,
+                "z": 559,
+                "text": "Yanille",
+                "hovertext": "Yanille"
+            }
+        ],
+        "name": "Teleports Island"
+    }
 };
