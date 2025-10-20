@@ -29,7 +29,7 @@ var overviewerConfig = {
         "debug": false,
         "cacheTag": "simuciokas.uk",
         "hideLayerControl": true,
-        "hideOverlayControl": false
+        "hideOverlayControl": true
     },
     "tilesets": [
         {

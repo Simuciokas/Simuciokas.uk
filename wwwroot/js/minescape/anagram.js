@@ -82,7 +82,7 @@ async function selectItem(item) {
     let y = dbItem.location.split(", ")[1]
     let z = dbItem.location.split(", ")[2]
 
-    let text = `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`
+    let text = `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`
     document.getElementById("solution-anagram-tip").innerText = dbItem.tip
     document.getElementById("solution-anagram-name").innerText = dbItem.id == undefined ? "Name not set in database" : capitalizeWords(dbItem.id)
     document.getElementById("solution-anagram-url").href = text

@@ -61,7 +61,7 @@ async function Startup() {
                 let z = location.split(", ")[2]
                 let tip = found.tip
 
-                let text = `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`
+                let text = `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`
                 document.getElementById("solution-cypher-tip").innerText = tip
                 document.getElementById("solution-cypher-name").innerText = name == undefined ? "No name provided" : name
                 document.getElementById("solution-cypher-url").href = text

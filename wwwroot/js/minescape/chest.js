@@ -75,7 +75,7 @@ async function selectItem(item) {
     let y = dbItem.location.split(", ")[1]
     let z = dbItem.location.split(", ")[2]
 
-    let text = `https://map.minescape.net/#/${x}/${y}/${z}/-2/minescape/minescape`
+    let text = `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`
     document.getElementById("solution-chest-tip").innerText = dbItem.tip;
     document.getElementById("solution-chest-url").href = text;
     document.getElementById("solution-chest-url").innerText = dbItem.location;

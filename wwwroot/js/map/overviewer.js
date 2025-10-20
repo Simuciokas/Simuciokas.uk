@@ -297,7 +297,6 @@ overviewer.util = {
         });
 
 
-
         overviewer.map = L.map('mcmap', {crs: L.CRS.Simple});
 
         overviewer.map.attributionControl.setPrefix(
@@ -432,9 +431,9 @@ overviewer.util = {
         });
 
         overviewer.compass.addTo(overviewer.map);
-        overviewer.worldCtrl.addTo(overviewer.map);
+        //overviewer.worldCtrl.addTo(overviewer.map);
         overviewer.coord_box.addTo(overviewer.map);
-        overviewer.progress.addTo(overviewer.map);
+        //overviewer.progress.addTo(overviewer.map);
 
         overviewer.map.on('mousemove', function(ev) {
             overviewer.coord_box.render(ev.latlng);
@@ -467,7 +466,7 @@ overviewer.util = {
                         var marker_group = new L.layerGroup();
                         var marker_entry = markers[obj.path][mkidx];
                         L.Util.setOptions(marker_group, {default_checked: marker_entry.checked});
-                        for (var dbidx = 0; dbidx < markersDB[marker_entry.groupName].raw.length; dbidx++) {
+                        for (var dbidx = 0; dbidx < markersDB[marker_entry.groupName]?.raw.length; dbidx++) {
                             var db = markersDB[marker_entry.groupName].raw[dbidx];
                             /*if(db.text == "Praying stand") {
                               var icon =  L.divIcon({html: `<a style="color: #f3f577">${db.text}</a>`});
@@ -511,8 +510,8 @@ overviewer.util = {
         });
 
         overviewer.layerCtrl = L.control.layers(
-                overviewer.collections.mapTypes[overviewerConfig.worlds[0]],
-                overviewer.collections.overlays[overviewerConfig.worlds[0]],
+                [], //overviewer.collections.mapTypes[overviewerConfig.worlds[0]],
+                [], //overviewer.collections.overlays[overviewerConfig.worlds[0]],
                 {collapsed: false})
             .addTo(overviewer.map);
         overviewer.current_world = overviewerConfig.worlds[0];
@@ -857,6 +856,12 @@ overviewer.util = {
         overviewer.worldCtrl.select.value = world_name;
 
         overviewer.map.setView(latlngcoords, zoom);
+
+        if (overviewerConfig.map.hideLayerControl)
+            document.querySelector('div.leaflet-control-layers:nth-child(2)').style = 'display: none;'
+
+        if (overviewerConfig.map.hideLayerControl)
+            document.querySelector('div.leaflet-control-layers:nth-child(3)').style = 'display: none;'
 
         if (ovconf.showlocationmarker) {
             var locationIcon = L.icon({

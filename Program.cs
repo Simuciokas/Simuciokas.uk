@@ -139,6 +139,55 @@ app.UseStaticFiles(new StaticFileOptions
     ContentTypeProvider = provider,
 });
 
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+    RequestPath = "/MapNoOverlay",
+    ContentTypeProvider = provider,
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "icons")),
+    RequestPath = "/MapNoOverlay/Icons",
+    ContentTypeProvider = provider,
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "databases")),
+    RequestPath = "/MapNoOverlay/Data",
+    ContentTypeProvider = provider,
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+    RequestPath = "/Map",
+    ContentTypeProvider = provider,
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "icons")),
+    RequestPath = "/Map/Icons",
+    ContentTypeProvider = provider,
+});
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "databases")),
+    RequestPath = "/Map/Data",
+    ContentTypeProvider = provider,
+});
+
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
