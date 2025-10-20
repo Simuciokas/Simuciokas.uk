@@ -149,8 +149,7 @@ overviewer.util = {
 
                 this.coord_box.innerHTML = "X " +
                                            Math.round(w_coords.x) +
-                                           " Z " + Math.round(w_coords.z) +
-                                           " (" + r_name + ")";
+                                           " Z " + Math.round(w_coords.z);
             },
             onAdd: function() {
                 return this.coord_box;
