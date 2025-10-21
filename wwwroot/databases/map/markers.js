@@ -1,58 +1,51 @@
 var markers = {
     "minescape": [
         {
-            "groupName": "shortcuts",
-            "displayName": "Shortcuts",
-            "icon": "icons/shortcuts.png",
-            "createInfoWindow": true,
-            "checked": true
-        },
-        {
             "groupName": "beacons",
             "displayName": "Beacons",
-            "icon": "icons/beacons.png",
+            "icon": "icons/beacon.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsGlory",
             "displayName": "Teleports Glory",
-            "icon": "icons/Amulet_of_glory.png",
+            "icon": "icons/glory.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsGames",
             "displayName": "Teleports Games",
-            "icon": "icons/Games_necklace.png",
+            "icon": "icons/games.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsDueling",
             "displayName": "Teleports Dueling",
-            "icon": "icons/Ring_of_dueling.png",
+            "icon": "icons/dueling.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsSkills",
             "displayName": "Teleports Skills",
-            "icon": "icons/Skills_necklace.png",
+            "icon": "icons/skills.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsMagic",
             "displayName": "Teleports Magic",
-            "icon": "icons/Varrock_Teleport.png",
+            "icon": "icons/tablet.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsFairy",
             "displayName": "Teleports Fairy",
-            "icon": "icons/Transportation.png",
+            "icon": "icons/fairy2.png",
             "createInfoWindow": true,
             "checked": true
         },
@@ -66,35 +59,35 @@ var markers = {
         {
             "groupName": "teleportsIsland",
             "displayName": "Teleports Island",
-            "icon": "icons/Teleport_to_House.png",
+            "icon": "icons/island.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsCanoe",
             "displayName": "Teleports Canoe",
-            "icon": "icons/canoe_paddle_water.png",
+            "icon": "icons/canoe.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsGlider",
             "displayName": "Teleports Glider",
-            "icon": "icons/30px-Captain_Errdo_chathead.png",
+            "icon": "icons/glider.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsAnchor",
             "displayName": "Teleports Anchor",
-            "icon": "icons/Max_cape.png",
+            "icon": "icons/home2.png",
             "createInfoWindow": true,
             "checked": true
         },
         {
             "groupName": "teleportsTree",
             "displayName": "Teleports Tree",
-            "icon": "icons/Task_Master_icon.png",
+            "icon": "icons/tree.png",
             "createInfoWindow": true,
             "checked": true
         },
@@ -108,7 +101,7 @@ var markers = {
         {
             "groupName": "teleportsCharter",
             "displayName": "Teleports Charter",
-            "icon": "icons/Rune_essence.png",
+            "icon": "icons/anchor2.png",
             "createInfoWindow": true,
             "checked": true
         },
