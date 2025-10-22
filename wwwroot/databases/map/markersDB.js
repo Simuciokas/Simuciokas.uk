@@ -1176,7 +1176,7 @@ var markersDB = {
             {
                 "x": -1455,
                 "y": 68,
-                "z": -92,
+                "z": 92,
                 "text": "Crandor",
                 "hovertext": "Crandor"
             },
@@ -1353,6 +1353,13 @@ var markersDB = {
                 "z": 550,
                 "text": "DLR poison waste",
                 "hovertext": "DLR poison waste"
+            },
+            {
+                "x": -611,
+                "y": 70,
+                "z": -655,
+                "text": "DKR Edgeville/GE",
+                "hovertext": "DKR Edgeville/GE"
             }
         ],
         "name": "Teleports Fairy"
@@ -1394,6 +1401,13 @@ var markersDB = {
                 "z": 66,
                 "text": "Iorwerth Camp",
                 "hovertext": "Iorwerth Camp"
+            },
+            {
+                "x": -3129,
+                "y": 71,
+                "z": -1251,
+                "text": "Piscatoris",
+                "hovertext": "Piscatoris"
             },
             {
                 "x": 1497,
@@ -1473,7 +1487,7 @@ var markersDB = {
             {
                 "x": -273,
                 "y": 67,
-                "z": -141,
+                "z": 141,
                 "text": "Lumbridge",
                 "hovertext": "Lumbridge"
             },
@@ -1512,53 +1526,53 @@ var markersDB = {
         "created": false,
         "raw": [
             {
-                "x": -169,
+                "x": -168,
                 "y": 71,
-                "z": 142,
-                "text": "Al-Kharid",
-                "hovertext": "Al-Kharid"
+                "z": 143,
+                "text": "Al-Kharid (Kar-Hewo)",
+                "hovertext": "Al-Kharid (Kar-Hewo)"
             },
             {
                 "x": -1256,
                 "y": 71,
-                "z": -677,
-                "text": "Karamja jungle",
-                "hovertext": "Karamja jungle"
+                "z": 676,
+                "text": "Karamja jungle (Gandius)",
+                "hovertext": "Karamja jungle (Gandius)"
             },
             {
                 "x": -1984,
                 "y": 73,
-                "z": 1582,
-                "text": "Northwest Ape Atoll",
-                "hovertext": "Northwest Ape Atoll"
+                "z": 1584,
+                "text": "Northwest Ape Atoll (Ookookolly Undri)",
+                "hovertext": "Northwest Ape Atoll (Ookookolly Undri)"
             },
             {
                 "x": -2392,
                 "y": 79,
-                "z": -1019,
-                "text": "Feldip Hunter Area",
-                "hovertext": "Feldip Hunter Area"
+                "z": 1020,
+                "text": "Feldip Hunter Area (Lemantolly Undri)",
+                "hovertext": "Feldip Hunter Area (Lemantolly Undri)"
             },
             {
                 "x": -2700,
                 "y": 98,
                 "z": -734,
-                "text": "Tree Gnome Stronghold",
-                "hovertext": "Tree Gnome Stronghold"
+                "text": "Tree Gnome Stronghold (Ta Quir Priw)",
+                "hovertext": "Tree Gnome Stronghold (Ta Quir Priw)"
             },
             {
-                "x": -1511,
+                "x": -1510,
                 "y": 139,
                 "z": -711,
-                "text": "White Wolf Mountain",
-                "hovertext": "White Wolf Mountain"
+                "text": "White Wolf Mountain (Sindarpos)",
+                "hovertext": "White Wolf Mountain (Sindarpos)"
             },
             {
-                "x": 83,
+                "x": 84,
                 "y": 73,
                 "z": -375,
-                "text": "Lumberyard",
-                "hovertext": "Lumberyard"
+                "text": "Digsite (Lemanto Andra)",
+                "hovertext": "Digsite (Lemanto Andra)"
             }
         ],
         "name": "Teleports Glider"
@@ -1735,5 +1749,116 @@ var markersDB = {
             }
         ],
         "name": "Teleports Tree"
+    },
+    "teleportsCharter": {
+        "created": false,
+        "raw": [
+            {
+                "x": -1155,
+                "y": 70,
+                "z": 373,
+                "text": "Karamja <-> Crandor",
+                "hovertext": "Karamja <-> Crandor"
+            },
+            {
+                "x": -1469,
+                "y": 68,
+                "z": 131,
+                "text": "Crandor <-> Karamja",
+                "hovertext": "Crandor <-> Karamja"
+            },
+            {
+                "x": -1142,
+                "y": 79,
+                "z": 410,
+                "text": "Karamja <-> Port-Sarim",
+                "hovertext": "Karamja <-> Port-Sarim"
+            },
+            {
+                "x": -933,
+                "y": 79,
+                "z": 150,
+                "text": "Port-Sarim <-> Karamja",
+                "hovertext": "Port-Sarim <-> Karamja"
+            },
+            {
+                "x": -932,
+                "y": 70,
+                "z": 252,
+                "text": "Port-Sarim Charter",
+                "hovertext": "Port-Sarim Charter"
+            },
+            {
+                "x": -1737,
+                "y": 70,
+                "z": 142,
+                "text": "Brimhaven Charter",
+                "hovertext": "Brimhaven Charter"
+            },
+            {
+                "x": -1333,
+                "y": 71,
+                "z": 269,
+                "text": "Musa point Charter",
+                "hovertext": "Musa point Charter"
+            },
+            {
+                "x": 1168,
+                "y": 71,
+                "z": -659,
+                "text": "Port Phasmatys Charter",
+                "hovertext": "Port Phasmatys Charter"
+            },
+            {
+                "x": -1598,
+                "y": 69,
+                "z": -410,
+                "text": "Catherby Charter",
+                "hovertext": "Catherby Charter"
+            },
+            {
+                "x": -1389,
+                "y": 72,
+                "z": -185,
+                "text": "Entrana Charter",
+                "hovertext": "Entrana Charter"
+            },
+            {
+                "x": -2021,
+                "y": 69,
+                "z": 22,
+                "text": "East Ardougne Charter",
+                "hovertext": "East Ardougne Charter"
+            },
+            {
+                "x": -1390,
+                "y": 72,
+                "z": -166,
+                "text": "Entrana <-> Crandor",
+                "hovertext": "Entrana <-> Crandor"
+            },
+            {
+                "x": -1449,
+                "y": 68,
+                "z": -73,
+                "text": "Crandor <-> Entrana",
+                "hovertext": "Crandor <-> Entrana"
+            },
+            {
+                "x": -904,
+                "y": 73,
+                "z": 131,
+                "text": "Port-Sarim -> Entrana",
+                "hovertext": "Port-Sarim -> Entrana"
+            },
+            {
+                "x": -872,
+                "y": 73,
+                "z": 103,
+                "text": "Port-Sarim -> Crandor",
+                "hovertext": "Port-Sarim -> Crandor"
+            }
+        ],
+        "name": "Teleports Charter"
     },
 };

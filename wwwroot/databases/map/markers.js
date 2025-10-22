@@ -45,7 +45,7 @@ var markers = {
         {
             "groupName": "teleportsFairy",
             "displayName": "Teleports Fairy",
-            "icon": "icons/fairy2.png",
+            "icon": "icons/fairy4.png",
             "createInfoWindow": true,
             "checked": true
         },
@@ -101,7 +101,7 @@ var markers = {
         {
             "groupName": "teleportsCharter",
             "displayName": "Teleports Charter",
-            "icon": "icons/anchor2.png",
+            "icon": "icons/charter.png",
             "createInfoWindow": true,
             "checked": true
         },
