@@ -1,4 +1,5 @@
 using Dapper;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Data.Sqlite;
 using SimuciokasUK.Models;
@@ -188,6 +189,10 @@ app.UseStaticFiles(new StaticFileOptions
     ContentTypeProvider = provider,
 });
 
+var options = new RewriteOptions()
+    .AddRedirect(@"^Minescape/MapNoOverlay/?$", "MapNoOverlay", 301)
+    .AddRedirect(@"^Minescape/Map/?$", "Map", 301);
+app.UseRewriter(options);
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();

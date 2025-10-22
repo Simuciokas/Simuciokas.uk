@@ -1868,4 +1868,31 @@ var markersDB = {
         ],
         "name": "Teleports Charter"
     },
+    "teleportsCharter": {
+        "created": false,
+        "raw": [
+            {
+                "x": -2142,
+                "y": 71,
+                "z": -447,
+                "text": "Fishing Guild",
+                "hovertext": "Fishing Guild"
+            },
+            {
+                "x": -591,
+                "y": 71,
+                "z": -517,
+                "text": "Cooking Guild",
+                "hovertext": "Cooking Guild"
+            },
+            {
+                "x": -1210,
+                "y": 69,
+                "z": -13,
+                "text": "Crafting Guild",
+                "hovertext": "Crafting Guild"
+            }
+        ],
+        "name": "Teleports Charter"
+    },
 };
