@@ -1709,43 +1709,50 @@ var markersDB = {
                 "x": -3372,
                 "y": 85,
                 "z": -297,
-                "text": "prifddinas",
-                "hovertext": "prifddinas"
+                "text": "Prifddinas",
+                "hovertext": "Prifddinas"
             },
             {
                 "x": -3070,
                 "y": 71,
                 "z": 528,
-                "text": "east of poison waste",
-                "hovertext": "east of poison waste"
+                "text": "East of poison waste",
+                "hovertext": "East of poison waste"
             },
             {
                 "x": -2410,
                 "y": 76,
                 "z": 58,
-                "text": "battlefield of khazard",
-                "hovertext": "battlefield of khazard"
+                "text": "Battlefield of khazard",
+                "hovertext": "Battlefield of khazard"
             },
             {
                 "x": -2717,
                 "y": 74,
                 "z": -551,
-                "text": "tree gnome stronghold",
-                "hovertext": "tree gnome stronghold"
+                "text": "Tree gnome stronghold",
+                "hovertext": "Tree gnome stronghold"
             },
             {
                 "x": -2462,
                 "y": 73,
                 "z": 335,
-                "text": "tree gnome village",
-                "hovertext": "tree gnome village"
+                "text": "Tree gnome village",
+                "hovertext": "Tree gnome village"
             },
             {
                 "x": -2620,
                 "y": 76,
                 "z": 1325,
-                "text": "feldip hills",
-                "hovertext": "feldip hills"
+                "text": "Feldip Hills",
+                "hovertext": "Feldip Hills"
+            },
+            {
+                "x": -471,
+                "y": 69,
+                "z": -702,
+                "text": "Grand Exchange",
+                "hovertext": "Grand Exchange"
             }
         ],
         "name": "Teleports Tree"
