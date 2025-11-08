@@ -401,6 +401,13 @@ var markersDB = {
                 "z": 647,
                 "text": "minescape_agility_shortcut_zanaris-altar - Lvl. 66",
                 "hovertext": "minescape_agility_shortcut_zanaris-altar - Lvl. 66"
+            },
+            {
+                "x": -549,
+                "y": 218,
+                "z": -1295,
+                "text": "Wi-V beacon shortcut, trapdoor entrance on top of Volcano, behind beacon",
+                "hovertext": "Wi-V beacon shortcut, trapdoor entrance on top of Volcano, behind beacon"
             }
         ],
         "name": "Shortcuts"
