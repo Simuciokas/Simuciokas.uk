@@ -34,19 +34,54 @@ async function Startup() {
 function Reset() {
 
     suggestions = []
-
-    document.getElementById("solution-hotcold-map").innerHTML = ""
+    let iframeDiv = document.getElementById("solution-hotcold-map")
+    iframeDiv.innerHTML = ""
     const tier = document.querySelectorAll('#HotCold input.btn-check:checked')[0].value.toLowerCase()
+    iframeDiv.innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"MapNoOverlay\"></iframe>`
     const data = database.hotcold.filter(x => { return x.id == tier })
-
     document.getElementById("solution-hotcold-header").innerHTML = `Possible Locations (${data.length})`
+
+    let iframe = iframeDiv.querySelector('iframe')
+    iframe.addEventListener('load', () => {
+        const mapWindow = iframe.contentWindow;
+
+        const checkReady = setInterval(() => {
+            const overviewer = mapWindow.overviewer;
+            if (
+                overviewer &&
+                overviewer.map &&
+                overviewer.current_layer &&
+                overviewer.current_layer[overviewer.current_world]
+            ) {
+                clearInterval(checkReady);
+
+                const L = mapWindow.L;
+                const map = overviewer.map;
+                const worldName = overviewer.current_world;
+                const tileSet = overviewer.current_layer[worldName];
+
+                // Use proper argument order for your Overviewer version: (x, y, z, tileSet)
+                const x = 100, y = 64, z = -200;
+                const latlng = overviewer.util.fromWorldToLatLng(x, y, z, tileSet);
+                console.log(tileSet)
+                if (latlng && !isNaN(latlng.lat)) {
+                    L.marker(latlng)
+                        .bindPopup(`Hot zone (${x}, ${y}, ${z})`)
+                        .addTo(map);
+                } else {
+                    console.error("Invalid LatLng from fromWorldToLatLng()", { x, y, z, tileSet });
+                }
+            }
+        }, 500);
+    });
+
+
     let solutionDiv = document.getElementById("solution-hotcold")
     solutionDiv.innerHTML = ""
     data.forEach(function (item, ind) {
         const htmlContent =
             `
             <label class="col d-flex h-100">
-                <input class="hotcoldRadio d-none" type="radio" name="hotcoldSelector"/>
                 <div class="col d-flex">
                     <div class="card h-100 w-100">
                       <div class="card-body d-flex flex-column">
@@ -62,17 +97,6 @@ function Reset() {
         temp.innerHTML = htmlContent.trim()
         solutionDiv.appendChild(temp)
     });
-
-    document.querySelectorAll("input.hotcoldRadio").forEach(function (x, ind) {
-        x.addEventListener('change', function (e) {
-            document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
-            x.nextElementSibling.querySelector("div").classList.add("border-primary")
-            const anchor = x.closest('label').querySelectorAll('.card-text')[1]
-            const url = GetMapURL(anchor.innerText)
-            document.getElementById("solution-hotcold-map").innerHTML = ""
-            document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
-        })
-    })
 }
 
 function UpdateLabels() {
@@ -133,6 +157,10 @@ function GetClosestItems(locations, tier, location, distance) {
     });
 
     return itemsWithDistances
+}
+
+function GetMapTierURL(location) {
+    return `MapNoOverlay?tier=${location}`;
 }
 
 function GetMapURL(location) {
