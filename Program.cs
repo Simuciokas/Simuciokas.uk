@@ -6,7 +6,7 @@ using SimuciokasUK.Models;
 using SimuciokasUK.Repositories;
 using System.Data;
 
-string[] AllowedTypes = ["Map", "Cypher", "Anagram", "Puzzle", "Light", "Beacon", "Chest", "HotCold", "GE"];
+string[] AllowedTypes = ["Map", "Cypher", "Anagram", "Puzzle", "Light", "Beacon", "Chest", "HotCold", "GE", "Other"];
 
 var builder = WebApplication.CreateBuilder(args);
 

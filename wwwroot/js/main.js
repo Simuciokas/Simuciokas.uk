@@ -79,30 +79,94 @@
 
         var btn = document.querySelector('[data-suggestion]')
         btn.addEventListener('click', () => {
-            let hash = window.location.hash; // "#Map"
-            if (!hash) {
-                // Get by selected radio
+            let hash = window.location.hash;
+            if (!hash)
                 hash = document.querySelector(".navRadio:checked")?.value
-            }
 
             if (!hash)
-                alert("No suggestion can be made at this location");
+                hash = "Other"
 
-            selectedType = hash.replace('#', '');
+            selectedType = hash.replace('#', '')
 
-            document.querySelector('.modal-title').textContent = `Submit ${selectedType} Suggestion`;
-            document.getElementById('suggestionNote').value = '';
-            messageBox.classList.add('d-none');
-            suggestionModal.show();
+            document.querySelector('.modal-title').textContent = `Submit ${selectedType} Suggestion`
+            document.getElementById('suggestionNote').value = ''
+
+            const suggestionNoteID = document.getElementById('suggestionNoteID');
+            suggestionNoteID.value = '';
+
+            switch (hash) {
+                case "Puzzle": {
+                    const canvas = document.getElementById("PuzzleCanvas")
+                    if (!isCanvasBlank(canvas)) suggestionNoteID.value = canvas.toDataURL()
+                    break
+                }
+                case "Light": {
+                    const visibleLights = Array.from(document.querySelectorAll('.light-preview'))
+                        .filter(el => getComputedStyle(el).display !== 'none')
+
+                    if (!visibleLights.length) break
+
+                    const labels = ['Initial', 'A', 'B', 'C', 'D', 'E', 'F', 'G']
+
+                    const canvasNotes = visibleLights.map((canvas, i) => {
+                        const base64 = canvas.toDataURL()
+                        const label = labels[i] || `?${i + 1}`
+                        return `${label}: ${base64}`
+                    })
+
+                    suggestionNoteID.value = canvasNotes.join('\n\n')
+                    break
+                }
+                case "Anagram": {
+                    suggestionNoteID.value = document.getElementById("AnagramInput").value
+                    break
+                }
+                case "Cypher": {
+                    suggestionNoteID.value = document.getElementById("CypherInput").value
+                    break
+                }
+                case "Beacon": {
+                    suggestionNoteID.value = document.getElementById("BeaconInput").value
+                    break
+                }
+                case "Chest": {
+                    suggestionNoteID.value = document.getElementById("ChestInput").value
+                    break
+                }
+                case "HotCold": {
+                    const mapNote = document.getElementById("HotColdMap").value
+                    const distanceNote = document.getElementById("HotColdDistance").value
+                    if (mapNote || distanceNote) suggestionNoteID.value = `${mapNote} ${distanceNote}`.trim()
+                    break
+                }
+                case "Map": {
+                    const checkedMap = document.querySelector("input.mapRadio:checked")
+                    if (!checkedMap) {
+                        const span = checkedMap.closest("label").querySelector("span")
+                        suggestionNoteID.value = span?.innerText.trim() || ''
+                    }
+                    break
+                }
+                case "GE": {
+                    suggestionNoteID.value = document.getElementById("SearchInput").value
+                    break
+                }
+            }
+
+            messageBox.classList.add('d-none')
+            suggestionModal.show()
         });
 
         const submitButton = document.getElementById('suggestionSubmit');
         submitButton.addEventListener('click', async () => {
-            const note = document.getElementById('suggestionNote').value.trim();
+            const noteID = document.getElementById('suggestionNoteID').value.trim();
+            let note = document.getElementById('suggestionNote').value.trim();
             if (!note) {
                 showMessage("Please enter a suggestion.", "danger");
                 return;
             }
+
+            note = noteID ? `${note}\n\nID: ${noteID}` : note;
 
             submitButton.disabled = true;
             submitButton.textContent = "Submitting...";
@@ -145,6 +209,17 @@
         }
     })
 })()
+
+function isCanvasBlank(canvas) {
+    const context = canvas.getContext('2d');
+    const pixelBuffer = new Uint32Array(
+        context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+    );
+
+    // Check if every pixel is fully transparent (0)
+    return !pixelBuffer.some(color => color !== 0);
+}
+
 async function showFeedbackPopup() {
     // Check if feedback is needed
     const check = await fetch('/api/feedback/needed').then(r => r.json());
