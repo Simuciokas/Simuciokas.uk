@@ -134,7 +134,7 @@
     "location": "-1248, 70, 214",
     "tip": "Rimmington Island"
   },
-  "South west on fountain square, pretty close to a slayer dungeon.": {
+  "North west on fountain square, pretty close to a slayer dungeon.": {
     "id": "",
     "location": "-1139, 69, -330",
     "tip": "Falador"
@@ -234,7 +234,7 @@
     "location": "-862, 67, 102",
     "tip": "Port Sarim"
   },
-  "At the far east of the grand city I play with the rocks, they are only friends.": {
+  "At the far north of the grand city I play with the rocks, they are only friends.": {
     "id": "",
     "location": "-196, 71, -440",
     "tip": "Varrock"
@@ -249,7 +249,7 @@
     "location": "-685, 64, -430",
     "tip": "Edgeville"
   },
-  "Enter north, then go west. I shall hide in the masses of the city.": {
+  "Enter east, then go south. I shall hide in the masses of the city.": {
     "id": "",
     "location": "-400, 70, -350",
     "tip": "Varrock"
