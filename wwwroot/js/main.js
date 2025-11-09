@@ -94,7 +94,7 @@
             const suggestionNoteID = document.getElementById('suggestionNoteID');
             suggestionNoteID.value = '';
 
-            switch (hash) {
+            switch (selectedType) {
                 case "Puzzle": {
                     const canvas = document.getElementById("PuzzleCanvas")
                     if (!isCanvasBlank(canvas)) suggestionNoteID.value = canvas.toDataURL()
@@ -141,14 +141,14 @@
                 }
                 case "Map": {
                     const checkedMap = document.querySelector("input.mapRadio:checked")
-                    if (!checkedMap) {
+                    if (checkedMap) {
                         const span = checkedMap.closest("label").querySelector("span")
                         suggestionNoteID.value = span?.innerText.trim() || ''
                     }
                     break
                 }
                 case "GE": {
-                    suggestionNoteID.value = document.getElementById("SearchInput").value
+                    suggestionNoteID.value = document.getElementById("searchInput").value
                     break
                 }
             }
