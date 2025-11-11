@@ -93,16 +93,26 @@
             document.querySelector('.modal-title').textContent = `Submit ${selectedType} Suggestion`
             document.getElementById('suggestionNote').value = ''
 
-            const suggestionNoteID = document.getElementById('suggestionNoteID');
-            suggestionNoteID.value = '';
+            const suggestionNoteID = document.getElementById('suggestionNoteID')
+            suggestionNoteID.value = ''
+
+            const suggestionIncludeAdditional = document.getElementById('suggestionIncludeAdditional')
+            suggestionIncludeAdditional.checked = true
+            suggestionIncludeAdditional.parentElement.hidden = true
+
+            const suggestionIncludeAdditionalLabel = document.getElementById('suggestionIncludeAdditionalLabel')
+            suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Data")
 
             switch (selectedType) {
                 case "Puzzle": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Uploaded Puzzle Image")
                     const canvas = document.getElementById("PuzzleCanvas")
                     fileList = [await canvasToFile(canvas, "Puzzle.png")]
+                    suggestionIncludeAdditional.parentElement.hidden = fileList != null && fileList.length > 0
                     break
                 }
                 case "Light": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Uploaded Light Images")
                     const visibleLights = Array.from(document.querySelectorAll('.light-preview'))
                         .filter(el => getComputedStyle(el).display !== 'none')
 
@@ -116,43 +126,63 @@
                             return await canvasToFile(canvas, `${label}.png`)
                         })
                     )
+
+                    suggestionIncludeAdditional.parentElement.hidden = fileList != null && fileList.length > 0
                     break
                 }
                 case "Anagram": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
                     suggestionNoteID.value = document.getElementById("AnagramInput").value
+                    console.log("Note: " + suggestionNoteID.value)
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
                 case "Cypher": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
                     suggestionNoteID.value = document.getElementById("CypherInput").value
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
                 case "Beacon": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
                     suggestionNoteID.value = document.getElementById("BeaconInput").value
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
                 case "Chest": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
                     suggestionNoteID.value = document.getElementById("ChestInput").value
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
                 case "HotCold": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Map & Distance Value")
                     const mapNote = document.getElementById("HotColdMap").value
                     const distanceNote = document.getElementById("HotColdDistance").value
                     if (mapNote || distanceNote) suggestionNoteID.value = `${mapNote} ${distanceNote}`.trim()
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
                 case "Map": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Selected Map")
                     const checkedMap = document.querySelector("input.mapRadio:checked")
                     if (checkedMap) {
                         const span = checkedMap.closest("label").querySelector("span")
                         suggestionNoteID.value = span?.innerText.trim() || ''
                     }
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
                 case "GE": {
+                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
                     suggestionNoteID.value = document.getElementById("searchInput").value
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
             }
+
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
             messageBox.classList.add('d-none')
             suggestionModal.show()
@@ -161,6 +191,10 @@
         const submitButton = document.getElementById('suggestionSubmit');
         submitButton.addEventListener('click', async () => {
             const noteID = document.getElementById('suggestionNoteID').value.trim();
+
+            const suggestionIncludeAdditional = document.getElementById('suggestionIncludeAdditional')
+            if (!suggestionIncludeAdditional.checked) noteID = null;
+
             let note = document.getElementById('suggestionNote').value.trim();
             if (!note) {
                 showMessage("Please enter a suggestion.", "danger");
