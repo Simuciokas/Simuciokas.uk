@@ -1,4 +1,5 @@
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Data.Sqlite;
@@ -12,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<FeedbackRepository>();
-builder.Services.AddSingleton<SuggestionRepository>();
+builder.Services.AddSingleton<SuggestionRepository>(); 
+builder.Services.AddAntiforgery();
 
 builder.Services.AddResponseCaching(options =>
 {
@@ -23,81 +25,6 @@ builder.Services.AddTransient<IDbConnection>(sp =>
     new SqliteConnection(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=app.db"));
 
 var app = builder.Build();
-
-var _connection = app.Services.GetRequiredService<IDbConnection>();
-_connection?.Execute(@"
-    CREATE TABLE IF NOT EXISTS Feedback (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-        IPAddress TEXT,
-        Rating INTEGER NOT NULL,
-        Notes TEXT,
-        Created TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS Suggestions (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-        IPAddress TEXT,
-        Type TEXT,
-        Notes TEXT,
-        Created TEXT NOT NULL
-    );
-");
-
-app.MapPost("/api/suggestion/{type}", (string type, Suggestion suggestion, SuggestionRepository repo, IDbConnection db, IConfiguration _configuration, HttpContext http) =>
-{
-    if (!AllowedTypes.Contains(type, StringComparer.InvariantCultureIgnoreCase))
-        return Results.BadRequest(new { message = "Invalid suggestion type." });
-
-
-    suggestion.IPAddress = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-                           ?? http.Connection.RemoteIpAddress?.ToString()
-                           ?? "unknown";
-
-    suggestion.Type = AllowedTypes.First(t => t.Equals(type, StringComparison.InvariantCultureIgnoreCase));
-
-    var suggestionLimit = _configuration.GetValue("SuggestionLimitPerHour", 5);
-    if (repo.GetLastHourCount(suggestion.IPAddress, suggestion.Type) >= suggestionLimit)
-        return Results.BadRequest(new { message = $"Suggestion limit reached ({suggestionLimit} per hour). Please try again later." });
-
-    suggestion.Created = DateTime.UtcNow;
-    
-    repo.Insert(suggestion);
-
-    return Results.Ok(new { message = "Suggestion submitted successfully." });
-});
-
-
-app.MapPost("/api/feedback", (HttpContext http, Feedback feedback, FeedbackRepository repo) =>
-{
-    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-         ?? http.Connection.RemoteIpAddress?.ToString()
-         ?? "unknown";
-
-    var recentFeedback = repo.Get(ip);
-
-    if (recentFeedback != null && recentFeedback.Created > DateTime.UtcNow.AddDays(-30))
-        return Results.Ok(new { message = "Feedback already submitted recently." });
-
-    feedback.IPAddress = ip;
-    feedback.Created = DateTime.UtcNow;
-    repo.Insert(feedback);
-
-    return Results.Ok(new { message = "Thank you for your feedback!" });
-})
-.WithName("SubmitFeedback");
-
-app.MapGet("/api/feedback/needed", (HttpContext http, FeedbackRepository repo) =>
-{
-    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-         ?? http.Connection.RemoteIpAddress?.ToString()
-         ?? "unknown";
-
-    var recentFeedback = repo.Get(ip);
-
-    return Results.Ok(new { feedbackNeeded = recentFeedback == null || recentFeedback.Created <= DateTime.UtcNow.AddDays(-30) });
-})
-.WithName("FeedbackNeeded");
-
-app.UseResponseCaching();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -192,8 +119,153 @@ app.UseStaticFiles(new StaticFileOptions
 var options = new RewriteOptions()
     .AddRedirect(@"^Minescape/MapNoOverlay/?$", "MapNoOverlay", 301)
     .AddRedirect(@"^Minescape/Map/?$", "Map", 301);
+
 app.UseRewriter(options);
 app.UseRouting();
+app.UseAntiforgery();
 app.UseAuthorization();
+app.UseResponseCaching();
+
+var _connection = app.Services.GetRequiredService<IDbConnection>();
+_connection?.Execute(@"
+    CREATE TABLE IF NOT EXISTS Feedback (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        IPAddress TEXT,
+        Rating INTEGER NOT NULL,
+        Notes TEXT,
+        Created TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS Suggestions (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        IPAddress TEXT,
+        Type TEXT,
+        Notes TEXT,
+        Created TEXT NOT NULL
+    );
+");
+try
+{
+    _connection?.Execute(@"ALTER TABLE Suggestions ADD COLUMN AttachmentPaths TEXT;
+");
+}
+catch
+{
+
+}
+
+
+
+app.MapPost("/api/v2/suggestion/{type}", async
+    (string type,
+    SuggestionRepository repo,
+    IDbConnection db,
+    IConfiguration _configuration,
+    HttpContext http) =>
+{
+    var form = await http.Request.ReadFormAsync();
+
+    // Bind text fields manually
+    var suggestion = new Suggestion
+    {
+        Note = form["Note"],
+        Created = DateTime.UtcNow,
+        IPAddress = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+                    ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        AttachmentPaths = []
+    };
+
+    if (!AllowedTypes.Contains(type, StringComparer.InvariantCultureIgnoreCase))
+        return Results.BadRequest(new { message = "Invalid suggestion type." });
+
+    suggestion.Type = AllowedTypes.First(t => t.Equals(type, StringComparison.InvariantCultureIgnoreCase));
+
+    var suggestionLimit = _configuration.GetValue("SuggestionLimitPerHour", 5);
+    if (repo.GetLastHourCount(suggestion.IPAddress, suggestion.Type) >= suggestionLimit)
+        return Results.BadRequest(new { message = $"Suggestion limit reached ({suggestionLimit} per hour). Please try again later." });
+
+    if (form.Files != null && form.Files.Count > 0)
+    {
+        var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+        if (!Directory.Exists(uploadsPath))
+            Directory.CreateDirectory(uploadsPath);
+
+        foreach (var file in form.Files)
+        {
+            if (file.Length == 0)
+                continue;
+
+            // You can add validation here (file size/type)
+            var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(file.FileName)}";
+            var filePath = Path.Combine(uploadsPath, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            suggestion.AttachmentPaths.Add($"/uploads/{uniqueFileName}");
+        }
+    }
+
+    repo.Insert(suggestion);
+
+    return Results.Ok(new { message = "Suggestion submitted successfully." });
+}).DisableAntiforgery();
+
+app.MapPost("/api/suggestion/{type}", (string type, Suggestion suggestion, SuggestionRepository repo, IDbConnection db, IConfiguration _configuration, HttpContext http) =>
+{
+    if (!AllowedTypes.Contains(type, StringComparer.InvariantCultureIgnoreCase))
+        return Results.BadRequest(new { message = "Invalid suggestion type." });
+
+
+    suggestion.IPAddress = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+                           ?? http.Connection.RemoteIpAddress?.ToString()
+                           ?? "unknown";
+
+    suggestion.Type = AllowedTypes.First(t => t.Equals(type, StringComparison.InvariantCultureIgnoreCase));
+
+    var suggestionLimit = _configuration.GetValue("SuggestionLimitPerHour", 5);
+    if (repo.GetLastHourCount(suggestion.IPAddress, suggestion.Type) >= suggestionLimit)
+        return Results.BadRequest(new { message = $"Suggestion limit reached ({suggestionLimit} per hour). Please try again later." });
+
+    suggestion.Created = DateTime.UtcNow;
+
+    repo.Insert(suggestion);
+
+    return Results.Ok(new { message = "Suggestion submitted successfully." });
+});
+
+
+app.MapPost("/api/feedback", (HttpContext http, Feedback feedback, FeedbackRepository repo) =>
+{
+    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+         ?? http.Connection.RemoteIpAddress?.ToString()
+         ?? "unknown";
+
+    var recentFeedback = repo.Get(ip);
+
+    if (recentFeedback != null && recentFeedback.Created > DateTime.UtcNow.AddDays(-30))
+        return Results.Ok(new { message = "Feedback already submitted recently." });
+
+    feedback.IPAddress = ip;
+    feedback.Created = DateTime.UtcNow;
+    repo.Insert(feedback);
+
+    return Results.Ok(new { message = "Thank you for your feedback!" });
+})
+.WithName("SubmitFeedback");
+
+app.MapGet("/api/feedback/needed", (HttpContext http, FeedbackRepository repo) =>
+{
+    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
+         ?? http.Connection.RemoteIpAddress?.ToString()
+         ?? "unknown";
+
+    var recentFeedback = repo.Get(ip);
+
+    return Results.Ok(new { feedbackNeeded = recentFeedback == null || recentFeedback.Created <= DateTime.UtcNow.AddDays(-30) });
+})
+.WithName("FeedbackNeeded");
+
 app.MapRazorPages();
 app.Run();

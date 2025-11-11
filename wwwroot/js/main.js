@@ -58,6 +58,8 @@
         }
     })
 
+    let fileList = []
+
     window.addEventListener('DOMContentLoaded', () => {
         showActiveTheme(getPreferredTheme())
 
@@ -78,7 +80,7 @@
         const messageBox = document.getElementById('suggestionMessage');
 
         var btn = document.querySelector('[data-suggestion]')
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             let hash = window.location.hash;
             if (!hash)
                 hash = document.querySelector(".navRadio:checked")?.value
@@ -97,7 +99,7 @@
             switch (selectedType) {
                 case "Puzzle": {
                     const canvas = document.getElementById("PuzzleCanvas")
-                    if (!isCanvasBlank(canvas)) suggestionNoteID.value = canvas.toDataURL()
+                    fileList = [await canvasToFile(canvas, "Puzzle.png")]
                     break
                 }
                 case "Light": {
@@ -108,13 +110,12 @@
 
                     const labels = ['Initial', 'A', 'B', 'C', 'D', 'E', 'F', 'G']
 
-                    const canvasNotes = visibleLights.map((canvas, i) => {
-                        const base64 = canvas.toDataURL()
-                        const label = labels[i] || `?${i + 1}`
-                        return `${label}: ${base64}`
-                    })
-
-                    suggestionNoteID.value = canvasNotes.join('\n\n')
+                    fileList = await Promise.all(
+                        visibleLights.map(async (canvas, i) => {
+                            const label = labels[i] || `?${i + 1}`
+                            return await canvasToFile(canvas, `${label}.png`)
+                        })
+                    )
                     break
                 }
                 case "Anagram": {
@@ -172,11 +173,15 @@
             submitButton.textContent = "Submitting...";
 
             try {
+                const formData = new FormData();
+                formData.append("Note", note);
+                for (const file of fileList) {
+                    formData.append("Attachments", file);
+                }
 
-                const response = await fetch(`/api/suggestion/${selectedType}`, {
+                const response = await fetch(`/api/v2/suggestion/${selectedType}`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ note })
+                    body: formData
                 });
 
                 const result = await response.json();
@@ -218,6 +223,11 @@ function isCanvasBlank(canvas) {
 
     // Check if every pixel is fully transparent (0)
     return !pixelBuffer.some(color => color !== 0);
+}
+
+async function canvasToFile(canvas, filename, type = "image/png") {
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, type));
+    return new File([blob], filename, { type });
 }
 
 async function showFeedbackPopup() {
@@ -302,4 +312,5 @@ async function showFeedbackPopup() {
         bsToast.hide();
         setTimeout(() => toast.remove(), 200);
     }
+
 }

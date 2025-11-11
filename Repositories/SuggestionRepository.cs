@@ -8,9 +8,20 @@ namespace SimuciokasUK.Repositories
     {
         public void Insert(Suggestion suggestion)
         {
+            var paths = suggestion.AttachmentPaths != null
+                ? string.Join(',', suggestion.AttachmentPaths)
+                : null;
+
             _connection.Execute(
-                "INSERT INTO Suggestions (IPAddress, Type, Notes, Created) VALUES (@IPAddress, @Type, @Note, @Created)",
-                suggestion
+                "INSERT INTO Suggestions (IPAddress, Type, Notes, Created, AttachmentPaths) VALUES (@IPAddress, @Type, @Note, @Created, @AttachmentPaths)",
+                new
+                {
+                    suggestion.IPAddress,
+                    suggestion.Type,
+                    Note = suggestion.Note,
+                    suggestion.Created,
+                    AttachmentPaths = paths
+                }
             );
         }
 
