@@ -133,7 +133,6 @@
                 case "Anagram": {
                     suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
                     suggestionNoteID.value = document.getElementById("AnagramInput").value
-                    console.log("Note: " + suggestionNoteID.value)
                     suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
                     break
                 }
