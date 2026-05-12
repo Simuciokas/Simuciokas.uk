@@ -1,27 +1,18 @@
-﻿import {
-    Chart,
-    TimeScale,
-    LinearScale,
-    CategoryScale,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import 'chartjs-adapter-luxon';
-import { CandlestickController, CandlestickElement } from 'chartjs-chart-financial';
-import ZoomPlugin from 'chartjs-plugin-zoom';
+﻿import { fuzzyMatch, exactMatch, normalize } from './_search.js';
+import { onDomReady } from './_dom.js';
 
-Chart.register(
-    TimeScale,
-    LinearScale,
-    CategoryScale,
-    Title,
-    Tooltip,
-    Legend,
-    CandlestickController,
-    CandlestickElement,
-    ZoomPlugin
-);
+// Chart.js + financial/zoom plugins are >100 KB and only used inside this
+// module. Defer the cost until the GE tab actually renders a chart. The
+// registration + named imports live in _chart.js so esbuild can tree-shake
+// the unused Chart.js controllers/elements (LineController, BarController,
+// etc.) that are otherwise pulled in by namespace-access patterns.
+let Chart;
+let chartReady;
+const loadChartLibrary = () => {
+    if (chartReady) return chartReady;
+    chartReady = import('./_chart.js').then(mod => { Chart = mod.Chart; });
+    return chartReady;
+};
 
 const units = [
     { value: 1e15, symbol: 'P' },  // Peta
@@ -95,87 +86,68 @@ async function ViewInitialOffers() {
 }
 
 async function Startup() {
-    try {
-        const [exchangeRes, sellRes, buyRes] = await Promise.all([
-            fetch('https://api.gameslabs.net/1.0.0/exchange/'),
-            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell'),
-            fetch('https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/buy')
-        ]);
+    const endpoints = {
+        exchange: 'https://api.gameslabs.net/1.0.0/exchange/',
+        sell:     'https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/sell',
+        buy:      'https://api.gameslabs.net/1.0.0/exchange/orders/MS.*/buy',
+    };
 
-        const [exchangeData, sellData, buyData] = await Promise.all([
-            exchangeRes.json(),
-            sellRes.json(),
-            buyRes.json()
-        ]);
+    const fetchJson = async (url) => {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+        return res.json();
+    };
 
-        items = exchangeData.map(entry => ({
+    const settled = await Promise.allSettled(
+        Object.values(endpoints).map(fetchJson)
+    );
+    const [exchange, sell, buy] = settled;
+    const failed = Object.keys(endpoints).filter((_, i) => settled[i].status !== 'fulfilled');
+
+    if (exchange.status === 'fulfilled') {
+        items = exchange.value.map(entry => ({
             symbol: entry.symbol,
-            name: entry.buy.name
+            name: entry.buy.name,
         }));
+    }
 
+    if (sell.status === 'fulfilled' || buy.status === 'fulfilled') {
+        const sellData = sell.status === 'fulfilled' ? sell.value : [];
+        const buyData  = buy.status  === 'fulfilled' ? buy.value  : [];
         initialOffers = [...sellData, ...buyData].map(entry => ({
             symbol: entry.symbol,
             type: entry.type,
             price: entry.price,
             amount: entry.amount,
             user: entry.user,
-            timestamp: entry.timestamp
+            timestamp: entry.timestamp,
         })).sort((a, b) => b.timestamp - a.timestamp);
-
-        await displayInitial();
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
-function normalize(text) {
-    return text
-        .toLowerCase()
-        .replace(/[_\s]+/g, ' ')
-        .trim();
-}
-
-function fuzzyMatch(query, text) {
-    const queryWords = query.split(' ');
-    const textWords = text.split(' ');
-
-    return queryWords.every(qWord =>
-        textWords.some(tWord => {
-            return tWord.includes(qWord) || levenshteinDistance(qWord, tWord) <= 1;
-        })
-    );
-}
-
-function exactMatch(query, text) {
-    const queryWords = query.split(' ');
-    const textWords = text.split(' ');
-
-    return queryWords.every(qWord =>
-        textWords.some(tWord => tWord.includes(qWord))
-    );
-}
-
-function levenshteinDistance(a, b) {
-    const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
-
-    for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
-    for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
-
-    for (let i = 1; i <= a.length; i++) {
-        for (let j = 1; j <= b.length; j++) {
-            if (a[i - 1] === b[j - 1]) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j - 1] + 1
-                );
-            }
-        }
     }
 
-    return matrix[a.length][b.length];
+    if (failed.length > 0) {
+        failed.forEach((key, i) => console.warn(
+            `GE: ${key} endpoint failed:`, settled[Object.keys(endpoints).indexOf(key)].reason
+        ));
+        showGEUnavailableBanner(failed);
+    }
+
+    await displayInitial();
+}
+
+function showGEUnavailableBanner(failedKeys) {
+    onDomReady(() => {
+        if (document.getElementById('ge-data-warning')) return;
+        const ge = document.getElementById('GE');
+        if (!ge) return;
+        const banner = document.createElement('div');
+        banner.id = 'ge-data-warning';
+        banner.className = 'alert alert-warning';
+        banner.setAttribute('role', 'alert');
+        banner.textContent =
+            `Live Grand Exchange data is unavailable right now (${failedKeys.join(', ')}). ` +
+            `Search and the offers table will be empty. Try refreshing in a few minutes.`;
+        ge.prepend(banner);
+    });
 }
 
 function searchItems(query) {
@@ -329,6 +301,7 @@ async function displayInitial() {
 }
 
 async function displayDetails(data) {
+    await loadChartLibrary();
     showingInitial = false
     document.getElementById('detailsTableItem').style.display = 'none'
     document.getElementById('geLatestFilter').style.display = 'none'
@@ -705,11 +678,20 @@ document.getElementById('viewLatestOffers').addEventListener("click", function (
     ViewInitialOffers();
 });
 
+// Debounce the typeahead so fuzzyMatch over the full item list runs at most
+// once per ~120ms of typing rather than on every keystroke.
+let searchDebounce;
+const debouncedSearch = (value) => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => searchItems(value), 120);
+};
+
 document.getElementById('searchInput').addEventListener('input', (e) => {
-    searchItems(e.target.value);
+    debouncedSearch(e.target.value);
 });
 
 document.getElementById('searchInput').addEventListener('click', (e) => {
+    clearTimeout(searchDebounce);
     searchItems(e.target.value);
     currentIndex = -1;
 });
@@ -727,7 +709,7 @@ document.getElementById('fuzzySearchToggle').addEventListener('change', () => {
     searchItems(currentQuery);
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+onDomReady(function () {
     const table = document.getElementById('detailsTable');
     const headers = table.querySelectorAll('th');
     let sortDirection = {};

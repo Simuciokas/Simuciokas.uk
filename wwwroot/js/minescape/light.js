@@ -3,8 +3,6 @@ var combos = ['A', 'BA', 'B', 'CA', 'CBA', 'CB', 'C', 'DA', 'DBA', 'DB', 'DCA', 
 
 var debug = false
 
-var checkbox = document.getElementById("LightDebug")
-
 var lightIndex = 0
 
 function resetLightPuzzle() {
@@ -51,10 +49,6 @@ document.getElementById("LightInputZone").addEventListener('click', function (e)
 
 document.getElementById("LightSolution").addEventListener('click', function (e) {
     if (this.innerHTML.includes("reset")) resetLightPuzzle()
-});
-
-checkbox.addEventListener('change', function () {
-    debug = this.checked
 });
 
 function imageOnLoad(img) {
@@ -205,7 +199,7 @@ function TopLeftBlack(imageData, width, height) {
             const rgba = getRGBA(imageData, width, x, y)
             if (rgba[0] < 5 && rgba[1] < 5 && rgba[2] < 5) {
                 let btnRgba = getRGBA(imageData, width, x, y+1)
-                i = 1
+                let i = 1
                 // Loop downwards through black pixels until color is reached
                 while (btnRgba[0] < 16 && btnRgba[0] < 16 && btnRgba[0] < 16) {
                     i++

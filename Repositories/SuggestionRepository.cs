@@ -27,9 +27,9 @@ namespace SimuciokasUK.Repositories
 
         public int GetLastHourCount(string ip, string type)
         {
-            return _connection.Query(
-                "SELECT ID FROM Suggestions WHERE IPAddress = @Ip AND Created >= @Date AND Type = @Type ORDER BY Created",
-                new { Ip = ip, Date = DateTime.UtcNow.AddHours(-1).ToString("yyyy-MM-dd HH:mm:ss"), Type = type }).Count();
+            return _connection.ExecuteScalar<int>(
+                "SELECT COUNT(*) FROM Suggestions WHERE IPAddress = @Ip AND Created >= @Cutoff AND Type = @Type;",
+                new { Ip = ip, Cutoff = DateTime.UtcNow.AddHours(-1), Type = type });
         }
     }
 }

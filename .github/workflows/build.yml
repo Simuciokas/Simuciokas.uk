@@ -1,0 +1,41 @@
+name: build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore .NET
+        run: dotnet restore SimuciokasUK.sln
+
+      - name: Install npm deps
+        run: npm ci
+
+      - name: Build client bundle
+        run: npm run build
+
+      - name: Build .NET
+        run: dotnet build SimuciokasUK.sln --configuration Release --no-restore
+
+      - name: Install Playwright browsers
+        run: pwsh tests/SimuciokasUK.Tests/bin/Release/net8.0/playwright.ps1 install --with-deps chromium
+
+      - name: Test .NET
+        run: dotnet test SimuciokasUK.sln --configuration Release --no-build --verbosity normal

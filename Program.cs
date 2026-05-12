@@ -1,28 +1,46 @@
-using Dapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Data.Sqlite;
-using SimuciokasUK.Models;
+using SimuciokasUK.Helpers;
 using SimuciokasUK.Repositories;
 using System.Data;
 
-string[] AllowedTypes = ["Map", "Cypher", "Anagram", "Puzzle", "Light", "Beacon", "Chest", "HotCold", "GE", "Other"];
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages();
-builder.Services.AddSingleton<FeedbackRepository>();
-builder.Services.AddSingleton<SuggestionRepository>(); 
-builder.Services.AddAntiforgery();
-
-builder.Services.AddResponseCaching(options =>
+if (!builder.Environment.IsDevelopment())
 {
-    options.MaximumBodySize = 314572800;
-    options.UseCaseSensitivePaths = true;
-});
-builder.Services.AddTransient<IDbConnection>(sp =>
-    new SqliteConnection(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=app.db"));
+    builder.Logging.ClearProviders();
+    builder.Logging.AddJsonConsole(options =>
+    {
+        options.IncludeScopes = true;
+        options.UseUtcTimestamp = true;
+    });
+}
+
+// Don't advertise the server software.
+builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
+
+builder.Services.AddRazorPages();
+builder.Services.AddHealthChecks();
+builder.Services.AddScoped<FeedbackRepository>();
+builder.Services.AddScoped<SuggestionRepository>();
+builder.Services.Configure<UploadOptions>(builder.Configuration.GetSection("Upload"));
+builder.Services.Configure<TurnstileOptions>(builder.Configuration.GetSection("Turnstile"));
+
+// Only wire the Turnstile HttpClient when it's actually enabled in config;
+// otherwise the no-op verifier path doesn't need a backing client at all.
+if (builder.Configuration.GetValue("Turnstile:Enabled", false))
+{
+    builder.Services.AddHttpClient<ITurnstileVerifier, TurnstileVerifier>();
+}
+else
+{
+    builder.Services.AddSingleton<ITurnstileVerifier, NoOpTurnstileVerifier>();
+}
+
+builder.Services.AddScoped<IDbConnection>(sp =>
+    new SqliteConnection(builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? "Data Source=app.db"));
 
 var app = builder.Build();
 
@@ -32,8 +50,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+// TLS terminates at nginx/cloudflared upstream; Kestrel listens HTTP only, so
+// app.UseHttpsRedirection() would just log "Failed to determine the https port".
+app.UseSecurityHeaders();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = StaticFileAliasExtensions.SetCacheControl,
+});
 
 var provider = new FileExtensionContentTypeProvider();
 provider.Mappings[".7z"] = "application/x-msdownload";
@@ -43,229 +66,46 @@ provider.Mappings[".json"] = "application/json";
 provider.Mappings[".webp"] = "image/webp";
 provider.Mappings[".svg"] = "image/svg+xml";
 
-app.UseStaticFiles(new StaticFileOptions
+// Order matters: register parent aliases before more-specific children so the
+// child mounts act as fallbacks when the broader physical root doesn't contain
+// the requested path.
+var aliases = new (string RequestPath, string PhysicalRelativePath)[]
 {
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "databases")),
-    RequestPath = "/Data",
-    ContentTypeProvider = provider,
-});
-
-app.UseStaticFiles(new StaticFileOptions
+    ("/Data",                 "wwwroot/databases"),
+    ("/MapImages",            "wwwroot/img/maps"),
+    ("/Icons",                "wwwroot/img/icons"),
+    ("/MapNoOverlay",         "wwwroot"),
+    ("/MapNoOverlay/Icons",   "wwwroot/img/icons"),
+    ("/MapNoOverlay/Data",    "wwwroot/databases"),
+    ("/Map",                  "wwwroot"),
+    ("/Map/Icons",            "wwwroot/img/icons"),
+    ("/Map/Data",             "wwwroot/databases"),
+};
+foreach (var (requestPath, physicalPath) in aliases)
 {
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "maps")),
-    RequestPath = "/MapImages",
-    ContentTypeProvider = provider,
-});
+    var absolute = Path.Combine(app.Environment.ContentRootPath, physicalPath);
+    if (Directory.Exists(absolute))
+        app.UseStaticFileAlias(requestPath, absolute, provider);
+}
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "icons")),
-    RequestPath = "/Icons",
-    ContentTypeProvider = provider,
-});
-
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
-    RequestPath = "/MapNoOverlay",
-    ContentTypeProvider = provider,
-});
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "icons")),
-    RequestPath = "/MapNoOverlay/Icons",
-    ContentTypeProvider = provider,
-});
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "databases")),
-    RequestPath = "/MapNoOverlay/Data",
-    ContentTypeProvider = provider,
-});
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
-    RequestPath = "/Map",
-    ContentTypeProvider = provider,
-});
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "icons")),
-    RequestPath = "/Map/Icons",
-    ContentTypeProvider = provider,
-});
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "databases")),
-    RequestPath = "/Map/Data",
-    ContentTypeProvider = provider,
-});
-
-var options = new RewriteOptions()
+var rewriteOptions = new RewriteOptions()
     .AddRedirect(@"^Minescape/MapNoOverlay/?$", "MapNoOverlay", 301)
     .AddRedirect(@"^Minescape/Map/?$", "Map", 301);
 
-app.UseRewriter(options);
+app.UseRewriter(rewriteOptions);
 app.UseRouting();
-app.UseAntiforgery();
-app.UseAuthorization();
-app.UseResponseCaching();
+app.UseRequestScopeLogging();
 
-var _connection = app.Services.GetRequiredService<IDbConnection>();
-_connection?.Execute(@"
-    CREATE TABLE IF NOT EXISTS Feedback (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-        IPAddress TEXT,
-        Rating INTEGER NOT NULL,
-        Notes TEXT,
-        Created TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS Suggestions (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-        IPAddress TEXT,
-        Type TEXT,
-        Notes TEXT,
-        Created TEXT NOT NULL
-    );
-");
-try
+using (var scope = app.Services.CreateScope())
 {
-    _connection?.Execute(@"ALTER TABLE Suggestions ADD COLUMN AttachmentPaths TEXT;
-");
-}
-catch
-{
-
+    var connection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
+    SchemaMigrator.Run(connection);
 }
 
-
-
-app.MapPost("/api/v2/suggestion/{type}", async
-    (string type,
-    SuggestionRepository repo,
-    IDbConnection db,
-    IConfiguration _configuration,
-    HttpContext http) =>
-{
-    var form = await http.Request.ReadFormAsync();
-
-    // Bind text fields manually
-    var suggestion = new Suggestion
-    {
-        Note = form["Note"],
-        Created = DateTime.UtcNow,
-        IPAddress = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-                    ?? http.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-        AttachmentPaths = []
-    };
-
-    if (!AllowedTypes.Contains(type, StringComparer.InvariantCultureIgnoreCase))
-        return Results.BadRequest(new { message = "Invalid suggestion type." });
-
-    suggestion.Type = AllowedTypes.First(t => t.Equals(type, StringComparison.InvariantCultureIgnoreCase));
-
-    var suggestionLimit = _configuration.GetValue("SuggestionLimitPerHour", 5);
-    if (repo.GetLastHourCount(suggestion.IPAddress, suggestion.Type) >= suggestionLimit)
-        return Results.BadRequest(new { message = $"Suggestion limit reached ({suggestionLimit} per hour). Please try again later." });
-
-    if (form.Files != null && form.Files.Count > 0)
-    {
-        var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-        if (!Directory.Exists(uploadsPath))
-            Directory.CreateDirectory(uploadsPath);
-
-        foreach (var file in form.Files)
-        {
-            if (file.Length == 0)
-                continue;
-
-            // You can add validation here (file size/type)
-            var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(file.FileName)}";
-            var filePath = Path.Combine(uploadsPath, uniqueFileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            suggestion.AttachmentPaths.Add($"/uploads/{uniqueFileName}");
-        }
-    }
-
-    repo.Insert(suggestion);
-
-    return Results.Ok(new { message = "Suggestion submitted successfully." });
-}).DisableAntiforgery();
-
-app.MapPost("/api/suggestion/{type}", (string type, Suggestion suggestion, SuggestionRepository repo, IDbConnection db, IConfiguration _configuration, HttpContext http) =>
-{
-    if (!AllowedTypes.Contains(type, StringComparer.InvariantCultureIgnoreCase))
-        return Results.BadRequest(new { message = "Invalid suggestion type." });
-
-
-    suggestion.IPAddress = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-                           ?? http.Connection.RemoteIpAddress?.ToString()
-                           ?? "unknown";
-
-    suggestion.Type = AllowedTypes.First(t => t.Equals(type, StringComparison.InvariantCultureIgnoreCase));
-
-    var suggestionLimit = _configuration.GetValue("SuggestionLimitPerHour", 5);
-    if (repo.GetLastHourCount(suggestion.IPAddress, suggestion.Type) >= suggestionLimit)
-        return Results.BadRequest(new { message = $"Suggestion limit reached ({suggestionLimit} per hour). Please try again later." });
-
-    suggestion.Created = DateTime.UtcNow;
-
-    repo.Insert(suggestion);
-
-    return Results.Ok(new { message = "Suggestion submitted successfully." });
-});
-
-
-app.MapPost("/api/feedback", (HttpContext http, Feedback feedback, FeedbackRepository repo) =>
-{
-    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-         ?? http.Connection.RemoteIpAddress?.ToString()
-         ?? "unknown";
-
-    var recentFeedback = repo.Get(ip);
-
-    if (recentFeedback != null && recentFeedback.Created > DateTime.UtcNow.AddDays(-30))
-        return Results.Ok(new { message = "Feedback already submitted recently." });
-
-    feedback.IPAddress = ip;
-    feedback.Created = DateTime.UtcNow;
-    repo.Insert(feedback);
-
-    return Results.Ok(new { message = "Thank you for your feedback!" });
-})
-.WithName("SubmitFeedback");
-
-app.MapGet("/api/feedback/needed", (HttpContext http, FeedbackRepository repo) =>
-{
-    var ip = http.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-         ?? http.Connection.RemoteIpAddress?.ToString()
-         ?? "unknown";
-
-    var recentFeedback = repo.Get(ip);
-
-    return Results.Ok(new { feedbackNeeded = recentFeedback == null || recentFeedback.Created <= DateTime.UtcNow.AddDays(-30) });
-})
-.WithName("FeedbackNeeded");
-
+app.MapHealthChecks("/healthz");
+app.MapSuggestionEndpoints();
+app.MapFeedbackEndpoints();
 app.MapRazorPages();
 app.Run();
+
+public partial class Program { }

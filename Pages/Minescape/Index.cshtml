@@ -80,7 +80,6 @@
             <span><b>Tip #1: </b></span><span>On Windows use WIN+SHIFT+S to screenshot into clipboard</span><br />
             <span><b>Tip #2: </b></span><span>Use CTRL+V to upload image from clipboard</span><br />
         </div>
-        <input type="checkbox" id="PuzzleDebug" style="display: none;"/><br />
     </div>
 
     <div class="main" id="Light" style="display: none;">
@@ -168,7 +167,6 @@
             <span><b>Tip #1: </b></span><span>On Windows use WIN+SHIFT+S to screenshot into clipboard</span><br />
             <span><b>Tip #2: </b></span><span>Use CTRL+V to upload image from clipboard</span><br />
         </div>
-        <input type="checkbox" id="LightDebug" style="display:none;" /><br />
     </div>
 
     <div class="main" id="Anagram" style="display: none;">
@@ -394,5 +392,15 @@
         </div>
     </div>
 
-    <script src="@Url.Content("/dist/minescape-solvers.js")"></script>
+    <script type="module" src="~/dist/minescape-solvers.js" asp-append-version="true"></script>
+}
+
+@section Head {
+    @* Preload the lookup tables in parallel with the JS bundle so data.js's
+       Promise.allSettled fetches resolve faster on cold loads. *@
+    <link rel="preload" href="~/Data/anagrams.json" as="fetch" type="application/json" crossorigin />
+    <link rel="preload" href="~/Data/beacons.json"  as="fetch" type="application/json" crossorigin />
+    <link rel="preload" href="~/Data/chests.json"   as="fetch" type="application/json" crossorigin />
+    <link rel="preload" href="~/Data/hotcold.json"  as="fetch" type="application/json" crossorigin />
+    <link rel="preload" href="~/Data/maps.json"     as="fetch" type="application/json" crossorigin />
 }

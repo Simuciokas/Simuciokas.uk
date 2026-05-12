@@ -1,4 +1,5 @@
 import database from './data.js'
+import { renderMapIframe } from './_solution.js'
 
 var suggestions = []
 
@@ -68,9 +69,7 @@ function Reset() {
             document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
             x.nextElementSibling.querySelector("div").classList.add("border-primary")
             const anchor = x.closest('label').querySelectorAll('.card-text')[1]
-            const url = GetMapURL(anchor.innerText)
-            document.getElementById("solution-hotcold-map").innerHTML = ""
-            document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+            renderMapIframe("solution-hotcold-map", anchor.innerText)
         })
     })
 }
@@ -96,8 +95,9 @@ function UpdateLabels() {
         document.getElementById("hotcold-location").innerHTML = "not provided"
 
     const distance = document.getElementById("HotColdDistance").value
+    const distanceNum = parseFloat(distance)
 
-    if (distance == '' || distance == NaN || distance == 0)
+    if (distance === '' || Number.isNaN(distanceNum) || distanceNum === 0)
         document.getElementById("hotcold-distance").innerHTML = "not provided"
     else
         document.getElementById("hotcold-distance").innerHTML = distance
@@ -135,32 +135,22 @@ function GetClosestItems(locations, tier, location, distance) {
     return itemsWithDistances
 }
 
-function GetMapURL(location) {
-    let x = location.split(", ")[0]
-    let y = location.split(", ")[1]
-    let z = location.split(", ")[2]
-
-    return `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`;
-}
-
 function TrySolve() {
 
     const distance = parseInt(document.getElementById("HotColdDistance").value);
+    const location = document.getElementById("hotcold-location").innerText;
     let skip = false
     document.getElementById("HotColdDistance").classList.remove('is-invalid')
     document.getElementById("HotColdMap").classList.remove('is-invalid')
-    if (distance == undefined || distance == null || distance == '' || isNaN(distance) || distance == 'not provided') {
+
+    if (isNaN(distance)) {
         document.getElementById("HotColdDistance").classList.add('is-invalid')
         skip = true
     }
-
-    const location = document.getElementById("hotcold-location").innerText;
-
-    if (location == undefined || location == null || location == '' || location == 'not provided') {
+    if (!location || location === 'not provided') {
         document.getElementById("HotColdMap").classList.add('is-invalid')
         skip = true
     }
-
     if (skip) return
 
     if (database.hotcold == null) return
@@ -181,33 +171,25 @@ function TrySolve() {
     document.getElementById("solution-hotcold-header").innerHTML = `Possible Locations (${items.length})`
     let solutionDiv = document.getElementById("solution-hotcold")
 
-    solutionDiv.innerHTML = ""
-    items.forEach(function(item, ind) {
-        const htmlContent = 
-            `
-            <label class="col d-flex h-100">
-                <input class="hotcoldRadio d-none" type="radio" name="hotcoldSelector"/>
-                <div class="col d-flex">
-                    <div class="card h-100 w-100">
-                      <div class="card-body d-flex flex-column">
-                            <p class="card-text">${item.tip}</p>
-                            <p class="card-text">${item.location}</p>
-                        </div>
+    solutionDiv.innerHTML = items.map(item => `
+        <label class="col d-flex h-100">
+            <input class="hotcoldRadio d-none" type="radio" name="hotcoldSelector"/>
+            <div class="col d-flex">
+                <div class="card h-100 w-100">
+                  <div class="card-body d-flex flex-column">
+                        <p class="card-text">${item.tip}</p>
+                        <p class="card-text">${item.location}</p>
                     </div>
                 </div>
-            </label>
-            `
-        solutionDiv.innerHTML += htmlContent
-    });
+            </div>
+        </label>`).join('');
 
     if (items.length == 1) {
         document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
         const x = document.querySelector("input.hotcoldRadio")
         x.nextElementSibling.querySelector("div").classList.add("border-primary")
         const anchor = x.closest('label').querySelectorAll('.card-text')[1]
-        const url = GetMapURL(anchor.innerText)
-        document.getElementById("solution-hotcold-map").innerHTML = ""
-        document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+        renderMapIframe("solution-hotcold-map", anchor.innerText)
     }
 
     document.querySelectorAll("input.hotcoldRadio").forEach(function (x, ind) {
@@ -215,9 +197,7 @@ function TrySolve() {
             document.getElementById("solution-hotcold").querySelectorAll("div.card").forEach(y => y.classList.remove("border-primary"))
             x.nextElementSibling.querySelector("div").classList.add("border-primary")
             const anchor = x.closest('label').querySelectorAll('.card-text')[1]
-            const url = GetMapURL(anchor.innerText)
-            document.getElementById("solution-hotcold-map").innerHTML = ""
-            document.getElementById("solution-hotcold-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+            renderMapIframe("solution-hotcold-map", anchor.innerText)
         })
     })
 }

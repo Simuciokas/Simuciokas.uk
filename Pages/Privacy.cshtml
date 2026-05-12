@@ -1,8 +1,26 @@
-﻿@page
+@page
 @model PrivacyModel
 @{
     ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>idk</p>
+<p>This site is a hobby project. It is intentionally minimal in what it collects.</p>
+
+<h2>What is stored</h2>
+<ul>
+    <li><strong>Feedback ratings.</strong> When you submit feedback, the rating, your optional notes, and your IP address are saved so the site can avoid asking the same visitor for feedback again within 30 days.</li>
+    <li><strong>Suggestions.</strong> When you submit a suggestion (text and optional screenshots), the note text, any attached image files, your IP address, and the suggestion type are saved so I can review the issue.</li>
+</ul>
+
+<h2>How IP addresses are used</h2>
+<p>IP addresses are used only for rate-limiting (to prevent abuse) and deduplication (so the feedback prompt doesn't repeat). They are not shared with third parties for advertising. The site sits behind Cloudflare, which also processes the IP for DDoS protection per their <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">privacy policy</a>.</p>
+
+<h2>Retention</h2>
+<p>Submissions and feedback are kept for as long as they are useful for improving the site. Uploaded screenshots are stored on the server filesystem. There is no automated deletion; if you want a specific submission removed, contact me.</p>
+
+<h2>Cookies</h2>
+<p>The site uses one piece of <code>localStorage</code> to remember your theme preference (light/dark/auto). No tracking cookies are set by this site directly. Cloudflare may set its own cookies for security purposes.</p>
+
+<h2>Contact</h2>
+<p>Open an issue at <a href="https://github.com/Simuciokas" rel="noopener" target="_blank">github.com/Simuciokas</a> or use the on-site suggestion form.</p>

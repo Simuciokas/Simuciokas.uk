@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /Map/Data/
+Disallow: /MapNoOverlay/Data/
+Disallow: /Data/
+Disallow: /uploads/
+
+Sitemap: https://simuciokas.uk/sitemap.xml

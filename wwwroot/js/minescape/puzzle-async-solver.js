@@ -1,4 +1,4 @@
-let puzzleWorker = new Worker(new URL('./puzzle-solver.worker', import.meta.url));
+let puzzleWorker = new Worker(new URL('./puzzle-solver.worker.js', import.meta.url), { type: 'module' });
 
 class Puzzle {
 
@@ -10,7 +10,7 @@ class Puzzle {
                 timeoutID = setTimeout(() => {
 
                     puzzleWorker.terminate();
-                    puzzleWorker = new Worker(new URL('./puzzle-solver.worker', import.meta.url));
+                    puzzleWorker = new Worker(new URL('./puzzle-solver.worker.js', import.meta.url), { type: 'module' });
 
                     console.error(`Time limit (${timeout / 1000} seconds) exceeded`);
                 }, timeout);

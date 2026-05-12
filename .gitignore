@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /app.db
+/uploads/
+
+# Local Claude Code settings (machine-specific permissions / hooks). The rest of
+# .claude/ (CLAUDE.md, context/*.md) is intentionally tracked.
+.claude/settings.local.json

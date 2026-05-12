@@ -1,3 +1,5 @@
+import { onDomReady } from './_dom.js';
+
 var radios = document.getElementById("Navigation").querySelectorAll("input")
 var currentPage = "Puzzle"
 resetPage();
@@ -25,7 +27,7 @@ function changePage(page) {
     history.replaceState(null, null, `#${currentPage}`);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+onDomReady(() => {
     const hash = window.location.hash.substring(1)
     if (!hash) return
 

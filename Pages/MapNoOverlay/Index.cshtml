@@ -1,47 +1,48 @@
-﻿@page
-@model SimuciokasUK.Pages.Map.IndexModel
+@page
+@model SimuciokasUK.Pages.MapNoOverlay.IndexModel
 @{
     Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <title>Minescape Map - Runescape in Minecraft</title>
     <meta name="description" content="Runescape in Minecraft. Minescape is a Minecraft game inspired by Runescape, developed by GamesLabs. Join the game on play.gameslabs.net">
-    <link rel="canonical" href="https://www.minescape.net/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Minescape - Runescape in Minecraft">
     <meta property="og:description" content="Minescape is a Minecraft game inspired by Runescape, developed by GamesLabs. Join the game on play.gameslabs.net">
     <meta property="og:image" content="https://www.minescape.net/img/logo-full.webp">
-    <meta property="og:url" content="https://www.minescape.net">
+    <meta property="og:url" content="https://simuciokas.uk/MapNoOverlay">
     <meta property="og:site_name" content="Minescape">
 
+    <link rel="stylesheet" href="~/css/map/leaflet.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/map/overviewer.css" type="text/css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/map/font-awesome.min.css" asp-append-version="true">
 
-
-    <script src="js/map/jquery.min.js"></script>
-    <script src="js/map/overviewerConfig.js"></script>
-    <script>
-        overviewerConfig.map.hideOverlayControl = true;
-    </script>
-    <script src="js/map/overviewer.js"></script>
-    <script src="js/map/baseMarkers.js"></script>
-    <script src="js/map/labels.js"></script>
-
-    <link rel="stylesheet" href="css/map/leaflet.css">
-    <script src="js/map/leaflet.js"></script>
-    <link rel="stylesheet" href="css/map/overviewer.css" type="text/css">
-
-
-    <!-- Font awesome -->
-    <link rel="stylesheet" href="css/map/font-awesome.min.css">
-
+    <script defer src="~/js/map/jquery.min.js" asp-append-version="true"></script>
+    <script defer src="~/js/map/leaflet.js" asp-append-version="true"></script>
+    <script defer src="~/js/map/overviewerConfig.js" asp-append-version="true"></script>
+    <script defer src="~/js/map/overviewer.js" asp-append-version="true"></script>
+    <script defer src="~/js/map/baseMarkers.js" asp-append-version="true"></script>
+    <script defer src="~/js/map/labels.js" asp-append-version="true"></script>
+    <script defer src="~/js/map/MovingMarker.js" asp-append-version="true"></script>
 </head>
-<body class="page-body" cz-shortcut-listen="true" onload="overviewer.util.initialize()">
+<body class="page-body">
     <div id="mcmap"></div>
-    <script src="js/map/MovingMarker.js"></script>
-
+    <script>
+        // overviewerConfig must be set BEFORE initialize runs, but the marker DB
+        // scripts overviewer.js injects via baseMarkers.js only finish loading
+        // between DOMContentLoaded and window.load. So: set the option as soon
+        // as overviewerConfig.js has executed (defer scripts run before
+        // DOMContentLoaded), then defer initialize() to the load event so
+        // markers are actually available when the map renders.
+        document.addEventListener('DOMContentLoaded', () => {
+            overviewerConfig.map.hideOverlayControl = true;
+        });
+        window.addEventListener('load', () => overviewer.util.initialize());
+    </script>
 </body>
 </html>

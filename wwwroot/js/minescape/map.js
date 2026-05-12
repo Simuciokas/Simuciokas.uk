@@ -1,4 +1,5 @@
 import database from './data.js'
+import { renderMapIframe } from './_solution.js'
 
 var suggestions = []
 
@@ -43,23 +44,11 @@ function Reset() {
 
     document.querySelectorAll("input.mapRadio").forEach(function(x, ind) {
         x.addEventListener('change', function (e) {
-            
             document.querySelectorAll("#solution-map div.card").forEach(y => y.classList.remove("border-primary"))
             x.nextElementSibling.classList.add("border-primary")
-            const url = GetMapURL(document.querySelector(`#map${ind + 1}`).innerText)
-            document.getElementById("solution-map-map").innerHTML = ""
-            document.getElementById("solution-map-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${url}\"></iframe>`
+            renderMapIframe("solution-map-map", document.querySelector(`#map${ind + 1}`).innerText)
         })
     })
-
-}
-
-function GetMapURL(location) {
-    let x = location.split(", ")[0]
-    let y = location.split(", ")[1]
-    let z = location.split(", ")[2]
-
-    return `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`;
 }
 
 document.querySelectorAll("#Map input.btn-check").forEach(x => {

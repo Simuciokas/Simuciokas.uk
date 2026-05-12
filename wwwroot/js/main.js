@@ -79,6 +79,53 @@
         const suggestionModal = new bootstrap.Modal(document.getElementById('suggestionModal'));
         const messageBox = document.getElementById('suggestionMessage');
 
+        // Per-suggestion-type config. Each entry is exactly one of:
+        //   { tooltip, captureFiles }  -> grab canvases as image files
+        //   { tooltip, noteValue }     -> pull a string into suggestionNoteID
+        const SEARCH_VALUE_TOOLTIP = "Include Search Value";
+        const valueFromInput = id => () => document.getElementById(id).value;
+        const suggestionTypeConfig = {
+            Puzzle: {
+                tooltip: "Include Uploaded Puzzle Image",
+                captureFiles: async () => [
+                    await canvasToFile(document.getElementById("PuzzleCanvas"), "Puzzle.png"),
+                ],
+            },
+            Light: {
+                tooltip: "Include Uploaded Light Images",
+                captureFiles: async () => {
+                    const visible = Array.from(document.querySelectorAll('.light-preview'))
+                        .filter(el => getComputedStyle(el).display !== 'none');
+                    if (!visible.length) return [];
+                    const labels = ['Initial', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
+                    return Promise.all(visible.map((canvas, i) =>
+                        canvasToFile(canvas, `${labels[i] || `?${i + 1}`}.png`)));
+                },
+            },
+            Anagram: { tooltip: SEARCH_VALUE_TOOLTIP, noteValue: valueFromInput("AnagramInput") },
+            Cypher:  { tooltip: SEARCH_VALUE_TOOLTIP, noteValue: valueFromInput("CypherInput") },
+            Beacon:  { tooltip: SEARCH_VALUE_TOOLTIP, noteValue: valueFromInput("BeaconInput") },
+            Chest:   { tooltip: SEARCH_VALUE_TOOLTIP, noteValue: valueFromInput("ChestInput") },
+            GE:      { tooltip: SEARCH_VALUE_TOOLTIP, noteValue: valueFromInput("searchInput") },
+            HotCold: {
+                tooltip: "Include Map & Distance Value",
+                noteValue: () => {
+                    const mapNote = document.getElementById("HotColdMap").value;
+                    const distance = document.getElementById("HotColdDistance").value;
+                    return (mapNote || distance) ? `${mapNote} ${distance}`.trim() : '';
+                },
+            },
+            Map: {
+                tooltip: "Include Selected Map",
+                noteValue: () => {
+                    const checked = document.querySelector("input.mapRadio:checked");
+                    if (!checked) return '';
+                    const span = checked.closest("label")?.querySelector("span");
+                    return span?.innerText.trim() || '';
+                },
+            },
+        };
+
         var btn = document.querySelector('[data-suggestion]')
         btn.addEventListener('click', async () => {
             let hash = window.location.hash;
@@ -95,6 +142,7 @@
 
             const suggestionNoteID = document.getElementById('suggestionNoteID')
             suggestionNoteID.value = ''
+            fileList = []
 
             const suggestionIncludeAdditional = document.getElementById('suggestionIncludeAdditional')
             suggestionIncludeAdditional.checked = true
@@ -103,80 +151,16 @@
             const suggestionIncludeAdditionalLabel = document.getElementById('suggestionIncludeAdditionalLabel')
             suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Data")
 
-            switch (selectedType) {
-                case "Puzzle": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Uploaded Puzzle Image")
-                    const canvas = document.getElementById("PuzzleCanvas")
-                    fileList = [await canvasToFile(canvas, "Puzzle.png")]
-                    suggestionIncludeAdditional.parentElement.hidden = fileList != null && fileList.length > 0
-                    break
-                }
-                case "Light": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Uploaded Light Images")
-                    const visibleLights = Array.from(document.querySelectorAll('.light-preview'))
-                        .filter(el => getComputedStyle(el).display !== 'none')
+            const config = suggestionTypeConfig[selectedType];
+            if (config) {
+                suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", config.tooltip);
 
-                    if (!visibleLights.length) break
-
-                    const labels = ['Initial', 'A', 'B', 'C', 'D', 'E', 'F', 'G']
-
-                    fileList = await Promise.all(
-                        visibleLights.map(async (canvas, i) => {
-                            const label = labels[i] || `?${i + 1}`
-                            return await canvasToFile(canvas, `${label}.png`)
-                        })
-                    )
-
-                    suggestionIncludeAdditional.parentElement.hidden = fileList != null && fileList.length > 0
-                    break
-                }
-                case "Anagram": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
-                    suggestionNoteID.value = document.getElementById("AnagramInput").value
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
-                }
-                case "Cypher": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
-                    suggestionNoteID.value = document.getElementById("CypherInput").value
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
-                }
-                case "Beacon": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
-                    suggestionNoteID.value = document.getElementById("BeaconInput").value
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
-                }
-                case "Chest": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
-                    suggestionNoteID.value = document.getElementById("ChestInput").value
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
-                }
-                case "HotCold": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Map & Distance Value")
-                    const mapNote = document.getElementById("HotColdMap").value
-                    const distanceNote = document.getElementById("HotColdDistance").value
-                    if (mapNote || distanceNote) suggestionNoteID.value = `${mapNote} ${distanceNote}`.trim()
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
-                }
-                case "Map": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Selected Map")
-                    const checkedMap = document.querySelector("input.mapRadio:checked")
-                    if (checkedMap) {
-                        const span = checkedMap.closest("label").querySelector("span")
-                        suggestionNoteID.value = span?.innerText.trim() || ''
-                    }
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
-                }
-                case "GE": {
-                    suggestionIncludeAdditionalLabel.setAttribute("data-bs-title", "Include Search Value")
-                    suggestionNoteID.value = document.getElementById("searchInput").value
-                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value
-                    break
+                if (config.captureFiles) {
+                    fileList = await config.captureFiles();
+                    suggestionIncludeAdditional.parentElement.hidden = fileList.length > 0;
+                } else if (config.noteValue) {
+                    suggestionNoteID.value = config.noteValue();
+                    suggestionIncludeAdditional.parentElement.hidden = !suggestionNoteID.value;
                 }
             }
 
@@ -189,7 +173,7 @@
 
         const submitButton = document.getElementById('suggestionSubmit');
         submitButton.addEventListener('click', async () => {
-            const noteID = document.getElementById('suggestionNoteID').value.trim();
+            let noteID = document.getElementById('suggestionNoteID').value.trim();
 
             const suggestionIncludeAdditional = document.getElementById('suggestionIncludeAdditional')
             if (!suggestionIncludeAdditional.checked) noteID = null;

@@ -1,6 +1,5 @@
-import Puzzle from './puzzle-async-solver'
-//import unzipSync from 'fflate'
-const { unzipSync } = require('fflate')
+import Puzzle from './puzzle-async-solver';
+import { unzipSync } from 'fflate';
 
 const colors = {
     tile: '#ccc',
@@ -20,44 +19,41 @@ var solutionSteps = null
 
 let showDebug = false
 let showDebug2 = false
-let debug = false //document.getElementById("PuzzleDebug").checked;
+let debug = false
 function getCurrentPage() {
     return document.getElementById("Navigation").querySelectorAll("input:checked")[0].value
 }
 
+function loadPuzzleImage(img) {
+    const zone = document.getElementById("PuzzleInputZone");
+    zone.classList.remove('dragover');
+
+    const desc = document.getElementById("PuzzleInputDescription");
+    desc.innerText = "Got another puzzle? Choose or drag it here";
+    desc.style.textAlign = "right";
+    desc.style.paddingRight = "5px";
+
+    const puzzleCanvas = document.getElementById("PuzzleCanvas");
+    puzzleCanvas.width = img.width;
+    puzzleCanvas.height = img.height;
+    zone.style.height = `${img.height + 6}px`;
+    puzzleCanvas.getContext('2d').drawImage(img, 0, 0);
+
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+
+    Solve();
+}
+
 window.addEventListener("paste", function (e) {
     if (getCurrentPage() != "Puzzle") return;
-    var item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
-
-    var blob = item.getAsFile();
-
-    var img = new Image();
-
-    img.onload = function () {
-        document.getElementById("PuzzleInputZone").classList.remove('dragover');
-        document.getElementById("PuzzleInputDescription").innerText = "Got another puzzle? Choose or drag it here";
-        document.getElementById("PuzzleInputDescription").style.textAlign = "right";
-        document.getElementById("PuzzleInputDescription").style.paddingRight = "5px";
-        let puzzleCanvas = document.getElementById("PuzzleCanvas");
-        puzzleCanvas.width = img.width;
-        puzzleCanvas.height = img.height;
-        document.getElementById("PuzzleInputZone").style.height = `${img.height + 6}px`;
-
-        let obj = puzzleCanvas.getContext('2d');
-        obj.drawImage(img, 0, 0);
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        Solve();
-    };
-
+    const item = Array.from(e.clipboardData.items).find(x => /^image\//.test(x.type));
+    if (!item) return;
+    const blob = item.getAsFile();
+    const img = new Image();
+    img.onload = () => loadPuzzleImage(img);
     img.src = URL.createObjectURL(blob);
-});
-
-document.getElementById("PuzzleDebug").addEventListener('change', function () {
-    debug = document.getElementById("PuzzleDebug").checked;
 });
 
 document.getElementById("PuzzleInput").addEventListener('change', function () {
@@ -77,36 +73,14 @@ document.getElementById("PuzzleInputZone").addEventListener('dragleave', functio
 });
 
 function readFile(input) {
-    if (debug) console.log(input.files);
-    if (input.files && input.files[0]) {
-        document.getElementById("PuzzleInputZone").classList.remove('dragover');
-        document.getElementById("PuzzleInputDescription").innerText = "Got another puzzle? Choose or drag it here";
-        document.getElementById("PuzzleInputDescription").style.textAlign = "right";
-        document.getElementById("PuzzleInputDescription").style.paddingRight = "5px";
-
-        var reader = new FileReader();
-
-        reader.onload = function (event) {
-            const img = new Image();
-            img.onload = function () {
-                let puzzleCanvas = document.getElementById("PuzzleCanvas");
-                puzzleCanvas.width = img.width;
-                puzzleCanvas.height = img.height;
-                document.getElementById("PuzzleInputZone").style.height = `${img.height + 6}px`;
-                
-                let obj = puzzleCanvas.getContext('2d');
-                obj.drawImage(img, 0, 0);
-
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-
-                Solve();
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => loadPuzzleImage(img);
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
 }
 
 class PartitionData {

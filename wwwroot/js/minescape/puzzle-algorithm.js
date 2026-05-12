@@ -93,7 +93,6 @@ class PuzzleSolver {
             }
             bound = output;
         }
-        return null;
     }
 
     _searchIDAStar(grid, path, traveledDist, bound) {

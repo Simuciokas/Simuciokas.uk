@@ -1,139 +1,31 @@
-import database from './data.js'
-function levenshteinDistance(a, b) {
-    const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0))
+import database from './data.js';
+import { attachTypeahead } from './_typeahead.js';
+import { renderMapIframe } from './_solution.js';
 
-    for (let i = 0; i <= a.length; i++) matrix[i][0] = i
-    for (let j = 0; j <= b.length; j++) matrix[0][j] = j
-
-    for (let i = 1; i <= a.length; i++) {
-        for (let j = 1; j <= b.length; j++) {
-            if (a[i - 1] === b[j - 1]) {
-                matrix[i][j] = matrix[i - 1][j - 1]
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j - 1] + 1
-                )
-            }
-        }
-    }
-
-    return matrix[a.length][b.length]
-}
-
-function fuzzyMatch(query, text) {
-    const queryWords = query.split(' ');
-    const textWords = text.split(' ');
-
-    return queryWords.every(qWord =>
-        textWords.some(tWord => {
-            return tWord.includes(qWord) || levenshteinDistance(qWord, tWord) <= 1;
-        })
-    );
-}
-
-function displaySearchResults(results) {
-    const searchResults = document.getElementById('searchResultsAnagram')
-    searchResults.innerHTML = ''
-
-    if (results.length > 0) {
-        searchResults.style.display = 'block'
-        results.forEach(item => {
-            const div = document.createElement('div')
-            div.innerHTML = item
-            div.addEventListener('click', () => {
-                selectItem(item)
-            });
-            searchResults.appendChild(div)
-        });
-    } else {
-        searchResults.style.display = 'none'
-    }
-}
-
-function searchItems(query) {
-    query = query.toLowerCase()
-    let results = []
-    let arr = Object.keys(database.anagrams)
-
-    for (let i = 0; i < arr.length; i++) {
-        const matches = fuzzyMatch(query, arr[i].toLowerCase());
-        if (matches)
-            results.push(arr[i])
-    }
-
-    displaySearchResults(results)
-}
 function capitalizeWords(str) {
     return str
         .split(' ')
-        .map(word =>
-            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        )
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 }
 
-async function selectItem(item) {
-    document.getElementById('AnagramInput').value = item
-    document.getElementById('searchResultsAnagram').style.display = 'none'
-    let dbItem = database.anagrams[item];
-    let x = dbItem.location.split(", ")[0]
-    let y = dbItem.location.split(", ")[1]
-    let z = dbItem.location.split(", ")[2]
+function selectAnagram(item) {
+    const dbItem = database.anagrams[item];
+    if (!dbItem) return;
 
-    let text = `MapNoOverlay/#/${x}/${y}/${z}/-2/minescape/minescape`
-    document.getElementById("solution-anagram-tip").innerText = dbItem.tip
-    document.getElementById("solution-anagram-name").innerText = dbItem.id == undefined ? "Name not set in database" : capitalizeWords(dbItem.id)
-    document.getElementById("solution-anagram-url").href = text
-    document.getElementById("solution-anagram-url").innerText = dbItem.location
-    document.getElementById("solution-anagram-map").innerHTML = ""
-    document.getElementById("solution-anagram-map").innerHTML = `<iframe id=\"\" style=\"width:100%; height:650px;\" src=\"${text}\"></iframe>`
+    document.getElementById('solution-anagram-tip').innerText = dbItem.tip;
+    document.getElementById('solution-anagram-name').innerText =
+        dbItem.id == null ? 'Name not set in database' : capitalizeWords(dbItem.id);
+
+    const url = renderMapIframe('solution-anagram-map', dbItem.location);
+    const link = document.getElementById('solution-anagram-url');
+    link.href = url;
+    link.innerText = dbItem.location;
 }
 
-let currentIndex = -1;
-
-document.getElementById('AnagramInput').addEventListener('input', (e) => {
-    searchItems(e.target.value);
-});
-
-document.getElementById('AnagramInput').addEventListener('click', (e) => {
-    searchItems(e.target.value);
-    currentIndex = -1;
-});
-
-window.addEventListener('click', function (e) {
-    if (!document.getElementById('AnagramInput').contains(e.target) &&
-        !document.getElementById('searchResultsAnagram').contains(e.target)) {
-        document.getElementById('searchResultsAnagram').style.display = 'none';
-    }
-});
-
-function updateHighlight(items) {
-    items.forEach(item => item.classList.remove('highlight'));
-    if (currentIndex >= 0) {
-        items[currentIndex].classList.add('highlight');
-        items[currentIndex].scrollIntoView({ block: 'nearest' });
-    }
-}
-
-document.getElementById('AnagramInput').addEventListener('keydown', (e) => {
-    const items = document.getElementById('searchResultsAnagram').querySelectorAll("div");
-    if (items.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        currentIndex = (currentIndex + 1) % items.length;
-        updateHighlight(items);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        currentIndex = (currentIndex - 1 + items.length) % items.length;
-        updateHighlight(items);
-    } else if (e.key === 'Enter') {
-        if (currentIndex >= 0) {
-            e.preventDefault();
-            document.getElementById('AnagramInput').value = items[currentIndex].textContent;
-            items[currentIndex].click();
-        }
-    }
+attachTypeahead({
+    inputId: 'AnagramInput',
+    resultsId: 'searchResultsAnagram',
+    candidates: Object.keys(database.anagrams),
+    onSelect: selectAnagram,
 });
